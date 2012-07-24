@@ -1,0 +1,29 @@
+body{ 
+    width:              588px;
+    margin-top:         70px;
+}
+
+div#wrapper{
+    width:              588px;
+}
+div#header{
+    width:              588px;
+}
+div#header div#header_content{
+    width:              588px;
+}
+
+div#navi_top_wrapper{
+    width:              588px;
+}
+div#content_wrapper{
+    width:              588px;
+}
+
+div#main_content{
+    width:              548px;
+}
+
+div#footer{
+    width:              588px;
+}

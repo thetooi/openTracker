@@ -1,0 +1,12 @@
+div#main_content{
+    float:              left;
+    width:              680px;
+    min-height:         400px;
+    padding:            20px;
+}
+
+div#sub_content{
+    float:left;
+    width: 220px;
+    padding: 10px;
+}

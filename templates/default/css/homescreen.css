@@ -1,0 +1,62 @@
+div.screen{
+    float:left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+div.screen div.titlebar div.title{
+    padding-left: 4px;   
+}
+div.screen div.titlebar{
+    float:left;
+    width: 100%;
+    background: #316897;
+    border-width: 1px 1px 0 1px;
+    border-color: #316897;
+    border-style: solid;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #fff;
+}
+
+div.screen div.content{
+    background-color: #F7FBFC;
+    border: 1px solid #E9E9E9;
+    float:left;
+    width: 100%;
+}
+
+div.screen div.content div.padding{
+    padding: 10px;
+}
+
+div#screens{
+    display: none;
+    float:left;
+    width: 100%;
+}
+
+div#screens div.item{
+    background: linear-gradient(top, white 0%,#F3F3F3 78%,#EDEDED 100%,white 100%);
+    float: left;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding: 3px;
+    min-width: 120px;
+    cursor: pointer;
+    border: 1px solid #E9E9E9;
+    background: #FBFBFB;
+}
+
+
+div#screens div.item img{
+    float: left;
+    margin-top: 1px;
+    padding-right: 5px;
+}
+
+div.screen div.edit_screen{
+    display:none;
+    float:right;
+    width: 100%;
+}

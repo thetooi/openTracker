@@ -1,0 +1,113 @@
+.jqifade, div.jqiwarningfade, div.jqiokfade, div.jqiwidefade {
+    position:			absolute;
+    background-color:	#000000;
+}
+div.jqi, div.jqiwarning, div.jqiok, div.jqiwide, div.jqiwider {
+    position:			absolute;
+    width:				400px;
+    padding:			7px;
+    border:				solid 4px #010101;
+    background-color:	#4b4b4b;
+    font-family:		Verdana, Arial, Helvetica;
+    font-size:			14px;
+    text-align:			left;
+}
+
+div.jqiwarning {
+    padding:			7px 7px 7px 14px;
+    background-image:	url('../images/icons/stop_24.png');
+    background-repeat:	no-repeat;
+    background-position:20px 18px;
+}
+
+div.jqi a,
+div.jqiwarning a,
+div.jqiok a,
+div.jqiwide a {
+    color:				#fff;
+}
+
+div.jqiwide {
+    width:				720px;
+}
+
+div.jqiwider {
+    width:				1024px;
+}
+
+div.jqi .jqicontainer, div.jqiwarning .jqiwarningcontainer, div.jqiokcontainer, div.jqiwidecontainer, div.jqiwidercontainer{
+    font-weight:		normal;
+}
+div.jqi .jqiclose, div.jqiwarning .jqiwarningclose, div.jqiokclose, div.jqiwideclose, div.jqiwiderclose{
+    position:			absolute;
+    top:				5px;
+    right:				-2px;
+    width:				18px;
+    cursor:				default;
+    color:				transparent;
+    font-weight:		bold;
+    background-image:	url('../images/icons/close.gif');
+    background-repeat:	no-repeat;
+
+}
+div.jqi .jqimessage, div.jqiwarning .jqiwarningmessage, div.jqimessage, div.jqiwidemessage, div.jqiokmessage {
+    padding:			14px 14px 14px 14px;
+    line-height:		20px;
+    color:				#bababa;
+    float:left;
+    width: 100%;
+}
+
+div.jqiwarning .jqiwarningmessage {
+    padding-left:		54px;
+    padding-bottom:		24px;
+}
+div.jqi .jqibuttons, div.jqiwarning .jqiwarningbuttons, div.jqiokbuttons, div.jqiwidebuttons {
+    float:left;
+    width: 100%;
+    text-align:			right;
+    padding:			5px 0px 5px 0px;
+    background-color:	#3a3a3a;
+}
+div.jqiwarning .jqiwarningbuttons {
+    /*	background-color:	#ca0000;*/
+}
+
+div.jqiok .jqiokbuttons {
+    background-color:	#00be09;
+}
+
+div.jqibuttons button,
+div.jqiwarning div.jqiwarningbuttons button,
+div.jqiok div.jqiokbuttons button,
+div.jqiwide div.jqiwidebuttons button {
+    padding:			0px 17px 0px 27px;
+    margin:				0px 10px 0px 0px;
+    background-image:	url('../images/icons/arrow_right.gif');
+    background-position:7px 2px;
+    background-color:	#222222;
+    background-repeat:	no-repeat;
+    height:				21px;
+    border-top:			0px solid #474747;
+    border-right:		0px solid #141414;
+    border-bottom:		0px solid #141414;
+    border-left:		0px solid #474747;
+    color:				#ff3b21;
+    font-size:			11px;
+    -moz-border-radius:	10px;
+    -webkit-border-radius:10px;
+}
+div.jqi button:hover{
+
+}
+
+div.jqi div.jqibuttons button.jqidefaultbutton,
+div.jqiwarning div.jqiwarningbuttons button.jqiwarningdefaultbutton,
+div.jqiok div.jqiokbuttons button.jqiokdefaultbutton,
+div.jqiwide div.jqiwidebuttons button.jqiwidedefaultbutton {
+    color:				#46ff00;
+    /*background-image:	url('../images/button.jpg');*/
+}
+.jqiwarning .jqi .jqibuttons, div.jqiwarning .jqiwarning .jqiwarningbuttons, div.jqiok .jqiok, .jqiokbuttons, div.jqiwide .jqiwide, .jqiwidebuttons {
+    background-color:	#BF5E26;
+}

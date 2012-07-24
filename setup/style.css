@@ -1,0 +1,192 @@
+
+body{ 
+    background:                 #EEE; 
+    font:                       12px Arial, sans-serif; 
+    color:                      #3a3a3a; 
+    width:                      600px;
+    margin:                     0 auto;
+}
+
+table{
+    font:                       12px Arial, sans-serif; 
+}
+
+a{ 
+    color:                      #3B5998;
+    text-decoration:            none; 
+}
+
+a:hover{
+    text-decoration:            underline; 
+}
+
+
+a img{
+    border:                     0px;
+}
+
+fieldset{
+    border:                     1px solid #ddd; 
+}
+
+h1, .span_h1 {
+    font-family:		'Verdana';
+    font-size:			24px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.3em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h2, .span_h2 {
+    font-family:		'Verdana';
+    font-size:			20px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.6em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h3, .span_h3 {
+    font-family:		'Verdana';
+    font-size:			18px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.3em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h4, .span_h4 {
+    font-family:		'Verdana';
+    font-size:			16px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.3em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h5, .span_h5 {
+    font-family:		'Verdana';
+    font-size:			14px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.5em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h6, .span_h6 {
+    font-family:		'Verdana';
+    font-size:			12px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.5em;
+    margin:				0px;
+    padding:			0px;
+}
+
+div#wrapper{
+    float:                      left;
+    width:                      600px;
+    margin-top:                 30px;
+}
+
+
+div#logo{
+    float:                      left;
+    width:                      600px;
+    margin-bottom:              10px;
+}
+
+div#content{
+    float:                      left; 
+    margin:                     3px; 
+    border:                     1px solid #ddd; 
+    padding:                    20px; 
+    padding-bottom:             10px; 
+    background-color:           #f8f8f8; 
+    width:                      600px;
+}
+
+input[type=submit], input[type=button]{
+    color:                      #fff;
+    cursor:                     pointer;
+    font-size:                  11px;
+    font-weight:                bold;
+    white-space:                nowrap;
+    margin:                     0px;
+    background-color:           #69A74E;
+    border-color:               #3B6E22 #3B6E22  #2C5115;
+    border-width:               0px;
+    vertical-align:             middle;
+    padding:                    4px;
+    margin-bottom:              3px;
+    margin-right:               3px;
+    padding-left:               10px;
+    padding-right:              10px;
+}
+
+input[type=submit]:hover, input[type=button]:hover{
+    background-color:           #578344;
+}
+
+.red{
+    background-color:           #ad4545!important;
+}
+
+.red:hover{
+    background-color:           #782222!important;
+}
+
+.blue{
+    background-color:           #3b7caa!important
+
+}
+
+.blue:hover{
+    background-color:           #0d4d79!important
+}
+
+span.btn{
+    color: #fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+    margin: 0px;
+    background-color: #69A74E;
+    border-color: #3B6E22 #3B6E22 #2C5115;
+    border-width: 1px;
+    vertical-align: middle;
+    padding: 4px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+span.btn:hover{
+    background-color: #578344;
+}
+
+span.big{
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    padding-left: 30px; 
+    padding-right: 30px; 
+}
+
+#poweredBy{
+    float:			left;
+    width:			100%;
+    margin-top:		0px;
+    padding-top:	10px;
+    text-align:		center;
+    color:			#666;
+    font-size:		0.9em;
+}

@@ -1,0 +1,575 @@
+@import url("jquery-ui-1.8.21.css");
+
+body{ 
+    background:         #eee; 
+    font:               12px Arial, sans-serif; 
+    color:              #3a3a3a; 
+    width:              960px;
+    margin:             0 auto;
+}
+
+a{ 
+    color:              #3B5998;
+    text-decoration:    none; 
+}
+
+
+a img{
+    border: 0px;
+}
+
+/* Brödtext + rubriker */
+p, h1, h2, h3, h4 {
+
+}
+
+/* Brödtext */
+span, .quote {
+
+}
+
+h1, .span_h1 {
+    font-family:		'Verdana';
+    font-size:			24px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.3em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h2, .span_h2 {
+    font-family:		'Verdana';
+    font-size:			20px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.6em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h3, .span_h3 {
+    font-family:		'Verdana';
+    font-size:			18px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.3em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h4, .span_h4 {
+    font-family:		'Verdana';
+    font-size:			16px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.3em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h5, .span_h5 {
+    font-family:		'Verdana';
+    font-size:			14px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.5em;
+    margin:				0px;
+    padding:			0px;
+}
+
+h6, .span_h6 {
+    font-family:		'Verdana';
+    font-size:			12px;
+    color:				#333333;
+    font-weight:		normal;
+    line-height:		1.5em;
+    margin:				0px;
+    padding:			0px;
+}
+
+/* Citat */
+blockquote, .quote {
+    font-family:		'Verdana';
+    font-size:			13px;
+    color:				#333333;
+    font-style:			italic;
+    display:			block;
+    line-height:		1.4em;
+}
+
+div#topbar{
+    height: 29px;
+    margin-top: 0px;
+    left:0px;
+    top:0px;
+    width: 100%;
+    color: #fff;
+    background-color: #204066;
+}
+
+
+div#topbar div#user{
+    float:left;
+    margin-top: 7px;
+    padding-left: 5px;
+}
+
+div#topbar div#actions{
+    float: right;
+    margin-top: 7px;
+}
+
+div#topbar div#actions ul#menu{
+    margin:0px;
+    padding: 0px;
+    float: left;
+    list-style: none;
+}
+
+div#topbar div#actions ul#menu li{
+    display: inline;
+    margin: 0px;
+}
+
+div#topbar div#actions ul#menu li a{
+    padding: 5px;
+    padding-top: 20px;
+}
+
+
+.msgAlert {
+    margin-top: 5px;
+    margin-left: -10px;
+    font-size: 10px;
+    padding: 2px;
+    position: absolute;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
+    background-color:  #F03D25;
+    border-radius: 5px;
+    text-align: center;
+}
+
+div#topbar a{
+    color: #fff;
+}
+
+div#topbar div#info{
+    width: 100%;
+    text-align: center;
+    padding-top: 5px;
+}
+
+div#wrapper{
+    float:              left;
+    width:              960px;
+    padding:            0px;
+    margin:             0px;
+    -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 5px 9px rgba(0,0,0,0.6);
+    box-shadow: 0 5px 9px rgba(0, 0, 0, 0.6);
+}
+div#header{
+    float:              left;
+    width:              960px;
+    background:         #0F3854 url(../images/branding_bg.png) repeat-x;
+    border-bottom:      1px solid #2C2C2C;    
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+div#header h1{
+    color:              #ffffff;
+    text-shadow:        1px 1px 1px black;
+    font-size:          22px;
+}
+
+div#header div#header_content{
+    float:              left;
+    width:              960px;
+    padding:            0px;
+    padding-bottom:     11px;
+}
+
+div#navi_top_wrapper{
+    float:              left;
+    width:              960px;
+    background: #204066;
+    border-top: 1px solid #416D99;
+}
+
+ul#navi_top{
+    float:              left;
+    width:              960px;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    padding-bottom: 0px;
+    list-style:         none;
+}
+
+ul#navi_top li{
+    float:              left;
+    height: 36px;
+    margin-right: 5px;
+    border-right: 0px solid #DDD;
+    background: #1C3B5F;
+    color: #fff;
+}
+
+ul#navi_top li a {
+    margin: 0px;
+    display:block;
+    padding: 10px 20px 10px 20px;
+    color: #fff;
+}
+
+ul#navi_top li:hover a, ul#navi_top li.selected a {
+    color: #2c2c2c;
+}
+
+ul#navi_top li:hover{
+    color: #2c2c2c;
+    background-color: #fff;
+}
+
+ul#navi_top li.selected{
+    color: #2c2c2c;
+    background-color: #fff;
+}
+
+div#content_wrapper{
+    float:              left;
+    width:              960px;
+    background-color:   #ffffff;
+    margin-top:         0px;
+}
+
+div#main_content{
+    float:              left;
+    width:              920px;
+    padding:            20px;
+}
+
+div#footer{
+    float:              left;
+    width:              960px;
+    padding-top:        10px;
+    padding-bottom:     10px;
+    background:         #204066;
+}
+
+div#footer div#footer_content{
+    float:              left;
+    font-size:          11px;
+    padding-left:       10px;
+    color: #ddd;
+}
+
+table td{
+    padding: 5px;
+    margin: 0px;
+}
+
+
+table.category_table{
+    width: 100%;
+    text-align: center;
+}
+
+table.category_table td{
+    width: 44px;
+    text-align: center;
+}
+
+table#browse{
+    width: 100%;
+}
+
+table .border-left{
+    border-left: 1px solid #E9E9E9;
+}
+
+table .border-right{
+    border-right: 1px solid #E9E9E9;
+}
+
+table .border-bottom{
+    border-bottom: 1px solid #E9E9E9;
+}
+
+table.forum{
+    border: 1px solid #E9E9E9;
+    border-bottom: 0px;
+    float:left;
+    margin-bottom: 20px;
+}
+
+table.forum thead td{
+    background-color: #fbfbfb;
+    padding:5px;
+}
+
+table.forum tbody td{
+    background-color: #ffffff;
+    padding:5px; 
+}
+
+img{
+    max-width: 100%;
+}
+
+div#conv{
+    float:left;
+    width: 100%;
+}    
+
+div#conv .item{
+    float:left;
+    width: 100%;
+    padding: 5px;
+    border-bottom: 1px solid #E9E9E9;
+}
+
+div#conv .item .avatar{
+    float:left;
+    width: 75px;
+}
+div#conv .item .sender{
+    float:left;
+}
+div#conv .item .message{
+    float:left;
+    width: 698px;
+}
+
+div#conv .item .date{
+    float:right;
+}
+
+div#conv .reply{
+    float:left;
+    width: 100%;
+    background-color: #F2F2F2;
+    border: 0px solid #CCC;
+    padding: 5px;
+}
+
+
+.citation{
+    padding: 5px;
+    border: 1px solid #E9E9E9;
+    background-color: #FBFBFB;
+}
+
+.blockquote{
+    padding: 5px;
+}
+
+.tipsy {padding: 5px; font-size: 10px; position: absolute; z-index: 100000; }
+.tipsy-north{ opacity: 0.8; }
+.tipsy-inner { padding: 5px 8px 4px 8px; background-color: black; color: white; text-align: center; }
+.tipsy-inner { border-radius: 3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
+.tipsy-arrow { position: absolute; background: url('../images/tipsy.gif') no-repeat top left; width: 9px; height: 5px; }
+.tipsy-n .tipsy-arrow { top: 0; left: 50%; margin-left: -4px; }
+.tipsy-nw .tipsy-arrow { top: 0; left: 10px; }
+.tipsy-ne .tipsy-arrow { top: 0; right: 10px; }
+.tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -4px; background-position: bottom left; }
+.tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; background-position: bottom left; }
+.tipsy-se .tipsy-arrow { bottom: 0; right: 10px; background-position: bottom left; }
+.tipsy-e .tipsy-arrow { top: 50%; margin-top: -4px; right: 0; width: 5px; height: 9px; background-position: top right; }
+.tipsy-w .tipsy-arrow { top: 50%; margin-top: -4px; left: 0; width: 5px; height: 9px; }
+
+fieldset{
+    border: 1px solid #E9E9E9;
+}
+
+
+#notifications{
+    position: absolute; 
+    width: 321px; 
+    margin-left: -150px; 
+    margin-top: 2px;
+    background-color: #fff; 
+    border:1px solid #DBDBDB; 
+    border-bottom: 0px;
+    border-top: 0px;
+    color: #2c2c2c; 
+    display:none;
+    z-index: 10;
+}
+
+#notifications .loading{
+    width:          100%;
+    float:          left;
+    text-align:     center;
+    padding-top:    20px;
+}
+
+#notifications ul{
+    list-style:     none;
+    width:          322px;
+    float:          left;
+    margin: 0px;
+    padding: 0px;
+}
+
+#notifications ul li:hover{
+    background-color: #F4F4F6;
+}
+#notifications ul li{
+    float:left;
+    width: 316px!important;
+    border-bottom: 1px solid #DDE1E2!important;
+    padding-left: 3px!important;
+    padding-right: 3px!important;
+    padding-top: 10px!important;
+    padding-bottom: 10px!important;
+}
+
+#notifications ul li.archive{
+    text-align: center;
+    padding-top: 10px!important;
+    padding-bottom: 10px!important;
+    background-color: #F4F4F6;
+    color: #2c2c2c;
+}
+
+#notifications ul li a{
+    color: #3B5998!important;
+}
+
+#notifications ul li .icon{
+    float:left;
+    margin-right: 5px;
+}
+
+input[type=submit], input[type=button]{
+    color: #fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+    margin: 0px;
+    background-color: #69A74E;
+    border-color: #3B6E22 #3B6E22  #2C5115;
+    border-width: 0px;
+    vertical-align: middle;
+    padding: 4px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+input[type=submit]:hover, input[type=button]:hover{
+    background-color: #578344;
+}
+
+.red{
+    background-color: #ad4545!important;
+}
+
+.red:hover{
+    background-color: #782222!important;
+}
+
+.blue{
+    background-color: #3b7caa!important
+
+}
+
+.blue:hover{
+    background-color: #0d4d79!important
+}
+
+span.btn{
+    color: #fff;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+    margin: 0px;
+    background-color: #69A74E;
+    border-color: #3B6E22 #3B6E22 #2C5115;
+    border-width: 1px;
+    vertical-align: middle;
+    padding: 4px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+span.btn:hover{
+    background-color: #578344;
+}
+
+table.bbedit{
+    padding: 0px;
+    background-color: #fff;
+}
+
+table.bbedit td{
+    padding: 0px;
+}
+
+table.bbedit td.editarea{
+    border: 1px solid #E9E9E9;
+}
+
+table.bbedit td.editarea textarea, table.bbedit td.editarea textarea:focus{
+    border: 0px;
+    outline:0px none transparent;
+}
+
+table.bbedit td.toolbar{
+    background-color: #FBFBFB;
+    border: 1px solid #E9E9E9;
+    border-bottom: 0px;
+    padding: 3px 5px 0px 5px;
+}
+
+table.bbedit td.toolbar img{
+    background-color: #FBFBFB;
+    color: #2c2c2c;
+    padding: 5px;
+    cursor: pointer;
+}
+
+table.bbedit td.toolbar img:hover{
+    background-color: #E9E9E9;
+}
+
+table.bbedit td.smilies{
+    background-color: #FBFBFB;
+    border: 1px solid #E9E9E9;
+    border-top: 0px;
+    padding: 5px 5px 2px 5px;
+}
+
+table.bbedit td.smilies img{
+    cursor: pointer;
+}
+
+div.widget{
+    float:left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+span.small{
+    font-size: 10px;
+}
+
+.align_right{
+    text-align: right;
+}
+
+.align_center{
+    text-align: center;
+}
