@@ -209,12 +209,10 @@ try {
             $db->connectable = $data['connectable'];
             $db->insert();
 
-            if ($db->affectedRows()) {
-                if ($data['seeder'])
-                    $torrent_query[] = "torrent_seeders = torrent_seeders + 1";
-                else
-                    $torrent_query[] = "torrent_leechers = torrent_leechers + 1";
-            }
+            if ($data['seeder'])
+                $torrent_query[] = "torrent_seeders = torrent_seeders + 1";
+            else
+                $torrent_query[] = "torrent_leechers = torrent_leechers + 1";
         }
     }
 
