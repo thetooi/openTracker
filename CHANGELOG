@@ -1,0 +1,17 @@
+Beta 0.2.0a
+* Fixed IMDB bugs
+* Fixed announce bug
+* Fixed bug in torrent details
+
+Beta 0.2.0
+* Added mysqli support
+* Added category in admin
+* Added invite system
+* Widgets
+* Revamped RSS feed
+* Removed the CMS_URL from rootSettings, its now set during installation
+* Revamped the setup
+* Added better support for custom javascripts.
+* Changed so that mysql/ajax errors only appears when site is not live, configs/system.php
+* Added custom startpage.
+* Added addon admin support /addon_name/admin/main.php
