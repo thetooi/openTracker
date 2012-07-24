@@ -1,4 +1,3 @@
-<h4><?php echo _t("Register Account"); ?></h4>
 <?php
 $this->setTitle("Register");
 
@@ -84,40 +83,9 @@ try {
 
     if (SYSTEM_USERS >= $pref->max_users)
         throw new Exception("We have reached the max amount of users. Try again later");
-    ?>
-    <form method="post">
-        <input type="hidden" name="secure_input" value="<?php echo $_SESSION['secure_token_last'] ?>">
-        <table>
-            <tr>
-                <td><?php echo _t("Username"); ?></td>
-            </tr>
-            <tr>
-                <td><input type="text" name="username" size="30" /></td>
-            </tr>
-            <tr>
-                <td><?php echo _t("Email"); ?></td>
-            </tr>
-            <tr>
-                <td><input type="text" name="email" size="30" /></td>
-            </tr>
-            <tr>
-                <td><?php echo _t("Password"); ?></td>
-            </tr>
-            <tr>
-                <td><input type="password" name="password" size="30" /></td>
-            </tr>
-            <tr>
-                <td><?php echo _t("Confirm password"); ?></td>
-            </tr>
-            <tr>
-                <td><input type="password" name="password2" size="30" /></td>
-            </tr>
-            <tr>
-                <td><input type="submit" name="register" value="<?php echo _t("Register account"); ?>"></td>
-            </tr>
-        </table>
-    </form>
-    <?php
+
+    $tpl = new Template($this->path . "tpl/");
+    $tpl->build("register.php");
 } Catch (Exception $e) {
     echo error(_t($e->getMessage()));
 }
