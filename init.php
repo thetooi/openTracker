@@ -16,13 +16,18 @@ include(PATH_ROOT . "update.php");
 
 $pref = new Pref("website");
 
+$url = $pref->url;
+if (substr($url, -1) != "/")
+    $url .= "/";
+$url = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . str_replace(array("http://", "https://"), array("", ""), $url);
+
 define("INCLUDED", true);
 define("CLEAN_URLS", $pref->cleanurls);
 define("DEFAULT_LANGUAGE", $pref->language);
 define("COOKIE_PREFIX", "opentracker_");
-define("SYSTEM_VERSION", "0.2.0");
+define("SYSTEM_VERSION", "0.2.1");
 define("START_APP", $pref->startapp);
-define("CMS_URL", (isset($_SERVER['HTTPS']) ? "https://" : "http://") . str_replace(array("http://", "https://"), array("", ""), $pref->url));
+define("CMS_URL", $url);
 
 if (get_magic_quotes_gpc()) {
     array_walk($_GET, 'cleanquotes');
