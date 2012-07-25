@@ -6,9 +6,9 @@ try {
 
     $acl = new Acl(USER_ID);
 
-    if(!$acl->Access("x"))
+    if (!$acl->Access("x"))
         throw new Exception("access denied");
-    
+
     echo "<h4>" . _t("Admin panel") . "</h4>";
 
     if (file_exists(PATH_ROOT . "setup/index.php"))
@@ -68,6 +68,12 @@ try {
             <td align="center">
                 <a href="<?php echo page("admin", "support"); ?>"><img src="images/admin/support.png" width="64px"><br />
                     <?php echo _t("Support") ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <a href="<?php echo page("admin", "mysql"); ?>"><img src="images/admin/mysql.png"><br />
+                    <?php echo _t("mySQL") ?></a>
             </td>
         </tr>
     </table>

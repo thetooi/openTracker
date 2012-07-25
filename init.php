@@ -447,6 +447,16 @@ function nfostrip($str) {
     return $str;
 }
 
+function trimstr($text, $length = 50) {
+    $dec = array("&", "\"", "'", "\\", '\"', "\'", "<", ">");
+    $enc = array("&amp;", "&quot;", "&#39;", "&#92;", "&quot;", "&#39;", "&lt;", "&gt;");
+    $text = str_replace($enc, $dec, $text);
+    if (strlen($text) > $length)
+        $text = substr($text, 0, ($length - 3)) . "...";
+    $text = str_replace($dec, $enc, $text);
+    return $text;
+}
+
 function pager($rpp, $count, $href, $arg = "", $opts = array(), $sign = "?") {
     if ($rpp > $count)
         return array('pagertop' => ' &nbsp;

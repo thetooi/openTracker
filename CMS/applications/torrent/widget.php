@@ -7,13 +7,13 @@ $db->setLimit("6");
 $db->select("torrent_visible = '1'");
 if ($db->numRows()) {
     ?>
-    <table>
+    <table width="100%">
         <?php
         while ($db->nextRecord()) {
             ?>
             <tr>
                 <td>
-                    <a href="<?php echo page("torrent", "details", "", "", "", "id=" . $db->torrent_id) ?>"><?php echo $db->torrent_name; ?></a>
+                    <a href="<?php echo page("torrent", "details", "", "", "", "id=" . $db->torrent_id) ?>"><?php echo trimstr($db->torrent_name, 37); ?></a>
                 </td>
             </tr>
             <?php
