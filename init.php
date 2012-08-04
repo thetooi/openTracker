@@ -21,11 +21,14 @@ if (substr($url, -1) != "/")
     $url .= "/";
 $url = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . str_replace(array("http://", "https://"), array("", ""), $url);
 
+/*
+ * Defines system stuff
+ */
 define("INCLUDED", true);
 define("CLEAN_URLS", $pref->cleanurls);
 define("DEFAULT_LANGUAGE", $pref->language);
 define("COOKIE_PREFIX", "opentracker_");
-define("SYSTEM_VERSION", "0.2.1");
+define("SYSTEM_VERSION", "0.2.1 dev");
 define("START_APP", $pref->startapp);
 define("CMS_URL", $url);
 
@@ -47,6 +50,12 @@ if (!isset($_SESSION['secure_token_last'])) {
     $_SESSION['secure_token_last'] = $token;
 }
 
+/*
+ * Defining USER_ID 
+ * If not logged in set USER_ID = false
+ * else
+ * Set USER_ID = logged in user_id
+ */
 if (isset($_COOKIE[COOKIE_PREFIX . 'user'])) {
     $cookie_vars = explode(".", $_COOKIE[COOKIE_PREFIX . 'user']);
     $cookie_1 = $cookie_vars['0'];
@@ -70,15 +79,19 @@ if (isset($_COOKIE[COOKIE_PREFIX . 'user'])) {
     define("USER_ID", false);
 }
 
-$page_title = "";
-
+/*
+ * Counts total users, 
+ */
 $db = new DB;
 $db->query("SELECT COUNT(user_id) as users FROM {PREFIX}users");
 $db->nextRecord();
 define("SYSTEM_USERS", $db->users);
 
-
-if (USER_ID) {
+/*
+ * IF USER_ID != false
+ * Get users current language
+ */
+if (USER_ID != false) {
     $db = new DB("users");
     $db->user_last_access = time();
     $db->update("user_id = '" . USER_ID . "'");
@@ -94,10 +107,16 @@ if (USER_ID) {
     define("CURRENT_LANGUAGE", DEFAULT_LANGUAGE);
 }
 
+/**
+ * __autoload
+ * 
+ * Loads class files from PATH_LIBRARY automaticly on use.
+ * 
+ * @param string $classname class name to load
+ * 
+ */
 function __autoload($classname) {
-
     $class_exploded = explode("_", $classname);
-
     if (count($class_exploded) == 1) {
         if (file_exists(PATH_LIBRARY . $classname . ".php"))
             include_once(PATH_LIBRARY . $classname . ".php");
@@ -109,11 +128,14 @@ function __autoload($classname) {
     }
 }
 
-function _tCurrentFilename($fullPath) {
-    $currentFilename = str_replace(PATH_ROOT, "", $fullPath);
-    return $currentFilename;
-}
-
+/**
+ * _t
+ * 
+ * Converts phrases into translatable strings
+ * 
+ * @param string $phrase The phrase to be translated
+ * @return string Returns the translated string
+ */
 function _t($phrase) {
     $translate = new DB("translation");
     $translate->select("translation_lang_id = '" . CURRENT_LANGUAGE . "' AND translation_phrase = '" . $translate->escape($phrase) . "'");
@@ -137,6 +159,12 @@ function _t($phrase) {
     return $text;
 }
 
+/**
+ * Check if the selected $port is blacklisted
+ * 
+ * @param int $port port number
+ * @return boolean true/false
+ */
 function blacklist($port) {
     // direct connect
     if ($port >= 411 && $port <= 413)
@@ -159,15 +187,24 @@ function blacklist($port) {
     return false;
 }
 
+/**
+ * Returns the correct page url to the selected application
+ *  
+ * @param string $app Selected application
+ * @param string $action action file inside the application
+ * @param string $var_a alternative variable a
+ * @param string $var_b alternative variable b
+ * @param string $var_c alternative variable c
+ * @param string $alt alternative variable
+ * @return string return the url
+ */
 function page($app, $action = "", $var_a = "", $var_b = "", $var_c = "", $alt = "") {
     $url = "";
-
     $app = cleanurl($app);
     $action = cleanurl($action);
     $var_a = cleanurl($var_a);
     $var_b = cleanurl($var_b);
     $var_c = cleanurl($var_c);
-
     if (CLEAN_URLS) {
         $url .= CMS_URL . "$app/";
         if (!empty($action))
@@ -196,6 +233,12 @@ function page($app, $action = "", $var_a = "", $var_b = "", $var_c = "", $alt = 
     return $url;
 }
 
+/**
+ * Convert bytes to a more user friendly string
+ * 
+ * @param int $bytes the number of bytes to convert
+ * @return string Returns the data
+ */
 function bytes($bytes) {
     if ($bytes < 1000 * 1024)
         return number_format($bytes / 1024, 2) . " kB";
@@ -207,6 +250,12 @@ function bytes($bytes) {
         return number_format($bytes / 1099511627776, 2) . " TB";
 }
 
+/**
+ * Displays an error message with jquery ui
+ * 
+ * @param string $msg the message to display
+ * @return string The error message
+ */
 function error($msg) {
     return "<div class = 'ui-widget'>
         <div class = 'ui-state-error ui-corner-all' style = 'padding: 0 .7em;'>
@@ -215,6 +264,12 @@ function error($msg) {
         </div>";
 }
 
+/**
+ * Displays a notice message with jquery ui
+ * 
+ * @param string $msg the message to display
+ * @return string The notice message
+ */
 function notice($msg) {
     return "
         <div class = 'ui-widget'>
@@ -442,6 +497,12 @@ function file_list($arr, $id) {
     return join(",", $new);
 }
 
+/**
+ * String the nfo file from crap.
+ * 
+ * @param string $str the nfo content
+ * @return string the new striped content
+ */
 function nfostrip($str) {
     $match = array("/[^a-zA-Z0-9-+., &=??????:;
         *'\"???\/\@\[\]\(\)\s]/",
@@ -452,6 +513,13 @@ function nfostrip($str) {
     return $str;
 }
 
+/**
+ * Trims a string lenght to not show all characters
+ * 
+ * @param string $text the string
+ * @param int $lenght the lenght of the short string
+ * @return string The new shorten string
+ */
 function trimstr($text, $length = 50) {
     $dec = array("&", "\"", "'", "\\", '\"', "\'", "<", ">");
     $enc = array("&amp;", "&quot;", "&#39;", "&#92;", "&quot;", "&#39;", "&lt;", "&gt;");
@@ -496,9 +564,6 @@ function pager($rpp, $count, $href, $arg = "", $opts = array(), $sign = "?") {
     }
     else
         $pager .= "<span>" . $as . "</span>";
-
-
-    $pager .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
     $as = _t("Next") . " &gt; &gt;";
     if ($page < $mp && $mp >= 0) {
@@ -547,6 +612,15 @@ function pager($rpp, $count, $href, $arg = "", $opts = array(), $sign = "?") {
     return array('pagertop' => $pagertop, 'pagerbottom' => $pagerbottom, 'limit' => $start . "," . $rpp);
 }
 
+/**
+ * Send an email with the noreply_email setting in the pref
+ * 
+ * @param string $to The address to send the email to
+ * @param string $subject The subject of the email
+ * @param string $body The body of the email
+ * 
+ * @return boolean $mail
+ */
 function sendEmail($to, $subject, $body) {
     $pref = new Pref("website");
 
@@ -565,6 +639,12 @@ function sendEmail($to, $subject, $body) {
         die("could not send email");
 }
 
+/**
+ * Generate a random password string
+ * 
+ * @param int $lenght the lenght of the string
+ * @return string The random password
+ */
 function generatePassword($length = 8) {
     $password = "";
     $possible = "2346789bcdfghjkmnpqrtvwxyzBCDFGHJKLMNPQRTVWXYZ";
@@ -583,86 +663,60 @@ function generatePassword($length = 8) {
     return $password;
 }
 
+/**
+ * Generates a time difference string.
+ * 
+ * @param int $date1 the first date
+ * @param int $date2 the second date
+ * @return string returns how many minutes/hours/days ect has been between the two dates.
+ */
 function timediff($date1, $date2) {
     $diff = abs($date2 - $date1);
-
     $years = floor($diff / (365 * 60 * 60 * 24));
     $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
     $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
     $hours = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24 - $days * 60 * 60 * 24) / (60 * 60));
     $minutes = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24 - $days * 60 * 60 * 24 - $hours * 60 * 60) / 60);
     $seconds = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24 - $days * 60 * 60 * 24 - $hours * 60 * 60 - $minutes * 60));
-
     $return = "";
     if ($years != 0)
         $return .= $years . " years ";
-
     if ($months != 0)
         $return .= $months . " months ";
-
     if ($days != 0)
         $return .= $days . " days ";
-
     if ($hours != 0)
         $return .= $hours . " hours ";
-
     $return .= $minutes . " minutes ";
-
     return $return;
 }
 
+/**
+ * Convert string to bbcodes.
+ * 
+ * @param string $s the string to convert
+ * @return string the converted string
+ */
 function bbcodes($s) {
-
-    $acl = new Acl(USER_ID);
-
     $s = preg_replace("#\[h1\]((\s|.)+?)\[\/h1\]#is", "<h1>\\1</h1>", $s);
     $s = preg_replace("#\[h2\]((\s|.)+?)\[\/h2\]#is", "<h2>\\1</h2>", $s);
     $s = preg_replace("#\[h3\]((\s|.)+?)\[\/h3\]#is", "<h3>\\1</h3>", $s);
     $s = preg_replace("#\[h4\]((\s|.)+?)\[\/h4\]#is", "<h4>\\1</h4>", $s);
-
     $s = str_replace(array("[ul]", "[/ul]"), array("<ul>", "</ul>"), $s);
-
-    // [li]li[/li]
     $s = preg_replace("#\[li\]((\s|.)+?)\[\/li\]#is", "<li>\\1</li>", $s);
-
-    // [b]Bold[/b]
     $s = preg_replace("#\[b\]((\s|.)+?)\[\/b\]#is", "<b>\\1</b>", $s);
-
-    // [i]Italic[/i]
     $s = preg_replace("#\[i\]((\s|.)+?)\[\/i\]#is", "<i>\\1</i>", $s);
-
-    // [u]Underline[/u]
     $s = preg_replace("#\[u\]((\s|.)+?)\[\/u\]#is", "<u>\\1</u>", $s);
-
-    // [u]Underline[/u]
     $s = preg_replace("#\[u\]((\s|.)+?)\[\/u\]#is", "<u>\\1</u>", $s);
-
-    // [img]http://www/image.gif[/img]
     $s = preg_replace("#\[img\](http:\/\/[^\s'\"<>]+(\.(jpg|gif|png)))\[\/img\]#is", "<img border=\"0\" src=\"\\1\" alt='' />", $s);
-
-    // [img=http://www/image.gif]
     $s = preg_replace("#\[img=(http:\/\/[^\s'\"<>]+(\.(gif|jpg|png)))\]\[\/img\]#is", "<img border=\"0\" src=\"\\1\" alt='' />", $s);
-
-    // [color=blue]Text[/color]
-    // [color=#ffcc99]Text[/color]
     $s = preg_replace("/\[color=([a-zA-Z]+)\]((\s|.)+?)\[\/color\]/i", "<font color='\\1'>\\2</font>", $s);
-
     $s = preg_replace("#\[color=(\#[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9])\]((\s|.)+?)\[\/color\]#is", "<font color='\\1'>\\2</font>", $s);
-
-    // [url=http://www.example.com]Text[/url]
     $s = preg_replace("#\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]#is", "<a href=\"\\1\" target=\"_blank\">\\2</a>", $s);
-
-    // [url]http://www.example.com[/url]
     $s = preg_replace("#\[url\]([^()<>\s]+?)\[\/url\]#is", "<a href=\"\\1\" target=\"_blank\">\\1</a>", $s);
-
-    // [size=4]Text[/size]
     $s = preg_replace("#\[size=([1-7])\]((\s|.)+?)\[\/size\]#is", "<font size='\\1'>\\2</font>", $s);
-
-    // [font=Arial]Text[/font]
     $s = preg_replace("#\[font=([a-zA-Z ,]+)\]((\s|.)+?)\[\/font\]#is", "<font face=\"\\1\">\\2</font>", $s);
-
     $s = format_quotes($s);
-
     return $s;
 }
 
@@ -681,14 +735,9 @@ function format_quotes($s) {
     $old_s = '';
     while ($old_s != $s) {
         $old_s = $s;
-
-        //find first occurrence of [/quote]
         $close = strpos($s, "[/quote]");
         if ($close === false)
             return $s;
-
-        //find last [quote] before first [/quote]
-        //note that there is no check for correct syntax
         $open = _strlastpos(substr($s, 0, $close), "[quote");
         if ($open === false)
             return $s;
