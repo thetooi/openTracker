@@ -9,7 +9,6 @@ include("rootSettings.php");
 if (!file_exists(PATH_CONFIGS . "database.php"))
     header("location: setup/");
 
-
 include(PATH_LIBRARY . "Main.php");
 include(PATH_ROOT . "update.php");
 
@@ -28,7 +27,7 @@ define("INCLUDED", true);
 define("CLEAN_URLS", $pref->cleanurls);
 define("DEFAULT_LANGUAGE", $pref->language);
 define("COOKIE_PREFIX", "opentracker_");
-define("SYSTEM_VERSION", "0.2.1 dev");
+define("SYSTEM_VERSION", "0.2.1");
 define("START_APP", $pref->startapp);
 define("CMS_URL", $url);
 

@@ -1,13 +1,14 @@
 <?php
 
+/**
+ * @author Wuild
+ */
 class Cleanup {
 
     private $deadtime_peers;
     private $deadtime_torrents;
 
     function __construct($force = false) {
-
-
         $db = new DB("avps");
         $db->select();
         $doclean = false;
@@ -32,8 +33,6 @@ class Cleanup {
         if ($doclean) {
             set_time_limit(0);
             ignore_user_abort(1);
-
-
             $this->deadtime_peers = time() - floor(60 * 30 * 1.3); // 39 minutes.
             $this->deadtime_torrents = time() - floor(60 * 60 * 24 * 3); // 3 Days
             $this->deadtime_users = time() - floor(60 * 60 * 24 * 56); // 56 Days

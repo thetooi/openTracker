@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @author Wuild
+ */
 class Main {
 
     private $main_template = "default";
@@ -8,10 +11,13 @@ class Main {
     private $control;
     private $startup;
 
+    /**
+     * Construct all the important url parameters.
+     * @param string $startup start page.
+     */
     function __construct($startup = "") {
 
         $this->startup = $startup;
-
         $this->data['url']['application'] = (!isset($_GET['application']) || empty($_GET['application'])) ? $this->startup : $_GET['application'];
         $this->data['url']['application'] = (isset($_GET['application']) && !empty($_GET['application'])) ? $_GET['application'] : $this->data['url']['application'];
         $this->data['url']['action'] = (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] != "install") ? $_GET['action'] : $this->data['url']['action'];
@@ -33,6 +39,10 @@ class Main {
         }
     }
 
+    /**
+     * Load a config file from PATH_CONFIGS.
+     * @param string $file 
+     */
     public function loadConfig($file) {
         $config = array();
         if (file_exists(PATH_CONFIGS . $file))
@@ -44,10 +54,17 @@ class Main {
         }
     }
 
+    /**
+     * Set the mainTemplate.
+     * @param type $template 
+     */
     public function setMainTemplate($template) {
         $this->main_template = $template;
     }
 
+    /**
+     * Build the system to display 
+     */
     public function build() {
         $pref = new Pref("system");
         $this->setMainTemplate($pref->template);
@@ -65,6 +82,10 @@ class Main {
         $tpl->build();
     }
 
+    /**
+     * Check if the current application is allowed to visit.
+     * @return boolean 
+     */
     private function isAllowed() {
         $allowed = array(
             "rss" => array("feed"),

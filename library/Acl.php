@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @author Wuild
+ */
+
 /*
  * 0 = inactive
  * 1 = pending
@@ -13,6 +17,10 @@ class Acl {
     private $_group;
     private $_id;
 
+    /**
+     *  Gather all the info on the selected user id
+     * @param string $id 
+     */
     function __construct($id) {
         $this->id = $id;
         $db = new DB("users");
@@ -44,11 +52,19 @@ class Acl {
         }
     }
 
+    /**
+     *  Set a user variable inside the Acl
+     * @param string $name
+     * @param string $value 
+     */
     function __set($name, $value) {
-
         $this->_user[str_replace("user_", "", $name)] = $value;
     }
 
+    /**
+     * Get the selected users avatar.
+     * @return string 
+     */
     function Avatar() {
         if ($this->_user['avatar'] == "") {
             return "images/default_avatar.jpg";
@@ -60,6 +76,11 @@ class Acl {
         }
     }
 
+    /**
+     * Get a user variable inside the Acl
+     * @param type $name
+     * @return string variable 
+     */
     function __get($name) {
         if (isset($this->_user[$name]))
             return $this->_user[$name];
@@ -67,18 +88,34 @@ class Acl {
             return "Data " . $name . " not found";
     }
 
+    /**
+     * Get the amount of invites
+     * @return int
+     */
     function invites() {
         return (int) $this->_user['invites'];
     }
 
+    /**
+     * Get the amount of uploaded data
+     * @return type 
+     */
     function uploaded() {
         return bytes($this->_user['uploaded']);
     }
 
+    /**
+     * Get the amount of downloaded data
+     * @return type 
+     */
     function downloaded() {
         return bytes($this->_user['downloaded']);
     }
 
+    /**
+     * Get the amount of currently seeding torrents
+     * @return int 
+     */
     function seeding() {
         $db = new DB;
         $db->query("SELECT COUNT(peer_id) as seeding FROM {PREFIX}peers WHERE peer_seeder = 1 AND peer_userid = '" . $this->id . "'");
@@ -86,6 +123,10 @@ class Acl {
         return $db->seeding;
     }
 
+    /**
+     * Get the amount of currently leeching torrents
+     * @return int
+     */
     function leeching() {
         $db = new DB;
         $db->query("SELECT COUNT(peer_id) as leeching FROM {PREFIX}peers WHERE peer_seeder = 0 AND peer_userid = '" . $this->id . "'");
@@ -93,6 +134,9 @@ class Acl {
         return $db->leeching;
     }
 
+    /**
+     * Generate a new passkey 
+     */
     function newPasskey() {
         $passkey = md5(uniqid(true));
         $db = new DB("users");
@@ -102,6 +146,11 @@ class Acl {
         $this->__set("passkey", $passkey);
     }
 
+    /**
+     * Get the access level of the selected user
+     * @param string $characters
+     * @return boolean 
+     */
     function Access($characters) {
         $allowed = true;
         $req = str_split($characters);
@@ -115,6 +164,11 @@ class Acl {
             return true;
     }
 
+    /**
+     * Calculate the ratio
+     * @return string
+     * @throws Exception 
+     */
     function ratio() {
         try {
             if ($this->_user['uploaded'] == 0)

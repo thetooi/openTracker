@@ -1,10 +1,17 @@
 <?php
 
+/**
+ * @author Wuild
+ */
 class Pref {
 
     private $target;
     public $_vars = array();
 
+    /**
+     * Construct the pref class with a pref target.
+     * @param string $target 
+     */
     function __construct($target) {
         $this->target = $target;
         $db = new DB("pref");
@@ -21,14 +28,27 @@ class Pref {
         }
     }
 
+    /**
+     * Store a variable in the class
+     * @param string $name
+     * @param string $value 
+     */
     function __set($name, $value) {
         $this->_vars[$name] = $value;
     }
 
+    /**
+     * Return a stored variable.
+     * @param string $name
+     * @return string
+     */
     function __get($name) {
         return $this->_vars[$name];
     }
 
+    /**
+     * Update the pref values on the selected target. 
+     */
     function update() {
         $db = new DB("pref");
         $db->setColPrefix("pref_");

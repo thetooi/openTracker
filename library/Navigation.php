@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @author Wuild
+ */
 class Navigation {
 
     private $app;

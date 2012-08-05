@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @author Wuild
+ */
+
 class DB {
 
     protected $auto_free = false;
@@ -24,6 +28,11 @@ class DB {
     protected $configs = array();
     protected $db_type = "";
 
+    /**
+     * Construct the database with the selected table.
+     * @param string $table
+     * @return boolean 
+     */
     public function __construct($table = null) {
         $fw = new Main;
         $fw->loadConfig("database.php");
@@ -39,6 +48,10 @@ class DB {
         }
     }
 
+    /**
+     * Connect to the database
+     * @return resource
+     */
     public function connect() {
         if ($this->db_type == "mysqli") {
             $this->link_id = new mysqli($this->configs['mysql']['hostname'], $this->configs['mysql']['username'], $this->configs['mysql']['password']);
@@ -52,6 +65,10 @@ class DB {
         return $this->link_id;
     }
 
+    /**
+     * Select the database.
+     * @param string $db 
+     */
     public function selectDb($db) {
         $this->table = $db;
         if ($this->db_type == "mysqli") {
@@ -65,12 +82,20 @@ class DB {
         }
     }
 
+    /**
+     * Drop the selected table. 
+     */
     public function dropTable() {
         $this->query = "DROP TABLE IF EXISTS ";
         $this->query .= $this->table;
         $this->query($this->query);
     }
 
+    /**
+     * Send Query to the database
+     * @param string $sql
+     * @return resource
+     */
     public function query($sql = null) {
         $sql = str_replace("{PREFIX}", $this->configs['mysql']['prefix'], $sql);
         if (empty($sql)) {
@@ -100,6 +125,10 @@ class DB {
         return $this->query_id;
     }
 
+    /**
+     * Run the query with a WHERE statement
+     * @param string $additionalStatement 
+     */
     public function select($additionalStatement = "") {
         $this->query = "SELECT ";
         $where = preg_replace("/where/", "", $additionalStatement, 1);
@@ -113,6 +142,9 @@ class DB {
         $this->query($this->query);
     }
 
+    /**
+     * Insert data to table. 
+     */
     public function insert() {
         $numCols = count($this->valueData);
         if ($numCols > 0) {
@@ -132,6 +164,10 @@ class DB {
         }
     }
 
+    /**
+     * Update data to table Width a WHERE statement
+     * @param string $whereStatement 
+     */
     public function update($whereStatement = "") {
         $numCols = count($this->valueData);
         $where = str_ireplace("where", "", $whereStatement);
@@ -152,11 +188,13 @@ class DB {
                 }
             } $this->query .= ( isset($this->limit) ) ? "\nLIMIT " . $this->limit : "";
             $this->query($this->query);
-        } else {
-//trigger_error("No values set for update. Use \$db->column_name = \"value\";", E_USER_ERROR);
         }
     }
 
+    /**
+     * Delete data from table width a WHERE statement
+     * @param string $whereStatement 
+     */
     public function delete($whereStatement) {
         $where = str_ireplace("where", "", $whereStatement);
         $this->query = "DELETE FROM ";
@@ -165,6 +203,11 @@ class DB {
         $this->query($this->query);
     }
 
+    /**
+     * Get column names from the selected table.
+     * @param array $colArray
+     * @return array 
+     */
     private function getColNames($colArray) {
         $colNames = array();
         foreach ($colArray as $col => $val) {
@@ -172,14 +215,26 @@ class DB {
         } return $colNames;
     }
 
+    /**
+     * get the Query; 
+     */
     public function getQuery() {
         $this->getQuery = true;
     }
 
+    /**
+     * Set a new table.
+     * @param type $tableName 
+     */
     public function setTable($tableName) {
         $this->table = $tableName;
     }
 
+    /**
+     * Selected columns in an array to get from the selected table.
+     * @param array $cols
+     * @param string $prefix 
+     */
     public function setCols($cols, $prefix = null) {
         if (is_array($cols)) {
             $this->cols = $cols;
@@ -191,10 +246,18 @@ class DB {
         }
     }
 
+    /**
+     * Select a column from the selected table.
+     * @param type $col 
+     */
     public function setCol($col) {
         $this->cols[] = $col;
     }
 
+    /**
+     * Set column prefix
+     * @param string $prefix 
+     */
     public function setColPrefix($prefix) {
         $this->colPrefix = $prefix;
         if (is_array($this->cols)) {
@@ -210,42 +273,34 @@ class DB {
         }
     }
 
+    /**
+     * Sort the data in an order. ASC or DESC
+     * @param string $sort 
+     */
     public function setSort($sort) {
         $this->sort[] = $sort;
     }
 
-    public function unsetSort() {
-        $this->sort = array();
-    }
-
-    public function setOrder($sort) {
-        $this->setSort($sort);
-    }
-
-    public function unsetOrder() {
-        $this->unsetSort();
-    }
-
-    public function setOrderBy($sort) {
-        $this->setSort($sort);
-    }
-
-    public function unsetOrderBy() {
-        $this->unsetSort();
-    }
-
+    /**
+     * Set distinct 
+     */
     public function setDistinct() {
         $this->distinct = true;
     }
 
+    /**
+     * Set the limit of data to return
+     * @param int $value 
+     */
     public function setLimit($value) {
         $this->limit = $value;
     }
 
-    public function unsetLimit() {
-        $this->limit = null;
-    }
-
+    /**
+     * Get a stored variable
+     * @param type $col
+     * @return type 
+     */
     public function __get($col) {
         if (isset($this->colPrefix)) {
             return $this->f($this->colPrefix . $col);
@@ -254,18 +309,31 @@ class DB {
         }
     }
 
+    /**
+     * Store a variable
+     * @param string $key
+     * @param string $val 
+     */
     public function __set($key, $val) {
         $this->valueData[$key] = $val;
     }
 
+    /**
+     * Get another table to join in with the selected table.
+     * @param string $type
+     * @param string $table
+     * @param string $tableAndColA
+     * @param string $tableAndColB 
+     */
     public function join($type, $table, $tableAndColA, $tableAndColB) {
         $this->join[] = $this->getJoinType($type) . " " . $table . " ON " . $tableAndColA . " = " . $tableAndColB;
     }
 
-    public function joinStatement($joinStatement) {
-        $this->join[] = $joinStatement;
-    }
-
+    /**
+     * Get the type of join
+     * @param string $key
+     * @return string 
+     */
     private function getJoinType($key) {
         $key = strtolower($key);
         switch ($key) {
@@ -278,6 +346,10 @@ class DB {
         }
     }
 
+    /**
+     * Return the affected ID from insert / update
+     * @return resource 
+     */
     public function getId() {
         if ($this->db_type == "mysqli")
             return $this->link_id->insert_id;
@@ -285,6 +357,11 @@ class DB {
             return mysql_insert_id($this->link_id);
     }
 
+    /**
+     * Get the nextRecord from the query.
+     * @param string $result_type
+     * @return resource 
+     */
     public function nextRecord($result_type = "both") {
         if (!$this->query_id) {
             $this->halt("next_record() called with no pending query.");
@@ -330,10 +407,11 @@ class DB {
         } return $status;
     }
 
-    public function next_record($result_type = "both") {
-        return $this->nextRecord($result_type);
-    }
-
+    /**
+     * Escape faulty characters in the query
+     * @param type $str
+     * @return resource 
+     */
     public function escape($str) {
         if ($this->db_type == "mysqli")
             return $this->link_id->real_escape_string($str);
@@ -341,6 +419,11 @@ class DB {
             return mysql_escape_string($str);
     }
 
+    /**
+     * Escape all faulty characters in the query
+     * @param type $str
+     * @return resource 
+     */
     public function escapeAll($str) {
         $str = str_replace("%", "", $str);
         if ($this->db_type == "mysqli")
@@ -349,10 +432,19 @@ class DB {
             return mysql_escape_string($str);
     }
 
+    /**
+     * Return the selected record
+     * @param string $name
+     * @return string 
+     */
     public function f($name) {
         return $this->record[$name];
     }
 
+    /**
+     * Return the affected rows in a query
+     * @return resource
+     */
     public function affectedRows() {
         if ($this->db_type == "mysqli")
             return $this->link_id->affected_rows;
@@ -360,6 +452,10 @@ class DB {
             return mysql_affected_rows($this->link_id);
     }
 
+    /**
+     * Return the number of affected rows in the query
+     * @return resource
+     */
     public function numRows() {
         if ($this->db_type == "mysqli")
             return $this->query_id->num_rows;
@@ -367,6 +463,10 @@ class DB {
             return mysql_num_rows($this->query_id);
     }
 
+    /**
+     * return number of fields in the selected table.
+     * @return type 
+     */
     public function numFields() {
         if ($this->db_type == "mysqli")
             return $this->link_id->field_count;
@@ -374,6 +474,11 @@ class DB {
             return mysql_num_fields($this->query_id);
     }
 
+    /**
+     * return the fields in the selected table.
+     * @param type $table
+     * @return type 
+     */
     public function fieldNames($table) {
         $arr_cols = array();
         $i = 0;
@@ -384,6 +489,10 @@ class DB {
         } return $arr_cols;
     }
 
+    /**
+     * return all the tables in the database.
+     * @return type 
+     */
     public function tableNames() {
         $arr_tables = array();
         $i = 0;
@@ -394,10 +503,17 @@ class DB {
         } return $arr_tables;
     }
 
+    /**
+     * @TODO make a freeResult script. 
+     */
     private function freeResult() {
         
     }
 
+    /**
+     * error Handler.
+     * @param string $msg 
+     */
     private function halt($msg = null) {
         if (!$this->configs['system']['live']) {
             $error_message = null;
