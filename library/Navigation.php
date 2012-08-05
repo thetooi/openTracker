@@ -8,11 +8,23 @@ class Navigation {
     private $app;
     private $mod;
 
+    /**
+     * Set the selected application and action file.
+     * @param string $app
+     * @param string $mod 
+     */
     function __construct($app = "", $mod = "") {
         $this->app = $app;
         $this->mod = $mod;
     }
 
+    /**
+     * Get the item.
+     * @param string $title
+     * @param string $app
+     * @param string $mod
+     * @return string 
+     */
     function item($title, $app, $mod = "") {
         if ($mod == "") {
             return "<li " . ($app == $this->app ? "class='selected'" : "") . "><a href='" . page($app) . "'>$title</a></li>";
@@ -21,6 +33,10 @@ class Navigation {
         }
     }
 
+    /**
+     * Build the navigation
+     * @return string
+     */
     function build() {
         $db = new DB("navigations");
         $db->setColPrefix("navigation_");

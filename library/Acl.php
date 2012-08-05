@@ -3,14 +3,6 @@
 /**
  * @author Wuild
  */
-
-/*
- * 0 = inactive
- * 1 = pending
- * 3 = locked
- * 4 = active
- */
-
 class Acl {
 
     private $_user = array();

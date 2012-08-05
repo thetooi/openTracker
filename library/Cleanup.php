@@ -8,6 +8,10 @@ class Cleanup {
     private $deadtime_peers;
     private $deadtime_torrents;
 
+    /**
+     * Check when the last cleanup was
+     * @param boolean $force force a cleanup
+     */
     function __construct($force = false) {
         $db = new DB("avps");
         $db->select();
@@ -44,6 +48,9 @@ class Cleanup {
         }
     }
 
+    /**
+     * Cleanup torrents. 
+     */
     function torrents() {
         $db = new DB;
         // Remove inactive peers
@@ -72,6 +79,9 @@ class Cleanup {
         }
     }
 
+    /**
+     * Cleanup groups 
+     */
     function groups() {
         $notif = new notifications_main();
         $db = new DB("groups");
