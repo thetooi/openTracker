@@ -1,10 +1,17 @@
 <?php
 
 /**
+ * filename library/Widget.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Widget {
 
+    /**
+     * Widget path
+     * @var string 
+     */
     private $_path;
 
     /**

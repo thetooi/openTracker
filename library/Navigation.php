@@ -1,11 +1,23 @@
 <?php
 
 /**
+ * filename library/Navigation.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Navigation {
 
+    /**
+     * Application
+     * @var string 
+     */
     private $app;
+    
+    /**
+     * Action file
+     * @var string 
+     */
     private $mod;
 
     /**

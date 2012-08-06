@@ -1,14 +1,35 @@
 <?php
 
 /**
+ * filename library/Main.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Main {
 
+    /**
+     * Default template.
+     * @var string 
+     */
     private $main_template = "default";
+
+    /**
+     * URL data
+     * @var array 
+     */
     public $data = array("url" => array("application" => "", "action" => "main", "var_a" => "", "var_b" => "", "var_c" => ""));
+
+    /**
+     * Loaded configs array
+     * @var array 
+     */
     public $configs = array();
-    private $control;
+
+    /**
+     * Start application
+     * @var string
+     */
     private $startup;
 
     /**

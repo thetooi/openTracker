@@ -51,25 +51,25 @@ if (isset($_POST['upload'])) {
             $nfo = str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename));
         }
         $nfo = nfostrip($nfo);
-        $dict = bdec_file($tmpname, filesize($tmpname));
+        $dict = Bcode::bdec_file($tmpname, filesize($tmpname));
         if (!isset($dict))
             throw new Exception("torrent file not benc coded");
-        list($ann, $info) = dict_check($dict, "announce(string):info");
+        list($ann, $info) = Bcode::dict_check($dict, "announce(string):info");
 
         $tmaker = (isset($dict['value']['created by']) && !empty($dict['value']['created by']['value'])) ? $dict['value']['created by']['value'] : "Unknown";
 
-        list($dname, $plen, $pieces) = dict_check($info, "name(string):piece length(integer):pieces(string)");
+        list($dname, $plen, $pieces) = Bcode::dict_check($info, "name(string):piece length(integer):pieces(string)");
 
         if (strlen($pieces) % 20 != 0)
             throw new Exception("somthing bad happend. and we dont know what.");
 
         $filelist = array();
-        $totallen = dict_get($info, "length", "integer");
+        $totallen = Bcode::dict_get($info, "length", "integer");
         if (isset($totallen)) {
             $filelist[] = array($dname, $totallen);
             $type = "single";
         } else {
-            $flist = dict_get($info, "files", "list");
+            $flist = Bcode::dict_get($info, "files", "list");
             if (!isset($flist))
                 throw new Exception("somthing bad happend. and we dont know what.");
             if (!count($flist))
@@ -77,7 +77,7 @@ if (isset($_POST['upload'])) {
 
             $totallen = 0;
             foreach ($flist as $fn) {
-                list($ll, $ff) = dict_check($fn, "length(integer):path(list)");
+                list($ll, $ff) = Bcode::dict_check($fn, "length(integer):path(list)");
                 $totallen += $ll;
                 $ffa = array();
                 foreach ($ff as $ffe) {
@@ -93,11 +93,11 @@ if (isset($_POST['upload'])) {
             $type = "multi";
         }
 
-        $dict['value']['info']['value']['private'] = bdec('i1e');
+        $dict['value']['info']['value']['private'] = Bcode::bdec('i1e');
         unset($dict['value']['announce-list']);
         unset($dict['value']['nodes']);
-        $dict = bdec(benc($dict));
-        list($ann, $info) = dict_check($dict, "announce(string):info");
+        $dict = Bcode::bdec(Bcode::benc($dict));
+        list($ann, $info) = Bcode::dict_check($dict, "announce(string):info");
 
         $infohash = sha1($info["string"]);
 
@@ -131,7 +131,7 @@ if (isset($_POST['upload'])) {
         $db->insert();
         $fp = fopen(PATH_TORRENTS . "$id.torrent", "w");
         if ($fp) {
-            @fwrite($fp, benc($dict), strlen(benc($dict)));
+            @fwrite($fp, Bcode::benc($dict), strlen(Bcode::benc($dict)));
             fclose($fp);
 
             $db->query("INSERT INTO {PREFIX}torrents_files (file_torrent, file_name, file_size) VALUES " . file_list($filelist, $id));

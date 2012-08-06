@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * filename init.php
+ * 
+ * @author Wuild
+ * @package openTracker
+ */
 ob_start();
 
 ini_set("display_errors", true);
@@ -20,15 +26,41 @@ if (substr($url, -1) != "/")
     $url .= "/";
 $url = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . str_replace(array("http://", "https://"), array("", ""), $url);
 
-/*
- * Defines system stuff
+
+/**
+ * check if init.php is included
  */
 define("INCLUDED", true);
+
+/**
+ * Check if cleanurls is active 
+ */
 define("CLEAN_URLS", $pref->cleanurls);
+
+/**
+ * System default language 
+ */
 define("DEFAULT_LANGUAGE", $pref->language);
+
+/**
+ * Cookie prefix
+ * @TODO add COOKIE_PREFIX to a config file. 
+ */
 define("COOKIE_PREFIX", "opentracker_");
+
+/**
+ * System version 
+ */
 define("SYSTEM_VERSION", "0.2.1");
+
+/**
+ * Start page 
+ */
 define("START_APP", $pref->startapp);
+
+/**
+ * base url. 
+ */
 define("CMS_URL", $url);
 
 if (get_magic_quotes_gpc()) {
@@ -279,204 +311,10 @@ function notice($msg) {
         ";
 }
 
-function cleanquotes(&$in) {
+function cleanquotes($in) {
     if (is_array($in))
         return array_walk($in, 'cleanquotes');
     return $in = stripslashes($in);
-}
-
-function benc_resp($d) {
-    benc_resp_raw(benc(array('type' => 'dictionary', 'value' => $d)));
-}
-
-function benc_resp_raw($x) {
-    header("Content-Type: text/plain");
-    header("Pragma: no-cache");
-
-    if ($_SERVER['HTTP_ACCEPT_ENCODING'] == 'gzip') {
-        header("Content-Encoding: gzip");
-        echo gzencode($x, 9, FORCE_GZIP);
-    }
-    else
-        echo $x;
-}
-
-function benc($obj) {
-    if (!is_array($obj) || !isset($obj["type"]) || !isset($obj["value"]))
-        return;
-    $c = $obj["value"];
-    switch ($obj["type"]) {
-        case "string":
-            return benc_str($c);
-        case "integer":
-            return benc_int($c);
-        case "list":
-            return benc_list($c);
-        case "dictionary":
-            return benc_dict($c);
-        default:
-            return;
-    }
-}
-
-function benc_str($s) {
-    return strlen($s) . ":$s";
-}
-
-function benc_int($i) {
-    return "i" . $i . "e";
-}
-
-function benc_list($a) {
-    $s = "l";
-    foreach ($a as $e) {
-        $s .= benc($e);
-    }
-    $s .= "e";
-    return $s;
-}
-
-function benc_dict($d) {
-    $s = "d";
-    $keys = array_keys($d);
-    sort($keys);
-    foreach ($keys as $k) {
-        $v = $d[$k];
-        $s .= benc_str($k);
-        $s .= benc($v);
-    }
-    $s .= "e";
-    return $s;
-}
-
-function bdec_file($f, $ms) {
-    $fp = fopen($f, "rb");
-    if (!$fp)
-        return;
-    $e = fread($fp, $ms);
-    fclose($fp);
-    return bdec($e);
-}
-
-function bdec($s) {
-    if (preg_match('/^(\d+):/', $s, $m)) {
-        $l = $m[1];
-        $pl = strlen($l) + 1;
-        $v = substr($s, $pl, $l);
-        $ss = substr($s, 0, $pl + $l);
-        if (strlen($v) != $l)
-            return;
-        return array("type" => "string", "value" => $v, "strlen" => strlen($ss), "string" => $ss);
-    }
-    if (preg_match('/^i(-{0,1}\d+)e/', $s, $m)) {
-        $v = $m[1];
-        $ss = "i" . $v . "e";
-        if ($v === "-0")
-            return;
-        if ($v[0] == "0" && strlen($v) != 1)
-            return;
-        return array("type" => "integer", "value" => $v, "strlen" => strlen($ss), "string" => $ss);
-    }
-    switch ($s[0]) {
-        case "l":
-            return bdec_list($s);
-        case "d":
-            return bdec_dict($s);
-        default:
-            return;
-    }
-}
-
-function bdec_dict($s) {
-    if ($s[0] != "d")
-        return;
-    $sl = strlen($s);
-    $i = 1;
-    $v = array();
-    $ss = "d";
-    for (;;) {
-        if ($i >= $sl)
-            return;
-        if ($s[$i] == "e")
-            break;
-        $ret = bdec(substr($s, $i));
-        if (!isset($ret) || !is_array($ret) || $ret["type"] != "string")
-            return;
-        $k = $ret["value"];
-        $i += $ret["strlen"];
-        $ss .= $ret["string"];
-        if ($i >= $sl)
-            return;
-        $ret = bdec(substr($s, $i));
-        if (!isset($ret) || !is_array($ret))
-            return;
-        $v[$k] = $ret;
-        $i += $ret["strlen"];
-        $ss .= $ret["string"];
-    }
-    $ss .= "e";
-    return array("type" => "dictionary", "value" => $v, "strlen" => strlen($ss), "string" => $ss);
-}
-
-function bdec_list($s) {
-    if ($s[0] != "l")
-        return;
-    $sl = strlen($s);
-    $i = 1;
-    $v = array();
-    $ss = "l";
-    for (;;) {
-        if ($i >= $sl)
-            return;
-        if ($s[$i] == "e")
-            break;
-        $ret = bdec(substr($s, $i));
-        if (!isset($ret) || !is_array($ret))
-            return;
-        $v[] = $ret;
-        $i += $ret["strlen"];
-        $ss .= $ret["string"];
-    }
-    $ss .= "e";
-    return array("type" => "list", "value" => $v, "strlen" => strlen($ss), "string" => $ss);
-}
-
-function dict_check($d, $s) {
-    if ($d["type"] != "dictionary")
-        throw new Exception("not Dict.");
-    $a = explode(":", $s);
-    $dd = $d["value"];
-    $ret = array();
-    $t = '';
-    foreach ($a as $k) {
-        unset($t);
-        if (preg_match('/^(.*)\((.*)\)$/', $k, $m)) {
-            $k = $m[1];
-            $t = $m[2];
-        }
-        if (!isset($dd[$k]))
-            throw new Exception("No Keys found.");
-        if (isset($t)) {
-            if ($dd[$k]["type"] != $t)
-                throw new Exception("Invalid entry key.");
-            $ret[] = $dd[$k]["value"];
-        }
-        else
-            $ret[] = $dd[$k];
-    }
-    return $ret;
-}
-
-function dict_get($d, $k, $t) {
-    if ($d["type"] != "dictionary")
-        throw new Exception("not Dict.");
-    $dd = $d["value"];
-    if (!isset($dd[$k]))
-        return;
-    $v = $dd[$k];
-    if ($v["type"] != $t)
-        throw new Exception("Unknown type.");
-    return $v["value"];
 }
 
 function searchfield($s) {
@@ -756,6 +594,11 @@ function format_quotes($s) {
     return $s;
 }
 
+/**
+ * List all available timezones.
+ * @param int $sel
+ * @return string 
+ */
 function timezones($sel) {
     $array = array(
         "-12.0" => "(GMT -12:00) Eniwetok, Kwajalein",
@@ -799,11 +642,24 @@ function timezones($sel) {
     return $o;
 }
 
+/**
+ * Find the youtube link
+ * @param string $url
+ * @return string 
+ */
 function findyoutube($url) {
     parse_str(parse_url($url, PHP_URL_QUERY), $my_array_of_vars);
     return $my_array_of_vars['v'];
 }
 
+/**
+ * Show the date in a nice way
+ * @param string $date
+ * @param string $method
+ * @param type $norelative
+ * @param int $full_relative
+ * @return string 
+ */
 function get_date($date, $method = "", $norelative = 0, $full_relative = 1) {
     $pref = new Pref("time");
     $config = array();
@@ -889,6 +745,11 @@ function get_date($date, $method = "", $norelative = 0, $full_relative = 1) {
     }
 }
 
+/**
+ * Strip the url string from unwanted characters
+ * @param string $url
+ * @return string 
+ */
 function cleanUrl($url) {
     // Replace white space & special chars to "simple"
     $arr_chars = array(' ', 'Ã§', 'Ã±', 'Å¡', 'Å¾', 'Â¢', 'Âµ', 'Ã—', 'ÃŸ');
@@ -923,6 +784,15 @@ function cleanUrl($url) {
     return strtolower($url);
 }
 
+/**
+ * Make file or folder list of selected folder.
+ * @param string $folder
+ * @param string $filter
+ * @param boolean $sort
+ * @param string $type
+ * @param string $ext_filter
+ * @return array
+ */
 function makefilelist($folder, $filter, $sort = true, $type = "files", $ext_filter = "") {
     $res = array();
     $filter = explode("|", $filter);
@@ -954,6 +824,12 @@ function makefilelist($folder, $filter, $sort = true, $type = "files", $ext_filt
     return $res;
 }
 
+/**
+ * Make options from an array
+ * @param array $files
+ * @param string $selected
+ * @return string 
+ */
 function makefileopts($files, $selected = "") {
     $res = "";
     for ($i = 0; $i < count($files); $i++) {
@@ -963,6 +839,12 @@ function makefileopts($files, $selected = "") {
     return $res;
 }
 
+/**
+ * Format html code and add bbcode if $bbcode = true
+ * @param string $text
+ * @param boolean $bbcodes
+ * @return string 
+ */
 function htmlformat($text, $bbcodes = false) {
     $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
     $text = nl2br($text);
@@ -973,8 +855,12 @@ function htmlformat($text, $bbcodes = false) {
     return $text;
 }
 
+/**
+ * Display bbcode buttons
+ * @param string $id
+ * @return string 
+ */
 function bbcode_buttons($id) {
-
     $btn = "<img src='images/bbcode/bold.png' onclick='javascript:addtag(\"$id\", \"b\");' \>";
     $btn .= "<img src='images/bbcode/italic.png' onclick='javascript:addtag(\"$id\", \"i\");' \>";
     $btn .= "<img src='images/bbcode/underline.png' onclick='javascript:addtag(\"$id\", \"u\");' \>";
@@ -985,6 +871,11 @@ function bbcode_buttons($id) {
     return $btn;
 }
 
+/**
+ * Validate a string to not have any unwelcome characters
+ * @param type $string
+ * @return boolean 
+ */
 function validate_string($string) {
     if (preg_match('/[^a-zA-Z0-9_]/', $string) == 0) {
         return true;
@@ -993,6 +884,11 @@ function validate_string($string) {
     }
 }
 
+/**
+ * Get user_id from a username
+ * @param string $name
+ * @return int 
+ */
 function getID($name) {
     $db = new DB("users");
     $db->select("user_name = '" . $db->escape($name) . "'");
@@ -1004,6 +900,12 @@ function getID($name) {
     }
 }
 
+/**
+ * Get all groups as selectable options
+ * @param string $selected
+ * @param boolean $above
+ * @return string 
+ */
 function getGroups($selected = "", $above = false) {
     $data = "";
     $user = new Acl(USER_ID);
@@ -1024,6 +926,14 @@ function getGroups($selected = "", $above = false) {
     return $data;
 }
 
+/**
+ * The custom bbeditor
+ * @param string $name
+ * @param int $rows
+ * @param int $cols
+ * @param string $content
+ * @return string 
+ */
 function bbeditor($name, $rows = 5, $cols = 50, $content = "") {
     $b = "<table class='bbedit' cellpadding='0' cellspacing='0'>";
     $b .= "<tr><td class='toolbar'>" . bbcode_buttons($name) . "<td></tr>";
@@ -1033,6 +943,11 @@ function bbeditor($name, $rows = 5, $cols = 50, $content = "") {
     return $b;
 }
 
+/**
+ * Display smileys in bbeditor
+ * @param string $textarea
+ * @return string 
+ */
 function displaysmileys($textarea) {
     $smiles = "";
     $smileys = array(
@@ -1051,6 +966,11 @@ function displaysmileys($textarea) {
     return $smiles;
 }
 
+/**
+ * Convert smiley strings to images.
+ * @param string $message
+ * @return string 
+ */
 function parsesmileys($message) {
     $smiley = array(
         "#\:\)#si" => "<img src='images/smiley/smile.gif' alt='smiley'>",
@@ -1068,6 +988,11 @@ function parsesmileys($message) {
     return $message;
 }
 
+/**
+ * Get all forum categories
+ * @param int $selected
+ * @return string 
+ */
 function getForumCategory($selected = "") {
     $data = "";
     $db = new DB("forum_categories");
@@ -1083,6 +1008,11 @@ function getForumCategory($selected = "") {
     return $data;
 }
 
+/**
+ * Get all installed languages
+ * @param string $selected
+ * @return string 
+ */
 function getLanguages($selected) {
     $data = "";
     $db = new DB("system_languages");
@@ -1097,6 +1027,10 @@ function getLanguages($selected) {
     return $data;
 }
 
+/**
+ * Quick function to build all the widgets.
+ * @return string
+ */
 function buildWidgets() {
     $acl = new Acl(USER_ID);
     if (USER_ID) {

@@ -15,7 +15,7 @@
 
 #===================================================[ The Movie Base class ]===
 /** Accessing Movie information
- * @package MDBApi
+ * @package openTracker
  * @class person_base
  * @extends mdb_base
  * @author Izzy (izzysoft AT qumran DOT org)

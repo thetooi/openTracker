@@ -1,13 +1,24 @@
 <?php
 
 /**
+ * filename library/Acl.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Acl {
 
+    /**
+     * Array of user information
+     * @var array
+     */
     private $_user = array();
-    private $_group;
-    private $_id;
+
+    /**
+     * Selected user id
+     * @var string 
+     */
+    private $id;
 
     /**
      *  Gather all the info on the selected user id
@@ -70,7 +81,7 @@ class Acl {
 
     /**
      * Get a user variable inside the Acl
-     * @param type $name
+     * @param string $name
      * @return string variable 
      */
     function __get($name) {

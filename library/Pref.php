@@ -1,11 +1,23 @@
 <?php
 
 /**
+ * filename library/Pref.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Pref {
 
+    /**
+     * Pref target
+     * @var string
+     */
     private $target;
+
+    /**
+     * Pref returned data
+     * @var array
+     */
     public $_vars = array();
 
     /**

@@ -18,7 +18,7 @@
 
  #=================================================[ The IMDB Person class ]===
  /** Obtain the Now Playing Movies in theaters of USA, from IMDB
-  * @package IMDB
+  * @package openTracker
   * @class imdb_nowplaying
   * @author Ricardo Silva (banzap) <banzap@gmail.com>
   * @author Itzchak Rehberg

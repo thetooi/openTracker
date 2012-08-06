@@ -16,7 +16,7 @@
 
  #=================================================[ The IMDB Person class ]===
  /** Accessing IMDB staff information
-  * @package IMDB
+  * @package openTracker
   * @class imdb_person
   * @extends mdb_base
   * @author Izzy (izzysoft AT qumran DOT org)
@@ -764,7 +764,7 @@
 
  #==========================================[ The IMDB Person search class ]===
  /** Searching IMDB staff information
-  * @package IMDB
+  * @package openTracker
   * @class imdbpsearch
   * @extends imdbsearch
   * @author Izzy (izzysoft AT qumran DOT org)

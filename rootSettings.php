@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * filename rootSettings.php
+ * 
+ * @author Wuild
+ * @package openTracker
+ */
 define("PATH_ROOT", dirname(__FILE__) . "/");
 define("PATH_CONFIGS", PATH_ROOT . "configs/");
 define("PATH_LIBRARY", PATH_ROOT . "library/");

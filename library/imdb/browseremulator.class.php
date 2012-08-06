@@ -22,7 +22,7 @@
 
 /** BrowserEmulator class. Provides methods for opening urls and emulating 
  *  a web browser request.
- * @package MDBApi
+ * @package openTracker
  * @class BrowserEmulator
  * @author Kai Blankenhorn (kai AT bitfolge DOT de)
  */

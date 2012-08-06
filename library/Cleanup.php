@@ -1,7 +1,10 @@
 <?php
 
 /**
+ * filename library/Cleanup.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Cleanup {
 

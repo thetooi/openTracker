@@ -18,7 +18,7 @@ require_once (dirname(__FILE__) . "/movie_base.class.php");
 #=================================================[ The IMDB class itself ]===
 #=============================================================================
 /** Accessing IMDB information
- * @package IMDB
+ * @package openTracker
  * @class imdb
  * @extends movie_base
  * @author Georgos Giagas

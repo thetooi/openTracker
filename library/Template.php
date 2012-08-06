@@ -1,16 +1,58 @@
 <?php
 
 /**
+ * filename library/Template.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Template {
+    /**
+     * path to template folder
+     * @var string 
+     */
     public $path = "";
+
+    /**
+     * loaded Files
+     * @var string 
+     */
     private $files = array();
+
+    /**
+     * data to return
+     * @var string 
+     */
     public $data = "";
+
+    /**
+     * template variables
+     * @var array
+     */
     private $vars = array();
+
+    /**
+     * page title
+     * @var string 
+     */
     public $title = "";
+
+    /**
+     * show sidebar
+     * @var boolean
+     */
     public $sidebar = false;
+
+    /**
+     * javascripts
+     * @var array 
+     */
     public $javascript = array();
+
+    /**
+     * stylesheets
+     * @var array
+     */
     public $css = array();
 
     /**

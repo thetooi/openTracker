@@ -19,7 +19,7 @@
 
  #====================================================[ IMDB Search class ]===
  /** Search the IMDB for a title and obtain the movies IMDB ID
-  * @package IMDB
+  * @package openTracker
   * @class imdbsearch
   * @extends mdb_config
   * @author Izzy (izzysoft AT qumran DOT org)

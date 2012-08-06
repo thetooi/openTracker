@@ -17,7 +17,7 @@
 
  #=================================================[ The IMDB Person class ]===
  /** Accessing IMDB staff information
-  * @package MoviePilot
+  * @package openTracker
   * @class pilot_person
   * @extends mdb_base
   * @author Izzy (izzysoft AT qumran DOT org)

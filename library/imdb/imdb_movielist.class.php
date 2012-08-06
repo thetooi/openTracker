@@ -15,7 +15,7 @@
 require_once (dirname(__FILE__)."/movie_base.class.php");
 
 /** Accessing miscellaneous IMDB movie lists
- * @package IMDB
+ * @package openTracker
  * @class imdb_movielist
  * @extends movie_base
  * @author Izzy (izzysoft AT qumran DOT org)

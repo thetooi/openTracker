@@ -1,12 +1,29 @@
 <?php
 
 /**
+ * filename library/Image.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Image {
 
+    /**
+     * The image
+     * @var resource 
+     */
     var $image;
+
+    /**
+     * Image type
+     * @var int 
+     */
     var $image_type;
+
+    /**
+     * Image filename
+     * @var string 
+     */
     var $filename;
 
     /**

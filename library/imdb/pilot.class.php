@@ -17,7 +17,7 @@
  #================================================[ The Pilot class itself ]===
  #=============================================================================
  /** Accessing MoviePilot information
-  * @package MoviePilot
+  * @package openTracker
   * @class pilot
   * @extends movie_base
   * @author Izzy (izzysoft AT qumran DOT org)

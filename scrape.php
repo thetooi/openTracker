@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * filename scrape.php
+ * 
+ * @author Wuild
+ * @package openTracker
+ */
 include("init.php");
 
 $r = 'd5:files';

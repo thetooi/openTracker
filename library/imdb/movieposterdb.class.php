@@ -16,7 +16,7 @@
 
 #================================================[ The MoviePosterDB class ]===
 /** Accessing posters, covers, etc. from movieposterdb.com
- * @package MDBApi
+ * @package openTracker
  * @class movieposterdb
  * @extends mdb_base
  * @author Izzy (izzysoft AT qumran DOT org)

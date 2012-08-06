@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * filename announce.php
+ * 
+ * @author Wuild
+ * @package openTracker
+ */
 include("init.php");
-error_reporting(0);
+error_reporting(1);
 
 $data = array(
     "ip" => $_SERVER['REMOTE_ADDR']
@@ -80,7 +86,7 @@ try {
 
     $torrent_id = $torrent->id;
 
-    $callback[] = "d" . benc_str("interval") . "i" . (60 * 30) . "e" . benc_str("peers") . "l";
+    $callback[] = "d" . Bcode::benc_str("interval") . "i" . (60 * 30) . "e" . Bcode::benc_str("peers") . "l";
 
     $totpeers = $torrent->seeders + $torrent->leechers;
 
@@ -100,11 +106,11 @@ try {
             $self = $peer;
             continue;
         }
-        $callback[] = "d" . benc_str("ip") . benc_str($peer->ip);
+        $callback[] = "d" . Bcode::benc_str("ip") . Bcode::benc_str($peer->ip);
         if (!$_GET['no_peer_id']) {
-            $callback[] = benc_str("peer id") . benc_str($peer->peer_id);
+            $callback[] = Bcode::benc_str("peer id") . Bcode::benc_str($peer->peer_id);
         }
-        $callback[] = benc_str("port") . "i" . $peer->port . "e" . "e";
+        $callback[] = Bcode::benc_str("port") . "i" . $peer->port . "e" . "e";
     }
 
     $callback[] = "ee";
@@ -225,11 +231,9 @@ try {
     if (count($torrent_query))
         $db->query("UPDATE {PREFIX}torrents SET " . implode(", ", $torrent_query) . " WHERE torrent_id = '$torrent_id'");
 
-
-    $callback[] = benc_str("private") . 'i1e';
-    benc_resp_raw(implode("", $callback));
+    Bcode::benc_resp_raw(implode("", $callback));
 } Catch (Exception $e) {
-    benc_resp(array('failure reason' => array('type' => 'string', 'value' => $e->getMessage())));
+    Bcode::benc_resp(array('failure reason' => array('type' => 'string', 'value' => $e->getMessage())));
     exit();
 }
 ?>

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * filename update.php
+ * 
+ * @author Wuild
+ * @package openTracker
+ */
 define("REVISION", "14");
 
 $system = new DB("system");
@@ -16,8 +22,6 @@ $query = array();
 if ($rev < 14) {
     $query[] = "ALTER TABLE  `{PREFIX}users` ADD  `user_invited` INT NOT NULL";
 }
-
-
 
 if ($system->revision < REVISION) {
     $system->revision = REVISION;

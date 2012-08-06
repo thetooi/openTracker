@@ -19,7 +19,7 @@
 
  #=================================================[ The IMDB Charts class ]===
  /** Obtaining the URL of the trailer Flash Movie
-  * @package IMDB
+  * @package openTracker
   * @class imdb_trailers
   * @author Ricardo Silva (banzap) <banzap@gmail.com>
   * @version $Revision: 357 $ $Date: 2010-03-16 23:01:11 +0100 (Di, 16. Mär 2010) $

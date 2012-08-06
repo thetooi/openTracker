@@ -18,7 +18,7 @@
 
  #=================================================[ The IMDB Charts class ]===
  /** Obtaining the information about Moviemeter Top 10 and Weekend box office of IMDB
-  * @package IMDB
+  * @package openTracker
   * @class imdb_topcharts
   * @author Ricardo Silva (banzap) <banzap@gmail.com>
   * @version $Revision: 269 $ $Date: 2009-11-24 22:20:24 +0100 (Di, 24. Nov 2009) $

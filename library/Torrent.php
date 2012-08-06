@@ -1,11 +1,23 @@
 <?php
 
 /**
+ * filename library/Torrent.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
 class Torrent {
 
+    /**
+     * Selected torrent id
+     * @var string 
+     */
     private $id;
+
+    /**
+     * Array with torrent info
+     * @var array
+     */
     private $_vars = array();
 
     /**

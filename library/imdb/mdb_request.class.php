@@ -37,7 +37,7 @@ if ( isset($PEAR) && $PEAR ) { // Use the HTTP_Request class from the PEAR proje
   /** The request class
    *  Here we emulate a browser accessing the IMDB site. You don't need to
    *  call any of its method directly - they are rather used by the IMDB classes.
-   * @package MDBApi
+   * @package openTracker
    * @class MDB_Request
    */
   class MDB_Request extends BrowserEmulator{

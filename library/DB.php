@@ -1,31 +1,125 @@
 <?php
 
 /**
+ * filename library/DB.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
-
 class DB {
 
+    /**
+     * Auto free results
+     * @var boolean
+     */
     protected $auto_free = false;
+
+    /**
+     * Connection resource id
+     * @var resource
+     */
     protected $link_id = 0;
+
+    /**
+     * Query resource id
+     * @var resource 
+     */
     protected $query_id = 0;
+
+    /**
+     * Query records
+     * @var array 
+     */
     public $record = array();
+
+    /**
+     * Error number
+     * @var int
+     */
     protected $errno = 0;
+
+    /**
+     * Error message
+     * @var string 
+     */
     protected $error = "";
+
+    /**
+     * Sorting ASC/DESC
+     * @var string 
+     */
     protected $sort;
+
+    /**
+     * Record limits
+     * @var init 
+     */
     protected $limit;
+
+    /**
+     * Select table columns
+     * @var array
+     */
     protected $cols;
+
+    /**
+     * Distinct
+     * @var boolean 
+     */
     protected $distinct = false;
+
+    /**
+     * Data value
+     * @var array 
+     */
     protected $valueData = array();
+
+    /**
+     * Current table
+     * @var string 
+     */
     protected $table;
+
+    /**
+     * Current query
+     * @var string 
+     */
     protected $query;
-    protected $primaryKey;
-    private $queryString;
+
+    /**
+     * Table joins
+     * @var array 
+     */
     protected $join = array();
+
+    /**
+     * Column prefix
+     * @var string 
+     */
     protected $colPrefix;
+
+    /**
+     * Database name
+     * @var string 
+     */
     protected $db_name = "";
+
+    /**
+     * Database prefix
+     * @var string 
+     */
     protected $db_prefix = "";
+
+    /**
+     * Mysql configs
+     * @var array 
+     */
     protected $configs = array();
+
+    /**
+     * Mysql type, mysql/mysqli
+     * @var string 
+     */
     protected $db_type = "";
 
     /**
@@ -70,7 +164,7 @@ class DB {
      * @param string $db 
      */
     public function selectDb($db) {
-        $this->table = $db;
+        $this->db_name = $db;
         if ($this->db_type == "mysqli") {
             if (!$this->link_id->select_db($db)) {
                 $this->halt("Can not use database " . $db);
@@ -504,6 +598,7 @@ class DB {
     }
 
     /**
+     * Free the query results.
      * @TODO make a freeResult script. 
      */
     private function freeResult() {

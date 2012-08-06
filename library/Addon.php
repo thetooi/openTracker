@@ -1,12 +1,23 @@
 <?php
 
 /**
+ * filename library/Addon.php
+ * 
  * @author Wuild
+ * @package openTracker
  */
-
 class Addon {
 
+    /**
+     * Selected addon path
+     * @var string
+     */
     private $_addon;
+
+    /**
+     * Selected addon name
+     * @var string 
+     */
     private $_name;
 
     /**

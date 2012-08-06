@@ -17,29 +17,29 @@ require_once (dirname(__FILE__)."/mdb_request.class.php");
 
 #===============================================[ Definition of Constants ]===
 /** No access at all
- * @package MDBApi
+ * @package openTracker
  * @constant integer NO_ACCESS
  */
 define('NO_ACCESS',0);
 /** Minimum access - only the most basic stuff
- * @package MDBApi
+ * @package openTracker
  * @constant integer BASIC_ACCESS
  */
 define('BASIC_ACCESS',1);
 /** Moderate access - some more than just the minimum
- * @package MDBApi
+ * @package openTracker
  * @constant integer MEDIUM_ACCESS
  */
 define('MEDIUM_ACCESS',2);
 /** Full access - all that's possible
- * @package MDBApi
+ * @package openTracker
  * @constant integer FULL_ACCESS
  */
 define('FULL_ACCESS',9);
 
 #===================================================[ The IMDB Base class ]===
 /** Accessing Movie information
- * @package MDBApi
+ * @package openTracker
  * @class mdb_base
  * @extends mdb_config
  * @author Georgos Giagas

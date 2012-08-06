@@ -24,14 +24,14 @@ $PEAR = false;
  *  If this is not set to TRUE, changing of the <code>pilot_imdbfill</code>
  *  setting will have no effect, it will always be set to <code>NO_ACCESS</code>.
  *  The imdb classes will be included based on this setting.
- * @package MDBApi
+ * @package openTracker
  * @constant boolean PILOT_IMDBFALLBACK
  * @see mdb_config::pilot_imdbfill
  */
 if ( !defined('PILOT_IMDBFALLBACK') ) define('PILOT_IMDBFALLBACK',FALSE);
 
 /** Configuration part of the IMDB classes
- * @package MDBApi
+ * @package openTracker
  * @class mdb_config
  * @author Izzy (izzysoft AT qumran DOT org)
  * @copyright (c) 2002-2004 by Giorgos Giagas and (c) 2004-2008 by Itzchak Rehberg and IzzySoft

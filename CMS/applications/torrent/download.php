@@ -34,7 +34,7 @@ try {
 
     $fn = PATH_TORRENTS . $torrent->id . ".torrent";
 
-    $dict = bdec_file($fn, filesize($fn));
+    $dict = Bcode::bdec_file($fn, filesize($fn));
 
     $dict['value']['announce']['value'] = CMS_URL . "announce.php?passkey=" . $acl->passkey;
 
@@ -46,7 +46,7 @@ try {
 
     header("Content-Type: application/x-bittorrent");
 
-    die(benc($dict));
+    die(Bcode::benc($dict));
 } catch (Exception $e) {
     echo $e->getMessage(), "\n";
 }
