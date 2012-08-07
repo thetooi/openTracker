@@ -7,6 +7,7 @@
  * @package openTracker
  */
 class Template {
+
     /**
      * path to template folder
      * @var string 

@@ -21,12 +21,26 @@ $title = ($control->title != "") ? " - " . $control->title : "";
         <title><?php echo $wpref->name . ($title); ?></title>
         <link rel="stylesheet" href="css/site_root.css" />
         <link rel="stylesheet" href="css/impromptu.css" />
+        <?php
+        if ($acl->Access("x")) {
+            ?>
+            <link rel="stylesheet" href="siteadmin/css/toolbar.css" />
+            <?php
+        }
+        ?>
         <script src='javascript/javascript.js.php?app=<?php echo $this->data['url']['application']; ?>' type='text/javascript' ></script>
         <script src='javascript/jquery-1.7.2.min.js' type='text/javascript' ></script>
         <script src='javascript/jquery-ui-1.8.21.custom.min.js' type='text/javascript' ></script>
         <script src='javascript/global.js' type='text/javascript' ></script>
         <script src='javascript/jquery-impromptu.js' type='text/javascript' ></script>
         <script src='javascript/jquery-impromptu-ext.js' type='text/javascript' ></script>
+        <?php
+        if ($acl->Access("x")) {
+            ?>
+            <script src='siteadmin/javascript/toolbar.js' type='text/javascript'></script>
+            <?php
+        }
+        ?>
         <?php
         $tpl->build("head.php");
 
@@ -49,6 +63,10 @@ $title = ($control->title != "") ? " - " . $control->title : "";
     </head>
     <body>
         <?php
+        if ($acl->Access("x")) {
+            $toolbar = new Template(PATH_SITEADMIN . "templates/");
+            $toolbar->build("toolbar.php");
+        }
         $tpl->build("template.php");
         ?>
         <div id="poweredBy">

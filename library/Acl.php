@@ -50,6 +50,7 @@ class Acl {
             $this->__set("group_access", $db->acl);
         } else {
             $this->__set("id", "0");
+            $this->__set("group_access", "");
             $this->__set("name", "Unknown");
             $this->__set("avatar", "");
         }

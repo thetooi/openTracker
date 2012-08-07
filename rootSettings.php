@@ -16,4 +16,5 @@ define("PATH_TPL", PATH_ROOT . "templates/tpl/");
 define("PATH_TORRENTS", PATH_ROOT . "torrents/");
 define("PATH_IMAGES", PATH_ROOT . "images/");
 define("PATH_AVATARS", PATH_IMAGES . "avatars/");
+define("PATH_SITEADMIN", PATH_ROOT . "siteadmin/");
 ?>
