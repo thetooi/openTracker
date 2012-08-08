@@ -30,13 +30,13 @@ div#toolbar ul#menu li.item{
     float: left;
     padding: 5px 10px 11px;
     line-height: 19px;
-    color: #999;
+    color: #BABABA;
     cursor:pointer;
 }
 
 
 div#toolbar ul#menu li a{
-    color: #999;
+    color: #BABABA;
 }
 
 div#toolbar ul#menu li.selected{

@@ -53,6 +53,56 @@ if (isset($_GET['incl']) && $_GET['incl'] == 0)
     $where[] = "torrent_visible = '1'";
 else if (isset($_GET['incl']) && $_GET['incl'] == 1)
     $where[] = "torrent_visible = '0'";
+
+
+if (isset($_GET['sort']) && isset($_GET['type'])) {
+    $column = '';
+    $ascdesc = '';
+    $array = array("name", "size", "added", "leechers", "seeders");
+
+    if (in_array($_GET['sort'], $array))
+        $column = $_GET['sort'];
+
+    switch ($_GET['type']) {
+        case 'asc':
+            $ascdesc = "ASC";
+            $linkascdesc = "asc";
+            break;
+        case 'desc':
+            $ascdesc = "DESC";
+            $linkascdesc = "desc";
+            break;
+        default: $ascdesc = "DESC";
+            $linkascdesc = "desc";
+            break;
+    }
+
+    $orderby = "torrent_" . $db->escape($column) . " " . $db->escape($ascdesc);
+    $pager_add .= "&sort=" . $db->escape($_GET['sort']) . "&type=" . $db->escape($linkascdesc);
+} else {
+    $orderby = "torrent_added DESC";
+}
+
+$order_link = (isset($_GET['type']) && $_GET['type'] == 'desc') ? 'asc' : 'desc';
+
+$count_get = 0;
+$oldlink = $char = $description = $type = $sort = $row = '';
+foreach ($_GET as $get_name => $get_value) {
+    $get_name = strip_tags(str_replace(array("\"", "'"), array("", ""), $get_name));
+    $get_value = strip_tags(str_replace(array("\"", "'"), array("", ""), $get_value));
+    if ($get_name != "sort" && $get_name != "type" && $get_name != "application" && $get_name != "action" && $get_name != "var_a" && $get_name != "var_b" && $get_name != "var_c") {
+        if ($count_get > 0) {
+            $oldlink = $oldlink . "&amp;" . $get_name . "=" . $get_value;
+        } else {
+            $oldlink = ($oldlink) . $get_name . "=" . $get_value;
+        }
+        $count_get++;
+    }
+}
+
+if ($count_get > 0) {
+    $oldlink = $oldlink . "&amp;";
+}
 ?>
 
 <center>
@@ -84,8 +134,8 @@ else if (isset($_GET['incl']) && $_GET['incl'] == 1)
                 $sel = isset($_GET['c' . $cat->id]) || in_array($cat->id, $query_cats) ? " CHECKED" : "";
                 ?>
                 <td align="center">
-                    <label for="cat_<?php echo $cat->id ?>"><img src="images/categories/<?php echo $cat->icon; ?>" /><br />
-                        <input type="checkbox" name="c<?php echo $cat->id; ?>" id="cat_<?php echo $cat->id; ?>" value="<?php echo $cat->id ?>" <?php echo $sel; ?> />
+                    <label for="cat_<?php echo $cat->id ?>"><a href="<?php echo page("torrent", "browse", "", "", "", "c" . $cat->id . "=1") ?>"><img src="images/categories/<?php echo $cat->icon; ?>" /></a><br />
+                        <input type="checkbox" name="c<?php echo $cat->id; ?>" id="cat_<?php echo $cat->id; ?>" value="1" <?php echo $sel; ?> />
                     </label>
                 </td>
             <?php }
@@ -107,21 +157,21 @@ echo $pager['pagertop'];
 
             </td>
             <td width="50%" class="border-bottom">
-                <b><?php echo _t("Name"); ?></b>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=name&amp;type={$order_link}") ?>"><b><?php echo _t("Name"); ?></b></a>
             </td>
             <td class="border-right border-bottom">
             </td>
             <td class="border-right border-bottom" align="center">
-                <b><?php echo _t("Size"); ?></b>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=size&amp;type={$order_link}") ?>"><b><?php echo _t("Size"); ?></b></a>
             </td>
             <td class="border-right border-bottom" align="center">
-                <b><?php echo _t("Uploaded"); ?></b>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=added&amp;type={$order_link}") ?>"><b><?php echo _t("Uploaded"); ?></b></a>
             </td>
             <td class="border-right border-bottom" align="center">
-                <b><img src="images/icons/down.gif" title="leechers"></b>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=leechers&amp;type={$order_link}") ?>"><b><img src="images/icons/down.gif" title="leechers"></b></a>
             </td>
             <td class="border-bottom" align="center">
-                <b><img src="images/icons/up.gif" title="seeders"></b>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=seeders&amp;type={$order_link}") ?>"><b><img src="images/icons/up.gif" title="seeders"></b></a>
             </td>
         </tr>
     </thead>
@@ -129,7 +179,7 @@ echo $pager['pagertop'];
         <?php
         $db = new DB("torrents");
         $db->setLimit($pager['limit']);
-        $db->setSort("torrent_added DESC");
+        $db->setSort($orderby);
 
         $db->select(implode(" AND ", $where) . "");
 
@@ -147,7 +197,6 @@ echo $pager['pagertop'];
                 </td>
                 <td class="border-right border-bottom" align="center">
                     <a href="<?php echo page("torrent", "download", "", "", "", "torrent=" . $db->torrent_id) ?>"><img src="images/icons/download.png" title="<?php echo _t("Download"); ?>" /></a>
-    <!--                    <img src="images/icons/bookmark.png">-->
                 </td>
                 <td class="border-right border-bottom" align="center">
                     <?php echo bytes($db->torrent_size); ?>

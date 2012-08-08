@@ -9,11 +9,6 @@ $wpref = new Pref("website");
                 <ul class="dropdown" id="admin_tools">
                     <li class="title"><a>Administration Tools</a></li>
                     <li>
-                        <a href="<?php echo page("admin", "settings"); ?>">
-                            <i class="icon"><img src="images/admin/settings.png" width="16px"></i>&nbsp;Settings
-                        </a>
-                    </li>
-                    <li>
                         <a href="<?php echo page("admin", "news"); ?>">
                             <i class="icon"><img src="images/admin/news.png" width="16px"></i>&nbsp;News
                         </a>
@@ -51,6 +46,36 @@ $wpref = new Pref("website");
                     <li>
                         <a href="<?php echo page("admin", "support"); ?>">
                             <i class="icon"><img src="images/admin/support.png" width="16px"></i>&nbsp;Support
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="item"><a href="#" class="menu" rel="admin_members">Members</a>
+                <ul class="dropdown" id="admin_members">
+                    <li class="title"><a>Members</a></li>
+                    <li>
+                        <a href="<?php echo page("admin", "members", "create"); ?>">
+                            <i class="icon"><img src="images/admin/members.png" width="16px"></i>&nbsp;Create account
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo page("admin", "members"); ?>">
+                            <i class="icon"><img src="images/admin/members.png" width="16px"></i>&nbsp;Search users
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="item"><a href="#" class="menu" rel="admin_settings">System</a>
+                <ul class="dropdown" id="admin_settings">
+                    <li class="title"><a>System</a></li>
+                    <li>
+                        <a href="<?php echo page("admin", "settings"); ?>">
+                            <i class="icon"><img src="images/admin/settings.png" width="16px"></i>&nbsp;Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo page("admin", "mysql"); ?>">
+                            <i class="icon"><img src="images/admin/mysql.png" width="16px"></i>&nbsp;Mysql
                         </a>
                     </li>
                 </ul>
