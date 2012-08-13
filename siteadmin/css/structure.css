@@ -254,43 +254,42 @@ a.btn{
     color: white;
 }
 
-.admin_table{
+table{
     border-collapse: collapse;
-
 }
 
-.admin_table thead, .admin_table thead.links {
+thead, thead.links {
     background-color: #4B4B4B;
     border-top: 1px solid #585858;
     border-bottom: 1px solid #2A2A2A;
 }
 
-.admin_table tbody {
+table tbody {
     display: table-row-group;
     vertical-align: middle;
     border-color: inherit;
 }
 
-.admin_table td, .admin_table td.dark, .admin_table th {
+table td, table td.dark, table th {
     padding: 2px 5px 2px 5px;
     height: 20px;
 }
 
-.admin_table tbody tr:hover {
+table tbody tr:hover {
     background-color:	#262626;
 }
 
-.admin_table .no_hover tbody tr:hover {
+table .no_hover tbody tr:hover {
     background-color:	inherit;
 }
 
 
-.admin_table td, th {
+table td, th {
     display: table-cell;
     vertical-align: inherit;
 }
 
-.admin_table .dark{
+table .dark{
     background-color: #333333;
 }
 
