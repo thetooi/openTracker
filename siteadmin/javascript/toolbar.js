@@ -113,11 +113,10 @@ function close(div){
 
 function closeAll(){
     var divs = [
-    "admin_tools",
-    "admin_settings"
+        "admin_tools",
+        "admin_members",
+        "admin_settings"
     ];
-    
-    
     $.each(divs, function (index, value) {
         div_id = value;
         close(div_id);

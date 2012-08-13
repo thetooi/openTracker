@@ -44,6 +44,11 @@ $wpref = new Pref("website");
                         </a>
                     </li>
                     <li>
+                        <a href="<?php echo page("admin", "translations"); ?>">
+                            <i class="icon"><img src="images/admin/translations.png" width="16px"></i>&nbsp;Languages
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?php echo page("admin", "support"); ?>">
                             <i class="icon"><img src="images/admin/support.png" width="16px"></i>&nbsp;Support
                         </a>

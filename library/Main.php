@@ -90,7 +90,11 @@ class Main {
         $pref = new Pref("system");
         $this->setMainTemplate($pref->template);
 
-        $tpl = new Template(PATH_TEMPLATES);
+
+        if ($this->data['url']['application'] == "admin")
+            $tpl = new Template(PATH_SITEADMIN_TEMPLATES);
+        else
+            $tpl = new Template(PATH_TEMPLATES);
         if (!USER_ID && !$this->isAllowed())
             header("location: " . page("user", "login"));
 
