@@ -55,6 +55,12 @@ class Template {
      * @var array
      */
     public $css = array();
+    
+    /**
+     * Admin menus
+     * @var array 
+     */
+    public $menu = array();
 
     /**
      * Set the path to the template

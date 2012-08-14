@@ -65,11 +65,17 @@ $title = ($control->title != "") ? " - " . $control->title : "";
                 <div id="full_body_head_left">
                 </div>		
                 <div id="full_body_head_right">	
+                    <?php echo $control->title; ?>
                 </div>
             </div>
             <div id="full_content">
                 <div id="admin_menu_main">
                     <ul id="menu">
+                        <?php
+                            foreach($control->menu as $title => $url){
+                                echo "<li><a href='$url'>"._t($title)."</a></li>";
+                            }
+                        ?>
                     </ul>
                 </div>
                 <div id="full_body">
