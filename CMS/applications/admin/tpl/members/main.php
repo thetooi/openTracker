@@ -30,7 +30,7 @@ if (isset($_POST['search'])) {
             $time = time() - 200;
             $online = ($acl->last_access < $time) ? get_date($acl->last_access) : "<b><font color='green'>Online</font></b>";
             ?>
-            <div class="user" style="float:left; margin: 3px; border: 1px solid #ddd; padding:5px; padding-bottom: 10px; background-color: #f8f8f8; width: 47%;">
+            <div class="confirm">
                 <img width="50px" src="<?php echo $acl->avatar(); ?>" style="float:left; margin-right: 5px;" alt="">
                 <a href="<?php echo page("admin", "members", "edit", $acl->name) ?>"><b><?php echo $acl->name ?></b></a> (<?php echo $acl->group_name ?>) <?php echo $online; ?>
                 <br />

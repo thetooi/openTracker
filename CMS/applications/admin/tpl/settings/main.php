@@ -40,7 +40,7 @@ $apps = makefilelist(PATH_APPLICATIONS, ".|..", true, "folders");
     <fieldset>
         <legend>System settings</legend>
         <input type="hidden" name="secure_input" value="<?php echo $_SESSION['secure_token_last'] ?>">
-        <table>
+        <table cellspacing="0" width="100%">
             <tr>
                 <td width="120px"><?php echo _t("Website name"); ?>:</td>
                 <td><input type="text" name="name" value="<?php echo $wpref->name; ?>" size="40" /></td>
@@ -69,7 +69,7 @@ $apps = makefilelist(PATH_APPLICATIONS, ".|..", true, "folders");
     </fieldset>
     <fieldset>
         <legend>Time settings</legend>
-        <table>
+        <table cellspacing="0" width="100%">
             <tr>
                 <td width="120px"><?php echo _t("Timezone"); ?>:</td>
                 <td><select name="offset"><?php echo timezones($time->offset); ?></select></td>
@@ -83,7 +83,7 @@ $apps = makefilelist(PATH_APPLICATIONS, ".|..", true, "folders");
 
     <fieldset>
         <legend>Member settings</legend>
-        <table>
+        <table cellspacing="0" width="100%">
             <tr>
                 <td width="120px"><?php echo _t("Open registration"); ?></td>
                 <td><input type="checkbox" name="registration" <?php echo $spref->registration == 1 ? "CHECKED" : "" ?>></td>

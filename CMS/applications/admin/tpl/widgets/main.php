@@ -1,9 +1,3 @@
-<h4><?php echo _t("Widgets") ?></h4>
-<br />
-<a href="<?php echo page("admin", "widgets", "install"); ?>">
-    <span class="btn"><?php echo _t("Install Widgets") ?></span>
-</a>
-<br /><br />
 <table id="widgets" width="100%" cellspacing="0" cellpadding="5" class="forum">
     <thead>
         <tr>

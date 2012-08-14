@@ -1,6 +1,3 @@
-<h4>Groups</h4><br />
-<a href="<?php echo page("admin", "groups", "create"); ?>"><span class="btn">Create Group</span></a>
-<br /><br />
 <table width="100%" class="forum" cellspacing="0" cellpadding="5">
     <thead>
         <tr>

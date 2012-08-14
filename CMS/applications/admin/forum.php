@@ -8,6 +8,11 @@ try {
     if (!$acl->Access("x"))
         throw new Exception("Access denied");
 
+    $this->menu["Forums"] = page("admin", "forum");
+    $this->menu["Create forum category"] = page("admin", "forum", "create-category");
+    $this->menu["Create forum"] = page("admin", "forum", "create-forum");
+
+
     $action = isset($this->args["var_a"]) ? $this->args['var_a'] : "";
 
     $tpl = new Template(PATH_APPLICATIONS . "admin/tpl/forum/");

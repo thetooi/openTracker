@@ -7,6 +7,10 @@ try {
     if (!$acl->Access("z"))
         throw new Exception("Access denied");
 
+    $this->menu["Languages"] = page("admin", "translations");
+    $this->menu["Create language"] = page("admin", "translations", "create");
+    $this->menu["Import language"] = page("admin", "translations", "import");
+
     $tpl = new Template(PATH_APPLICATIONS . "admin/tpl/translations/");
     $action = isset($this->args["var_a"]) ? $this->args['var_a'] : "";
 

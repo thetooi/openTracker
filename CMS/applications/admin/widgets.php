@@ -10,6 +10,10 @@ try {
 
     $action = isset($this->args["var_a"]) ? $this->args['var_a'] : "";
 
+    
+    $this->menu["Widgets"] = page("admin", "widgets");
+    $this->menu["Install Widget"] = page("admin", "widgets", "install");
+    
     $tpl = new Template(PATH_APPLICATIONS . "admin/tpl/widgets/");
     switch ($action) {
         default:

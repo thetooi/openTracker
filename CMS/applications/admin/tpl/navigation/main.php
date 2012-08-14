@@ -1,7 +1,3 @@
-<a href="<?php echo page("admin", "navigation", "create"); ?>"><span class="btn"><?php echo _t("Create item") ?></span></a>
-<br /><br />
-
-
 <script type="text/javascript">
     $(document).ready(function(){
         

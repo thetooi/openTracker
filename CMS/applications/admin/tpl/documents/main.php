@@ -1,6 +1,3 @@
-<h4>FAQ</h4><br />
-<a href="<?php echo page("admin", "documents", "create"); ?>"><span class="btn">Create document</span></a>
-<br /><br />
 <table class="forum" width="100%" cellspacing="0" cellpadding="5">
     <thead>
         <tr>

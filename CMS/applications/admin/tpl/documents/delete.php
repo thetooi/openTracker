@@ -6,7 +6,7 @@ try {
 
     if (isset($_GET['confirm'])) {
         ?>
-        <div class="user" style="float:left; margin: 3px; border: 1px solid #ddd; padding:5px; padding-bottom: 10px; background-color: #f8f8f8; width: 47%;">
+        <div class="confirm">
             <center><?php echo _t("Are you sure you wish to delete this?") ?><br /><br />
                 <a href="<?php echo page("admin", "documents", "delete", "", "", "type=" . $_GET['type'] . "&id=" . $_GET['id']) ?>"><span class="btn red"><?php echo _t("Yes") ?></span></a> 
                 <a href="<?php echo page("admin", "documents") ?>"><span class="btn"><?php echo _t("No") ?></span></center></a>

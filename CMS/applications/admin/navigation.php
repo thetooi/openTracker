@@ -8,6 +8,9 @@ try {
     if (!$acl->Access("z"))
         throw new Exception("Access denied");
 
+    $this->menu["Navigations"] = page("admin", "navigation");
+    $this->menu["Create item"] = page("admin", "navigation", "create");
+    
     $action = isset($this->args["var_a"]) ? $this->args['var_a'] : "";
 
     $tpl = new Template(PATH_APPLICATIONS . "admin/tpl/navigation/");

@@ -1,5 +1,4 @@
-<a href="<?php echo page("admin", "news", "compose"); ?>"><span class="btn">Compose news post</span></a>
-<br /><br />
+
 <table width="100%" class="forum" cellspacing="0" cellpadding="5">
     <thead>
         <tr>

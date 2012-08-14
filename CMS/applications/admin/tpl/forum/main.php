@@ -1,6 +1,3 @@
-<a href="<?php echo page("admin", "forum", "create-category") ?>"><span class="btn"><?php echo _t("Create forum category"); ?></span></a> 
-<a href="<?php echo page("admin", "forum", "create-forum") ?>"><span class="btn"><?php echo _t("Create forum"); ?></span></a>
-<br /><br />
 <div id="sortables">
     <?php
     $acl = new Acl(USER_ID);

@@ -1,7 +1,3 @@
-<h4><?php echo _t("Installed Languages") ?></h4><br />
-<a href="<?php echo page("admin", "translations", "create"); ?>"><span class="btn"><?php echo _t("Create new language") ?></span></a>
-<a href="<?php echo page("admin", "translations", "import"); ?>"><span class="btn"><?php echo _t("Import language") ?></span></a>
-<br /><br />
 <table class="forum" width="100%" cellspacing="0" cellpadding="5">
     <thead>
         <tr>

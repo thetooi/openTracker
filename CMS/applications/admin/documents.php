@@ -9,6 +9,9 @@ try {
 
     $action = isset($this->args["var_a"]) ? $this->args['var_a'] : "";
 
+    $this->menu["Documents"] = page("admin", "documents");
+    $this->menu["Create document"] = page("admin", "documents", "create");
+
     $tpl = new Template(PATH_APPLICATIONS . "admin/tpl/documents/");
     switch ($action) {
         default:
