@@ -12,12 +12,9 @@
  * @package openTracker
  */
 
-if(!defined("INCLUDED"))
-    die("Access denied");
-
 try {
     include("../../../init.php");
-
+    
     $acl = new Acl(USER_ID);
 
     if (!$acl->Access("x"))
