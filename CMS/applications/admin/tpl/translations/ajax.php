@@ -22,6 +22,8 @@ try {
     if (!$acl->Access("x"))
         throw new Exception("Access denied");
 
+    echo "AJAXOK";
+    
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
             case 'save':

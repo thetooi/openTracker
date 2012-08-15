@@ -34,9 +34,8 @@ if(!defined("INCLUDED"))
                 url: PATH_APP+"tpl/translations/ajax.php",
                 data: "action=save&text="+text+"&translation="+translates+"&language="+lang_id,
                 success: function(msg){
-                    $("#msg_"+id).show();
-                    $("#msg_"+id).html(msg);
-                    $("#msg_"+id).fadeOut(1700)
+                    msg = parseAjaxMsg(msg);
+                    
                 }
             });
         });
