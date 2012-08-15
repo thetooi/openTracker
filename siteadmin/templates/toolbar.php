@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,7 +10,6 @@
  * @author Wuild
  * @package openTracker
  */
-
 $wpref = new Pref("website");
 ?>
 <div id="toolbar">
@@ -39,6 +37,11 @@ $wpref = new Pref("website");
                     <li>
                         <a href="<?php echo page("admin", "groups"); ?>">
                             <i class="icon"><img src="images/admin/groups.png" width="16px"></i>&nbsp;Groups
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo page("admin", "categories"); ?>">
+                            <i class="icon"><img src="images/admin/categories.png" width="16px"></i>&nbsp;Categories
                         </a>
                     </li>
                     <li>

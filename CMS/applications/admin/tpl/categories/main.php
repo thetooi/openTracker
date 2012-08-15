@@ -16,9 +16,6 @@ if(!defined("INCLUDED"))
     die("Access denied");
 
 ?>
-
-<a href="<?php echo page("admin", "categories", "create"); ?>"><span class="btn"><?php echo _t("Create category") ?></span></a>
-<br /><br />
 <table width="100%" class="forum" cellspacing="0" cellpadding="5">
     <thead>
         <tr>

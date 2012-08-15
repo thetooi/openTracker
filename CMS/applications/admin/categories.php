@@ -17,6 +17,10 @@ if(!defined("INCLUDED"))
 
 $this->setTitle("Admin - Categories");
 $this->setSidebar(true);
+
+$this->menu["Categories"] = page("admin", "categories");
+$this->menu["Create category"] = page("admin", "categories", "create");
+
 try {
     $acl = new Acl(USER_ID);
     if (!$acl->Access("x"))
