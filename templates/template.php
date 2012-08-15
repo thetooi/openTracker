@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+
+if(!defined("INCLUDED"))
+    die("Access denied");
+
 $acl = new Acl(USER_ID);
 $wpref = new Pref("website");
 $spref = new Pref("system");
@@ -13,7 +29,8 @@ $tpl->sidebar = $control->sidebar;
 $tpl->login = $this->login;
 $title = ($control->title != "") ? " - " . $control->title : "";
 ?>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <base href="<?php echo CMS_URL; ?>" />

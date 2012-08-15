@@ -1,7 +1,19 @@
 <?php
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+if (!defined("INCLUDED"))
+    die("Access denied");
+
 try {
-
-
     if (!$this->userid)
         throw new Exception("User not found");
 
@@ -37,32 +49,32 @@ try {
         </tr>
         <tr>
             <td>
-                <?php
-                $db = new DB("users_log");
-                $db->setColPrefix("log_");
-                $db->setSort("log_added DESC");
-                $db->select("log_user = '" . $acl->id . "'");
-                if ($db->numRows()) {
-                    while ($db->nextRecord()) {
-                        $user = new Acl($db->poster);
-                        ?>
+    <?php
+    $db = new DB("users_log");
+    $db->setColPrefix("log_");
+    $db->setSort("log_added DESC");
+    $db->select("log_user = '" . $acl->id . "'");
+    if ($db->numRows()) {
+        while ($db->nextRecord()) {
+            $user = new Acl($db->poster);
+            ?>
                         <div style="border-bottom: 1px solid #ddd; float:left; width: 100%;">
                             <div style="float:left; padding: 3px;">
                                 <a href="<?php echo page("profile", "view", $user->name) ?>"><?php echo $user->name ?></a> -
                             </div>
                             <div style="float:left; padding: 3px;">
-                                <?php echo htmlformat($db->msg); ?>
+            <?php echo htmlformat($db->msg); ?>
                             </div>
                             <div style="float:right; padding: 3px;">
-                                <?php echo get_date($db->added) ?>
+            <?php echo get_date($db->added) ?>
                             </div>
                         </div>
-                        <?php
-                    }
-                } else {
-                    echo _t("No Log posts found");
-                }
-                ?>
+            <?php
+        }
+    } else {
+        echo _t("No Log posts found");
+    }
+    ?>
             </td>
         </tr>
     </table>

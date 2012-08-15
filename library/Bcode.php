@@ -1,7 +1,30 @@
 <?php
 
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker.Bcode
+ */
+
+/**
+ * Encode and Decode torrent files
+ * @package openTracker.Bcode
+ */
+
 class Bcode {
 
+    /**
+     * Info
+     * @param type $f
+     * @param type $ms
+     * @return type 
+     */
     static function bdec_file($f, $ms) {
         $fp = fopen($f, "rb");
         if (!$fp)
@@ -11,6 +34,11 @@ class Bcode {
         return Bcode::bdec($e);
     }
 
+    /**
+     * Info
+     * @param type $s
+     * @return type 
+     */
     static function bdec($s) {
         if (preg_match('/^(\d+):/', $s, $m)) {
             $l = $m[1];
@@ -40,6 +68,11 @@ class Bcode {
         }
     }
 
+    /**
+     * Info
+     * @param type $s
+     * @return type 
+     */
     static function bdec_dict($s) {
         if ($s[0] != "d")
             return;
@@ -71,6 +104,11 @@ class Bcode {
         return array("type" => "dictionary", "value" => $v, "strlen" => strlen($ss), "string" => $ss);
     }
 
+    /**
+     * Info
+     * @param type $s
+     * @return type 
+     */
     static function bdec_list($s) {
         if ($s[0] != "l")
             return;
@@ -94,6 +132,13 @@ class Bcode {
         return array("type" => "list", "value" => $v, "strlen" => strlen($ss), "string" => $ss);
     }
 
+    /**
+     * Info
+     * @param type $d
+     * @param type $s
+     * @return type
+     * @throws Exception 
+     */
     static function dict_check($d, $s) {
         if ($d["type"] != "dictionary")
             throw new Exception("not Dict.");
@@ -120,6 +165,14 @@ class Bcode {
         return $ret;
     }
 
+    /**
+     * Info
+     * @param type $d
+     * @param type $k
+     * @param type $t
+     * @return type
+     * @throws Exception 
+     */
     static function dict_get($d, $k, $t) {
         if ($d["type"] != "dictionary")
             throw new Exception("not Dict.");
@@ -132,10 +185,18 @@ class Bcode {
         return $v["value"];
     }
 
+    /**
+     * Info
+     * @param type $d 
+     */
     static function benc_resp($d) {
         Bcode::benc_resp_raw(Bcode::benc(array('type' => 'dictionary', 'value' => $d)));
     }
 
+    /**
+     * Info
+     * @param type $x 
+     */
     static function benc_resp_raw($x) {
         header("Content-Type: text/plain");
         header("Pragma: no-cache");
@@ -148,6 +209,11 @@ class Bcode {
             echo $x;
     }
 
+    /**
+     * Info
+     * @param type $obj
+     * @return type 
+     */
     static function benc($obj) {
         if (!is_array($obj) || !isset($obj["type"]) || !isset($obj["value"]))
             return;
@@ -166,14 +232,29 @@ class Bcode {
         }
     }
 
+    /**
+     * Info
+     * @param type $s
+     * @return type 
+     */
     static function benc_str($s) {
         return strlen($s) . ":$s";
     }
 
+    /**
+     * Info
+     * @param type $i
+     * @return type 
+     */
     static function benc_int($i) {
         return "i" . $i . "e";
     }
 
+    /**
+     * Info
+     * @param type $a
+     * @return string 
+     */
     static function benc_list($a) {
         $s = "l";
         foreach ($a as $e) {
@@ -183,6 +264,11 @@ class Bcode {
         return $s;
     }
 
+    /**
+     * Info
+     * @param type $d
+     * @return string 
+     */
     static function benc_dict($d) {
         $s = "d";
         $keys = array_keys($d);

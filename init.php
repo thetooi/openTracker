@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+
+/**
  * filename init.php
  * 
  * @author Wuild
@@ -311,22 +323,44 @@ function notice($msg) {
         ";
 }
 
+/**
+ * Clean quotes
+ * 
+ * @param array $in
+ */
 function cleanquotes($in) {
     if (is_array($in))
         return array_walk($in, 'cleanquotes');
     return $in = stripslashes($in);
 }
 
+/**
+ * replace un wanted characters with spaces to make it more search friendly
+ * 
+ * @param string $s
+ */
 function searchfield($s) {
     return preg_replace(array('/[^a-z0-9]/si', '/^\s*/s', '/\s*$/s', '/\s+/s'), array(" ", "", "", " "), $s);
 }
 
+/**
+ * find hash
+ * @param string $name
+ * @param string $hash
+ * @return string 
+ */
 function hash_where($name, $hash) {
     $db = new DB;
     $shhash = preg_replace('/ *$/s', "", $hash);
     return "($name = '" . $db->escape($hash) . "' OR $name = '" . $db->escape($shhash) . "')";
 }
 
+/**
+ * List files in torrent file
+ * @param array $arr
+ * @param string $id
+ * @return type 
+ */
 function file_list($arr, $id) {
     $db = new DB;
     foreach ($arr as $v)
@@ -354,7 +388,7 @@ function nfostrip($str) {
  * Trims a string lenght to not show all characters
  * 
  * @param string $text the string
- * @param int $lenght the lenght of the short string
+ * @param int $length the lenght of the short string
  * @return string The new shorten string
  */
 function trimstr($text, $length = 50) {
@@ -367,6 +401,18 @@ function trimstr($text, $length = 50) {
     return $text;
 }
 
+/**
+ * Automatic page function
+ * @param type $rpp
+ * @param type $count
+ * @param type $href
+ * @param type $arg
+ * @param type $opts
+ * @param type $sign
+ * @return type 
+ * 
+ * @todo make this in a class instead.
+ */
 function pager($rpp, $count, $href, $arg = "", $opts = array(), $sign = "?") {
     if ($rpp > $count)
         return array('pagertop' => ' &nbsp;
@@ -479,7 +525,7 @@ function sendEmail($to, $subject, $body) {
 /**
  * Generate a random password string
  * 
- * @param int $lenght the lenght of the string
+ * @param int $length the lenght of the string
  * @return string The random password
  */
 function generatePassword($length = 8) {
@@ -557,6 +603,13 @@ function bbcodes($s) {
     return $s;
 }
 
+/**
+ * Find last position
+ * @param type $haystack
+ * @param type $needle
+ * @param type $offset
+ * @return type 
+ */
 function _strlastpos($haystack, $needle, $offset = 0) {
     $addLen = strlen($needle);
     $endPos = $offset - $addLen;
@@ -568,6 +621,11 @@ function _strlastpos($haystack, $needle, $offset = 0) {
     return ($endPos >= 0) ? $endPos : false;
 }
 
+/**
+ * Format quotes
+ * @param string $s
+ * @return string 
+ */
 function format_quotes($s) {
     $old_s = '';
     while ($old_s != $s) {

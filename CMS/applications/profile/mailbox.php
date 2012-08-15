@@ -1,3 +1,21 @@
+<?php
+
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+
+if(!defined("INCLUDED"))
+    die("Access denied");
+
+?>
 <script>
     $(document).ready(function(){
         $(".item").live("click", function(){
@@ -12,6 +30,11 @@
     $this->setSidebar(true);
     $this->setTitle("Mailbox");
 
+    /**
+     * Return the last message
+     * @param int $uid
+     * @return int 
+     */
     function getLastMsg($uid) {
         $db = new DB("messages");
         $db->setColPrefix("message_");

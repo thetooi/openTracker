@@ -1,10 +1,20 @@
 <?php
 
 /**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+/**
  * filename library/DB.php
  * 
  * @author Wuild
- * @package openTracker
+ * @package openTracker.DB
  */
 class DB {
 

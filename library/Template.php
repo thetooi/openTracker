@@ -1,10 +1,21 @@
 <?php
 
 /**
- * filename library/Template.php
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
  * 
- * @author Wuild
- * @package openTracker
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+/**
+ * Template class file
+ * Class to build custom template files
+ * 
+ * @author        Wuild
+ * @package       openTracker.Template
  */
 class Template {
 
@@ -55,7 +66,7 @@ class Template {
      * @var array
      */
     public $css = array();
-    
+
     /**
      * Admin menus
      * @var array 

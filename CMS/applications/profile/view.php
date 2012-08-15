@@ -1,8 +1,23 @@
 <?php
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+
+if(!defined("INCLUDED"))
+    die("Access denied");
+
 try {
 
     $this->setSidebar(true);
-    
+
     if (!isset($this->args['var_a']) && empty($this->args['var_a']))
         throw new Exception("Missing variable");
 
@@ -63,14 +78,14 @@ try {
             <tr class="row"><td valign="top" class="avatar" rowspan="14"><img src="<?php echo $acl->Avatar() ?>" id='avatar_image' alt="" style="max-width: 150px;" /></td></tr>
             <tr class="row"><td class="tblhead"><?php echo _t("Last seen") ?></td><td align="left"><?php echo $online ?></td></tr>
             <tr class="row"><td class="tblhead"><?php echo _t("Joined") ?></td><td align="left"><?php echo get_date($acl->added, "", 1); ?></td></tr>
-    <?php
-    if (!$acl->anonymous || $user->Access("x")) {
-        ?>
+            <?php
+            if (!$acl->anonymous || $user->Access("x")) {
+                ?>
                 <tr class="row"><td class="tblhead"><?php echo _t("Uploaded") ?></td><td align="left"><?php echo $acl->uploaded() ?></td></tr>
                 <tr class="row"><td class="tblhead"><?php echo _t("Downloaded") ?></td><td align="left"><?php echo $acl->downloaded() ?></td></tr>
-        <?php
-    }
-    ?>
+                <?php
+            }
+            ?>
             <tr class="row"><td class="tblhead"><?php echo _t("Ratio") ?></td><td align="left"><?php echo $acl->ratio() ?></td></tr>
             <tr class="row"><td class="tblhead"><?php echo _t("Torrents") ?></td><td align="left"><?php echo _t("Seeding") . " " . $acl->seeding(); ?> / <?php echo _t("Leeching") . " " . $acl->leeching(); ?></td></tr>
         </table>

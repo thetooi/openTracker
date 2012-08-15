@@ -1,3 +1,21 @@
+<?php
+
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+
+if(!defined("INCLUDED"))
+    die("Access denied");
+
+?>
 <h4><?php echo _t("Log in") ?></h4>
 <form method="post" action="<?php echo page("user", "login"); ?>">
     <input type="hidden" name="secure_input" value="<?php echo $_SESSION['secure_token_last'] ?>" />

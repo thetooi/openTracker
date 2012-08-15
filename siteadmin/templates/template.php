@@ -1,4 +1,17 @@
 <?php
+
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker
+ */
+
 $acl = new Acl(USER_ID);
 $wpref = new Pref("website");
 $control = new Template(PATH_APPLICATIONS . $this->data['url']['application'] . "/");

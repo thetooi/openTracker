@@ -1,11 +1,31 @@
 <?php
 
+/**
+ * Copyright 2012, openTracker. (http://opentracker.nu)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @link          http://opentracker.nu openTracker Project
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @author Wuild
+ * @package openTracker.Notifications
+ */
+
+/**
+ * Notifications main class
+ * @package openTracker.Notifications
+ * @todo fix this later. 
+ */
+
 class notifications_main {
 
-    function __construct() {
-        //echo "hello";
-    }
-
+    /**
+     * Add notification
+     * @param type $user_id
+     * @param type $type
+     * @param type $data 
+     */
     function add($user_id, $type, $data) {
         $db = new DB("notifications");
         $db->setColPrefix("notification_");
@@ -17,6 +37,10 @@ class notifications_main {
         $db->insert();
     }
 
+    /**
+     * Get unread notifications
+     * @return type 
+     */
     function getNew() {
         $db = new DB;
         $db->query("SELECT COUNT(notification_id) as new_notifi FROM {PREFIX}notifications WHERE notification_unread = '1' AND notification_user = '" . USER_ID . "'");
@@ -24,6 +48,10 @@ class notifications_main {
         return $db->new_notifi;
     }
 
+    /**
+     * Load notifications
+     * @param type $limit 
+     */
     function load($limit = 5) {
         $db = new DB("notifications");
         $db->setColPrefix("notification_");
