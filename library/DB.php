@@ -131,6 +131,7 @@ class DB {
      * @var string 
      */
     protected $db_type = "";
+    protected $announce_debug = false;
 
     /**
      * Construct the database with the selected table.
@@ -159,7 +160,6 @@ class DB {
     public function connect() {
         if ($this->db_type == "mysqli") {
             $this->link_id = new mysqli($this->configs['mysql']['hostname'], $this->configs['mysql']['username'], $this->configs['mysql']['password']);
-            $this->link_id->set_charset("utf8");
         } else if ($this->db_type == "mysql") {
             $this->link_id = mysql_connect($this->configs['mysql']['hostname'], $this->configs['mysql']['username'], $this->configs['mysql']['password']);
         }
@@ -227,6 +227,10 @@ class DB {
         }
 
         return $this->query_id;
+    }
+
+    public function setAnnounceDebug() {
+        $this->announce_debug = true;
     }
 
     /**
@@ -620,14 +624,19 @@ class DB {
      * @param string $msg 
      */
     private function halt($msg = null) {
-        if (!$this->configs['system']['live']) {
+        if (!$this->configs['system']['live'] && !$this->announce_debug) {
             $error_message = null;
             $error_message .= "MYSQL_ERROR - " . $this->db_name . "<br />\n";
             $error_message .= "<b>Database error:</b> " . $msg . "<br />\n";
             $error_message .= "<b>MYSQL Error</b>: " . $this->errno . " (" . $this->error . ")<br />\n";
             echo $error_message;
         }
-        die("This page is unavailable at the moment. Please try again.");
+        if (!$this->announce_debug)
+            die("This page is unavailable at the moment. Please try again.");
+        else {
+            Bcode::benc_resp(array('failure reason' => array('type' => 'string', 'value' => "MYSQL Error: $msg in ".$this->table)));
+            die();
+        }
     }
 
 }

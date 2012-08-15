@@ -17,7 +17,7 @@
  * @author Wuild
  * @package openTracker
  */
-define("REVISION", "15");
+define("REVISION", "16");
 
 $system = new DB("system");
 $system->setColPrefix("system_");
@@ -47,6 +47,33 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}bonus` (
 )  ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;        
 ";
     $query[] = "ALTER TABLE  `{PREFIX}users` ADD  `user_bonus` FLOAT NOT NULL";
+}
+
+if ($rev < 16) {
+    $query[] = "DROP TABLE IF EXISTS `{PREFIX}peers`;";
+    $query[] = "
+        CREATE TABLE IF NOT EXISTS `{PREFIX}peers` (
+  `peer_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `peer_torrent` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `peer_passkey` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `peer_peer_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `peer_ip` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `peer_port` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `peer_uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `peer_downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `peer_to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `peer_seeder` int(1) NOT NULL,
+  `peer_started` int(11) NOT NULL,
+  `peer_last_action` int(11) NOT NULL,
+  `peer_connectable` int(11) NOT NULL,
+  `peer_userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `peer_agent` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `peer_finishedat` int(10) unsigned NOT NULL DEFAULT '0',
+  `peer_downloadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `peer_uploadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`peer_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+";
 }
 
 if ($system->revision < REVISION) {

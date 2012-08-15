@@ -93,6 +93,7 @@ class Cleanup {
         }
 
         foreach ($torrents as $torrent => $array) {
+ 
             $update = array();
             if (isset($array['seeders']))
                 $update[] = "torrent_seeders = " . $array['seeders'];

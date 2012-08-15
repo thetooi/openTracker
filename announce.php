@@ -11,7 +11,6 @@
  * @author Wuild
  * @package openTracker
  */
-
 /**
  * filename announce.php
  * 
@@ -19,7 +18,8 @@
  * @package openTracker
  */
 include("init.php");
-error_reporting(0);
+ini_set("display_errors", true);
+error_reporting(E_ALL);
 
 $data = array(
     "ip" => $_SERVER['REMOTE_ADDR']
@@ -28,7 +28,7 @@ $data = array(
 $callback = array();
 
 $user_cols = array("id", "uploaded", "downloaded", "group", "status");
-$torrent_cols = array("id", "seeders", "leechers", "added", "times_completed");
+$torrent_cols = array("id", "seeders", "leechers", "added", "times_completed", "freeleech");
 $peer_cols = array("seeder", "peer_id", "ip", "port", "uploaded", "downloaded", "userid");
 
 try {
@@ -59,6 +59,11 @@ try {
     }
 
 
+    foreach (array("info_hash", "peer_id") as $x)
+        if (strlen($data[$x]) != 20)
+            err("Invalid $x (" . strlen($data[$x]) . " - " . urlencode($data[$x]) . ")");
+
+
     $readsize = 50;
     foreach (array("num want", "numwant", "num_want") as $k) {
         if (isset($_GET[$k])) {
@@ -67,11 +72,19 @@ try {
         }
     }
 
+    if (substr($data['peer_id'], 0, 1) == 'A')
+        if (substr($data['peer_id'], 1, 3) < 300)
+            throw new Exception("error2f");
+
+    if ($_SERVER['HTTP_ACCEPT_ENCODING'] == 'identity' && substr($data['peer_id'], 0, 6) == 'M4-1-3')
+        throw new Exception("bad client");
+
+
+
     if (!isset($data['event']))
         $data['event'] = "";
 
     $data['info_hash'] = bin2hex($data['info_hash']);
-
     $data['seeder'] = ($data['left'] == 0) ? true : false;
 
     $user = new DB("users");
@@ -127,7 +140,7 @@ try {
 
     $callback[] = "ee";
 
-    $self_query = "peer_torrent = '" . $torrent_id . "' AND peer_passkey = '" . $data['passkey'] . "'";
+    $self_query = "peer_torrent = '" . $torrent_id . "' AND " . hash_where("peer_peer_id", $data['peer_id']);
 
     if (!isset($self)) {
 
@@ -146,7 +159,7 @@ try {
 
     if (!isset($self)) {
         $db = new DB("peers");
-        $db->select("peer_torrent = '" . $torrent->id . "' AND peer_passkey = '" . $data['passkey'] . "'");
+        $db->select($self_query);
 
         if ($db->numRows() >= 1 && !$data['seeder'])
             throw new Exception("Error 8: Connection limit exceeded!");
@@ -211,6 +224,7 @@ try {
             }
 
             $db = new DB("peers");
+            $db->setAnnounceDebug();
             $db->setColPrefix("peer_");
             $db->torrent = $torrent_id;
             $db->userid = $user->id;
@@ -235,7 +249,7 @@ try {
     }
 
     if ($data['seeder']) {
-        $torrent_query[] = "torrent_visible = '1'";
+        $torrent_query[] = "torrent_visible = 1";
         $torrent_query[] = "torrent_last_action = '" . time() . "'";
     }
 
