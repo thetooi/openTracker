@@ -44,7 +44,7 @@ class Cleanup {
             $doclean = true;
         } else {
             $db->nextRecord();
-            $time = time() - 1800;
+            $time = time() - 900;
 
 
             if ($db->last_cleantime < $time)
@@ -64,6 +64,7 @@ class Cleanup {
             $this->deadtime_users = time() - floor(60 * 60 * 24 * 56); // 56 Days
             $this->torrents();
             $this->groups();
+            $this->bonus();
             $db = new DB("avps");
             $db->last_cleantime = time();
             $db->update();
@@ -147,6 +148,21 @@ class Cleanup {
                     $db2->update("user_id = '" . $user->user_id . "'");
                     $notif->add($user->user_id, "system", json_encode(array("type" => "downgrade", "group" => $db->group_downgradeto)));
                 }
+            }
+        }
+    }
+
+    /**
+     * Give seedbonus to users  
+     */
+    function bonus() {
+        $db = new DB("peers");
+        $db->select("peer_seeder = 1 GROUP BY peer_userid");
+        if ($db->numRows() > 0) {
+            while ($db->nextRecord()) {
+                $add = 0.25;
+                $db2 = new DB;
+                $db2->query("UPDATE {PREFIX}users SET user_bonus = user_bonus + $add WHERE user_id= '" . $db->escape($db->peer_userid) . "' ");
             }
         }
     }

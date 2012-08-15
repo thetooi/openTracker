@@ -151,6 +151,14 @@ class Acl {
     }
 
     /**
+     * Return number of bonus points
+     * @return int 
+     */
+    function bonusPoints(){
+        return (float)$this->_user['bonus'];
+    }
+    
+    /**
      * Generate a new passkey 
      */
     function newPasskey() {

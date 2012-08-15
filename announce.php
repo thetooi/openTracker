@@ -19,7 +19,7 @@
  * @package openTracker
  */
 include("init.php");
-error_reporting(1);
+error_reporting(0);
 
 $data = array(
     "ip" => $_SERVER['REMOTE_ADDR']

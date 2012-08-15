@@ -82,6 +82,7 @@ $spref = new Pref("system");
                 <?php echo _t("Ratio"); ?>: <?php echo $acl->ratio() ?>
                 <img src="images/icons/up.gif" style="padding-left: 10px;" alt="up" /> <?php echo $acl->uploaded(); ?>
                 <img src="images/icons/down.gif" style="padding-left: 10px;" alt="down" /> <?php echo $acl->downloaded(); ?> 
+                <img src="images/icons/bonus.png" style="padding-left: 10px;" width="13px" height="12px" alt="bonus" /> <?php echo $acl->bonusPoints(); ?> 
             </div>
             <?php
         }

@@ -55,7 +55,7 @@ try {
         <?php
         if ($user->Access("x") && $acl->id != USER_ID) {
             ?>
-            <a href="<?php echo page("admin", "members", "edit", $user->name) ?>" style="float:right;"><span class="btn blue"><?php echo _t("Edit profile") ?></span></a>
+            <a href="<?php echo page("admin", "members", "edit", $acl->name) ?>" style="float:right;"><span class="btn blue"><?php echo _t("Edit profile") ?></span></a>
             <?php
         }
         if ($friend_show) {

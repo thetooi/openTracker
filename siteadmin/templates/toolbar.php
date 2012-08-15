@@ -40,6 +40,11 @@ $wpref = new Pref("website");
                         </a>
                     </li>
                     <li>
+                        <a href="<?php echo page("admin", "bonus"); ?>">
+                            <i class="icon"><img src="images/admin/bonus.png" width="16px"></i>&nbsp;Bonus Store
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?php echo page("admin", "categories"); ?>">
                             <i class="icon"><img src="images/admin/categories.png" width="16px"></i>&nbsp;Categories
                         </a>

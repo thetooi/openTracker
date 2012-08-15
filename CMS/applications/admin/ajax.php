@@ -11,10 +11,9 @@
  * @author Wuild
  * @package openTracker
  */
-
 try {
     include("../../../init.php");
-    
+
     $acl = new Acl(USER_ID);
 
     if (!$acl->Access("x"))
@@ -62,6 +61,17 @@ try {
                     $gid = $gid[1];
                     $db->query("UPDATE {PREFIX}navigations SET navigation_sorting = '" . $db->escape($num) . "' WHERE navigation_id = '" . $db->escape($gid) . "'");
                 }
+                break;
+
+            case 'bonus':
+                $db = new DB;
+                $data = explode(",", $_POST['sorting']);
+                foreach ($data as $num => $id) {
+                    $gid = explode("_", $id);
+                    $gid = $gid[1];
+                    $db->query("UPDATE {PREFIX}bonus SET bonus_sort = '" . $db->escape($num) . "' WHERE bonus_id = '" . $db->escape($gid) . "'");
+                }
+                break;
                 break;
         }
     }
