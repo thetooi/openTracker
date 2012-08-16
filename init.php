@@ -110,6 +110,10 @@ if (isset($_COOKIE[COOKIE_PREFIX . 'user'])) {
     $userdata->select("user_id = '" . $id . "'");
     if ($userdata->numRows()) {
         $userdata->nextRecord();
+        
+        if($userdata->status == 0 || $userdata->status == 1 ||  $userdata->status == 3)
+            header("location: ".page("user", "logout"));
+        
         if (md5("!" . $userdata->id . md5("!" . $userdata->password . md5($_SERVER['REMOTE_ADDR']))) == $password) {
             define("USER_ID", $userdata->id);
         } else {
@@ -198,7 +202,7 @@ function _t($phrase) {
         }
         $text = $phrase;
     }
-
+    $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
     return $text;
 }
 
@@ -399,100 +403,6 @@ function trimstr($text, $length = 50) {
         $text = substr($text, 0, ($length - 3)) . "...";
     $text = str_replace($dec, $enc, $text);
     return $text;
-}
-
-/**
- * Automatic page function
- * @param type $rpp
- * @param type $count
- * @param type $href
- * @param type $arg
- * @param type $opts
- * @param type $sign
- * @return type 
- * 
- * @todo make this in a class instead.
- */
-function pager($rpp, $count, $href, $arg = "", $opts = array(), $sign = "?") {
-    if ($rpp > $count)
-        return array('pagertop' => ' &nbsp;
-        ', 'pagerbottom' => ' &nbsp;
-        ', 'limit' => $rpp);
-
-    $pages = ceil($count / $rpp);
-
-    if (!isset($opts["lastpagedefault"]))
-        $pagedefault = 0;
-    else {
-        $pagedefault = floor(($count - 1) / $rpp);
-        if ($pagedefault < 0)
-            $pagedefault = 0;
-    }
-
-    if (isset($_GET["page"])) {
-        $page = 0 + $_GET["page"];
-        if ($page < 0)
-            $page = $pagedefault;
-    }
-    else
-        $page = $pagedefault;
-
-    $pager = "";
-    $mp = $pages - 1;
-    $as = " &lt;&lt; " . _t("Previous");
-    if ($page >= 1) {
-        $pager .= "<a href=\"{$href}{$sign}page=" . ($page - 1) . $arg . "\"><b>";
-        $pager .= $as;
-        $pager .= "</b></a>";
-    }
-    else
-        $pager .= "<span>" . $as . "</span>";
-
-    $as = _t("Next") . " &gt; &gt;";
-    if ($page < $mp && $mp >= 0) {
-        $pager .= "<a href=\"{$href}{$sign}page=" . ($page + 1) . $arg . "\"><b>";
-        $pager .= $as;
-        $pager .= "</b></a>";
-    }
-    else
-        $pager .= "<span>" . $as . "</span>";
-
-    if ($count) {
-        $pagerarr = array();
-        $dotted = 0;
-        $dotspace = 2;
-        $dotend = $pages - $dotspace;
-        $curdotend = $page - $dotspace;
-        $curdotstart = $page + $dotspace;
-        for ($i = 0; $i < $pages; $i++) {
-            if (($i >= $dotspace && $i <= $curdotend) || ($i >= $curdotstart && $i < $dotend)) {
-                if (!$dotted)
-                    $pagerarr[] = "&nbsp;&nbsp;<b>...</b>&nbsp;&nbsp; | ";
-                $dotted = 1;
-                continue;
-            }
-            $dotted = 0;
-            $start = $i * $rpp + 1;
-            $end = $start + $rpp - 1;
-            if ($end > $count)
-                $end = $count;
-            $text = "$start&nbsp;-&nbsp;$end";
-            if ($i != $page)
-                $pagerarr[] = "<a href=\"{$href}{$sign}page=$i$arg \">$text</a> | ";
-            else
-                $pagerarr[] = "<span>$text | </span>";
-        }
-        $pagerstr = join(" ", $pagerarr);
-        $pagertop = "<p align=\"center\" class='pages' >$pager<br /> $pagerstr</p>\n";
-        $pagerbottom = "<p align=\"center\" class='pages' >$pager<br /> $pagerstr</p>\n";
-    }
-    else {
-        $pagertop = "<p align=\"center\">$pager</p>\n";
-        $pagerbottom = $pagertop;
-    }
-
-    $start = $page * $rpp;
-    return array('pagertop' => $pagertop, 'pagerbottom' => $pagerbottom, 'limit' => $start . "," . $rpp);
 }
 
 /**

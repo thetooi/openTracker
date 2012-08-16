@@ -8,7 +8,9 @@ Beta 0.2.1
 * Users with Access "x" can now edit forum topics as well as delete them.
 * The forums now shows a different image if there is a new post or topic thats not been read by the user.
 * Fixed bugs in the announcer script where "Tracker sending invalid data: <NULL>" appeard.
-* Made the function pager into a class instead. library/Pager.php
+* Made the function pager into a class instead. library/Pager.php.
+* Added a bonus shop.
+* Fixed where users that checked the remember details checkbox didnt get affected by user status changed.
 
 Beta 0.2.0a
 * Fixed IMDB bugs
