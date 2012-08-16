@@ -17,7 +17,7 @@
  * @author Wuild
  * @package openTracker
  */
-define("REVISION", "16");
+define("REVISION", "17");
 
 $system = new DB("system");
 $system->setColPrefix("system_");
@@ -74,6 +74,16 @@ if ($rev < 16) {
   PRIMARY KEY (`peer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 ";
+}
+
+if ($rev < 17) {
+    $query[] = "CREATE TABLE IF NOT EXISTS `tracker_forum_postread` (
+  `post_id` int(11) NOT NULL AUTO_INCREMENT,
+  `post_userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `post_topicid` int(11) NOT NULL,
+  `post_lastpostread` int(11) NOT NULL,
+  PRIMARY KEY (`post_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 }
 
 if ($system->revision < REVISION) {

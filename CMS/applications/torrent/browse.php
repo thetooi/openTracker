@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Browse");
@@ -123,9 +121,9 @@ if ($count_get > 0) {
 
 <center>
     <form method="GET">
-        <?php
-        if (!CLEAN_URLS) {
-            ?>
+<?php
+if (!CLEAN_URLS) {
+    ?>
             <?php if (isset($this->args['application'])) { ?><input type="hidden" name="application" value="<?php echo $this->args['application'] ?>"><?php } ?>
             <?php if (isset($this->args['action'])) { ?><input type="hidden" name="action" value="<?php echo $this->args['action'] ?>"><?php } ?>
             <?php if (isset($this->args['var_a'])) { ?><input type="hidden" name="var_a" value="<?php echo $this->args['var_a'] ?>"><?php } ?>
@@ -142,29 +140,35 @@ if ($count_get > 0) {
         </select>
         <input type="submit" value="<?php echo _t("Search") ?>" /><br />
         <table>
-            <?php
-            $cat = new DB("categories");
-            $cat->setColPrefix("category_");
-            $cat->select();
-            while ($cat->nextRecord()) {
-                $sel = isset($_GET['c' . $cat->id]) || in_array($cat->id, $query_cats) ? " CHECKED" : "";
-                ?>
+<?php
+$cat = new DB("categories");
+$cat->setColPrefix("category_");
+$cat->select();
+while ($cat->nextRecord()) {
+    $sel = isset($_GET['c' . $cat->id]) || in_array($cat->id, $query_cats) ? " CHECKED" : "";
+    ?>
                 <td align="center">
                     <label for="cat_<?php echo $cat->id ?>"><a href="<?php echo page("torrent", "browse", "", "", "", "c" . $cat->id . "=1") ?>"><img src="images/categories/<?php echo $cat->icon; ?>" /></a><br />
                         <input type="checkbox" name="c<?php echo $cat->id; ?>" id="cat_<?php echo $cat->id; ?>" value="1" <?php echo $sel; ?> />
                     </label>
                 </td>
-            <?php }
-            ?>
+<?php }
+?>
         </table>
     </form>
 </center>
 
 <?php
-$perpage = ($acl->torrents_perpage != 0) ? $acl->torrents_perpage : 50;
+$perpage = ($acl->torrents_perpage != 0) ? $acl->torrents_perpage : 1;
+$db->select(implode(" AND ", $where) . "");
+$pager = new Pager;
+$pager->perpage = $perpage;
+$pager->count = $db->numRows();
+$pager->href = array("torrent", "browse");
+$pager->args = $pager_add;
+$pager->build();
 
-$pager = pager($perpage, $db->numrows(), page("torrent", "browse"), $pager_add);
-echo $pager['pagertop'];
+echo $pager->pager_top;
 ?>
 <table id="browse" class="forum" cellspacing="0" cellpadding="5">
     <thead>
@@ -192,42 +196,42 @@ echo $pager['pagertop'];
         </tr>
     </thead>
     <tbody>
-        <?php
-        $db = new DB("torrents");
-        $db->setLimit($pager['limit']);
-        $db->setSort($orderby);
+<?php
+$db = new DB("torrents");
+$db->setLimit($pager->limit);
+$db->setSort($orderby);
 
-        $db->select(implode(" AND ", $where) . "");
+$db->select(implode(" AND ", $where) . "");
 
-        while ($db->nextRecord()) {
+while ($db->nextRecord()) {
 
-            $torrent = new Torrent($db->torrent_id);
-            ?>
+    $torrent = new Torrent($db->torrent_id);
+    ?>
             <tr>
                 <td class="border-bottom">
                     <img src="images/categories/<?php echo $torrent->category(); ?>" />
                 </td>
                 <td width="50%" class="border-bottom">
                     <a href="<?php echo page("torrent", "details", "", "", "", "id=" . $db->torrent_id); ?>"><?php echo $db->torrent_name; ?></a>
-                    <?php echo ($db->torrent_freeleech) ? "<br /><small class='freeleech'>Freeleech</small>" : "" ?>
+    <?php echo ($db->torrent_freeleech) ? "<br /><small class='freeleech'>Freeleech</small>" : "" ?>
                 </td>
                 <td class="border-right border-bottom" align="center">
                     <a href="<?php echo page("torrent", "download", "", "", "", "torrent=" . $db->torrent_id) ?>"><img src="images/icons/download.png" title="<?php echo _t("Download"); ?>" /></a>
                 </td>
                 <td class="border-right border-bottom" align="center">
-                    <?php echo bytes($db->torrent_size); ?>
+    <?php echo bytes($db->torrent_size); ?>
                 </td>
                 <td class="border-right border-bottom" align="center">
-                    <?php echo str_replace(" ", "<br />", date("Y-m-d H:i", $db->torrent_added)) ?>
+    <?php echo str_replace(" ", "<br />", date("Y-m-d H:i", $db->torrent_added)) ?>
                 </td>
                 <td class="border-right border-bottom" align="center">
-                    <?php echo $db->torrent_leechers ?>
+    <?php echo $db->torrent_leechers ?>
                 </td>
                 <td class="border-bottom" align="center">
-                    <?php echo $db->torrent_seeders ?>
+    <?php echo $db->torrent_seeders ?>
                 </td>
             </tr>
-        <?php } ?>
+<?php } ?>
     </tbody>
 </table>
 <?php
@@ -236,5 +240,5 @@ if (!$db->numRows())
 ?>
 <br />
 <?php
-echo $pager['pagerbottom'];
+echo $pager->pager_bottom;
 ?>

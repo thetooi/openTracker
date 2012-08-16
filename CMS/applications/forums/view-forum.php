@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 try {
@@ -27,6 +25,9 @@ try {
     $db->select("forum_id = '" . $db->escape($id) . "'");
     $db->nextRecord();
 
+    $tpl = new Template(PATH_APPLICATIONS . "forums/tpl/");
+    $tpl->build("search.php");
+
     if ($db->forum_group > $acl->group)
         throw new Exception("Access denied");
 
@@ -34,7 +35,7 @@ try {
 
     $this->setTitle($db->forum_name);
     ?>
-
+    <br />
     <a href="<?php echo page("forums", "create-topic", "", "", "", "forum=" . $id); ?>" style="float:right;"><span class="btn"><?php echo _t("Create new topic"); ?></span></a>
     <br /><br />
     <table width="100%" cellpadding="5" cellspacing="0" class="forum">
@@ -66,10 +67,21 @@ try {
                 $q->setLimit("1");
                 $q->select("topic_id= '" . $db->id . "'");
 
+                $r = new DB("forum_postread");
+                $r->setColPrefix("post_");
+                $r->select("post_userid = '" . USER_ID . "' AND post_topicid = " . $db->id);
+                if ($r->numRows()) {
+                    $r->nextRecord();
+                    $last = $r->lastpostread;
+                } else {
+                    $last = 0;
+                }
+                $q->nextRecord();
+                $new = ($q->post_id > $last) ? true : false;
+
                 if (!$db->numRows())
                     $last_post = "--";
                 else {
-                    $q->nextRecord();
                     $user = new Acl($q->post_user);
                     $last_post = _t("By") . " <a href='" . page("profile", "view", strtolower($user->name)) . "'>" . $user->name . "</a> in 
                         <a href='" . page("forums", "view-topic", $q->topic_subject . "-" . $q->topic_id) . "'>" . $q->topic_subject . "</a>
@@ -82,6 +94,8 @@ try {
                     $image = "forum-sticky.png";
                 if ($db->locked)
                     $image = "forum-closed.png";
+
+                $image = ($new ? "forum-new.png" : $image);
                 ?>
                 <tr>
                     <td width="46px" class="border-bottom" align="center"><img src="images/forum/<?php echo $image; ?>"></td>

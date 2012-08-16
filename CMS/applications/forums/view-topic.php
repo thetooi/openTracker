@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("View Topic");
@@ -24,35 +22,28 @@ try {
         throw new Exception("Missing variable");
 
     $id = end(explode("-", $this->args['var_a']));
-
+    $topicid = $id;
     if (!intval($id))
         throw new Exception("Missing forum id");
 
     $page = isset($_GET["page"]) ? $_GET["page"] : false;
 
+    $db = new DB("forum_topics");
+    $db->select("topic_id = '" . $db->escape($id) . "'");
+    $db->nextRecord();
 
     if ($acl->Access("x")) {
         $db = new DB("forum_topics");
         $db->select("topic_id = '" . $db->escape($id) . "'");
         $db->nextRecord();
-        if (isset($_POST['lock'])) {
-            if ($db->topic_locked == "1") {
-                $db->query("UPDATE {PREFIX}forum_topics SET topic_locked = '0' WHERE topic_id = '" . $db->escape($id) . "'");
-            } else {
-                $db->query("UPDATE {PREFIX}forum_topics SET topic_locked = '1' WHERE topic_id = '" . $db->escape($id) . "'");
-            }
-        } else if (isset($_POST['sticky'])) {
-            if ($db->topic_sticky == "1") {
-                $db->query("UPDATE {PREFIX}forum_topics SET topic_sticky = '0' WHERE topic_id = '" . $db->escape($id) . "'");
-            } else {
-                $db->query("UPDATE {PREFIX}forum_topics SET topic_sticky = '1' WHERE topic_id = '" . $db->escape($id) . "'");
-            }
+        if (isset($_POST['edit'])) {
+            header("location: " . page("forums", "edit-topic", $db->topic_subject . "-" . $db->topic_id));
+        }
+        if (isset($_POST['delete'])) {
+            header("location: " . page("forums", "delete-topic", "", "", "", "id=" . $db->topic_id . "&confirm"));
         }
     }
 
-    $db = new DB("forum_topics");
-    $db->select("topic_id = '" . $db->escape($id) . "'");
-    $db->nextRecord();
     $forum_id = $db->topic_forum;
 
     echo "<h4>" . $db->topic_subject . "</h4>";
@@ -60,8 +51,8 @@ try {
     if ($acl->Access("x")) {
         echo "
         <form method='post' style='float:right;'>
-            <input type='submit' name='lock' value='" . ($db->topic_locked == "1" ? _t("Unlock Topic") : _t("Lock Topic")) . "'>
-            <input type='submit' name='sticky' value='" . ($db->topic_sticky == "1" ? _t("Unsticky Topic") : _t("Sticky Topic")) . "'>
+            <input type='submit' class='red' name='delete' value='" . _t("Delete Topic") . "'>
+            <input type='submit' class='blue' name='edit' value='" . _t("Edit Topic") . "'>
         </form>
         ";
     }
@@ -207,6 +198,18 @@ try {
         </table>
         <br />
         <?php
+        $t = new DB("forum_postread");
+        $t->select("post_userid = '" . USER_ID . "' AND post_topicid = '" . $topicid . "'");
+        $t->setColPrefix("post_");
+        if ($t->numRows()) {
+            $t->lastpostread = $db->post_id;
+            $t->update("post_userid = '" . USER_ID . "' AND post_topicid = '" . $topicid . "'");
+        } else {
+            $t->topicid = $topicid;
+            $t->userid = USER_ID;
+            $t->lastpostread = $db->post_id;
+            $t->insert();
+        }
     }
     echo $pagemenu;
 

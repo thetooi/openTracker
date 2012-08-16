@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Forum");
@@ -35,6 +33,8 @@ function getLastPost($id) {
     return $db->record;
 }
 
+$tpl = new Template(PATH_APPLICATIONS . "forums/tpl/");
+$tpl->build("search.php");
 $forum_cat = new DB("forum_categories");
 $forum_cat->setColPrefix("category_");
 $forum_cat->setSort("category_sort ASC");
@@ -58,9 +58,7 @@ while ($forum_cat->nextRecord()) {
             $forums->setSort("forum_sort ASC");
             $forums->select("forum_group <= " . $acl->group . " AND forum_category = '" . $forum_cat->id . "'");
             while ($forums->nextRecord()) {
-
                 $db = new DB;
-
                 $db->query("SELECT COUNT(topic_id) as topics FROM {PREFIX}forum_topics WHERE topic_forum = '" . $forums->id . "'");
                 $db->nextRecord();
                 $topics = $db->topics;
@@ -70,17 +68,29 @@ while ($forum_cat->nextRecord()) {
                 $db->setSort("post_added DESC");
                 $db->setLimit("1");
                 $db->select("topic_forum = '" . $forums->id . "'");
+                $db->nextRecord();
 
                 if (!$db->numRows())
                     $last_post = "--";
                 else {
-                    $db->nextRecord();
                     $user = new Acl($db->post_user);
                     $last_post = _t("By") . " <a href='" . page("profile", "view", strtolower($user->name)) . "'>" . $user->name . "</a> in <a href='" . page("forums", "view-topic", $db->topic_subject . "-" . $db->topic_id) . "'>" . $db->topic_subject . "</a><br />" . get_date($db->post_added);
                 }
+
+                $r = new DB("forum_postread");
+                $r->setColPrefix("post_");
+                $r->select("post_userid = '" . USER_ID . "' AND post_topicid = '" . $db->topic_id . "'");
+                if ($r->numRows()) {
+                    $r->nextRecord();
+                    $last = $r->lastpostread;
+                } else {
+                    $last = 0;
+                }
+                $new = ($db->post_id > $last) ? true : false;
+                $image = ($new ? "forum-new.png" : "forum-default.png");
                 ?>
                 <tr>
-                    <td class="border-bottom" align="center"><img src="images/forum/forum-default.png"></td>
+                    <td class="border-bottom" align="center"><img src="images/forum/<?php echo $image; ?>"></td>
                     <td class="border-bottom border-right"><a href="<?php echo page("forums", "view-forum", cleanurl($forums->name) . "-" . $forums->id) ?>"><?php echo $forums->name ?></a><?php echo $forums->description != "" ? "<br />" . $forums->description : "" ?></td>
                     <td class="border-bottom border-right" align="center"><?php echo $topics; ?></td>
                     <td class="border-bottom"><?php echo $last_post; ?></td>
