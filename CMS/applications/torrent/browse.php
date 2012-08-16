@@ -159,7 +159,7 @@ while ($cat->nextRecord()) {
 </center>
 
 <?php
-$perpage = ($acl->torrents_perpage != 0) ? $acl->torrents_perpage : 1;
+$perpage = ($acl->torrents_perpage != 0) ? $acl->torrents_perpage : 50;
 $db->select(implode(" AND ", $where) . "");
 $pager = new Pager;
 $pager->perpage = $perpage;
