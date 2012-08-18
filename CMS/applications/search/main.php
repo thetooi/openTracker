@@ -16,7 +16,7 @@ if(!defined("INCLUDED"))
     die("Access denied");
 
 ?>
-<h4>Search</h4>
+<h4><?php echo _t("Search") ?></h4>
 <form method="GET">
     <?php
     if (!CLEAN_URLS) {
@@ -31,9 +31,10 @@ if(!defined("INCLUDED"))
     ?>
 
     <input type="search" name="q" size="50" value="<?php echo isset($_GET['q']) ? $_GET['q'] : "" ?>" /><br />
-    <input type="radio" name="type" value="members" <?php echo (!isset($_GET['type']) || $_GET['type'] == "members") ? "CHECKED" : "" ?>> Members <input type="radio" name="type" value="forums" <?php echo (isset($_GET['type']) && $_GET['type'] == "forums") ? "CHECKED" : "" ?>> Forums
+    <input type="radio" name="type" value="members" <?php echo (!isset($_GET['type']) || $_GET['type'] == "members") ? "CHECKED" : "" ?>> <?php echo _t("Members") ?> 
+    <input type="radio" name="type" value="forums" <?php echo (isset($_GET['type']) && $_GET['type'] == "forums") ? "CHECKED" : "" ?>> <?php echo _t("Forum") ?>
     <br />
-    <input type="submit" value="Search" />
+    <input type="submit" value="<?php echo _t("Search") ?>" />
 </form>
 
 <?php
@@ -71,8 +72,8 @@ if (isset($_GET['q']) && isset($_GET['type']) && !empty($_GET['q'])) {
                             <img src="images/icons/down.gif" /> <?php echo $acl->downloaded(); ?><br />
                         <?php } ?>
                         <br />
-                        <a href="<?php echo page("profile", "mailbox", "view", "", "", "uid=" . $acl->id) ?>"><span class="btn">PM</span></a> 
-                        <a href="<?php echo page("profile", "view", $acl->name) ?>"><span class="btn">Profile</span></a>
+                        <a href="<?php echo page("profile", "mailbox", "view", "", "", "uid=" . $acl->id) ?>"><span class="btn"><?php echo _t("PM") ?></span></a> 
+                        <a href="<?php echo page("profile", "view", $acl->name) ?>"><span class="btn"><?php echo _t("Profile") ?></span></a>
                     </div>
                     <?php
                 }

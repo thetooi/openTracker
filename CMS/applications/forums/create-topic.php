@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Create Topic");
@@ -68,6 +66,10 @@ try {
             $p->insert();
             $post_id = $p->getId();
 
+            $db = new DB("forum_topics");
+            $db->topic_lastpost = $post_id;
+            $db->update("topic_id = '$topic_id'");
+
             header("location: " . page("forums", "view-topic", "$topic_name-" . $topic_id, "", "", "page=p$post_id#post$post_id"));
         } Catch (Exception $e) {
             echo error(_t($e->getMessage()));
@@ -87,7 +89,7 @@ try {
             </tr>
             <tr><td></td>
                 <td>
-                    <?php echo bbeditor("content", 15, 80, (isset($_POST['content']) ? $_POST['content'] : "")); ?>
+    <?php echo bbeditor("content", 15, 80, (isset($_POST['content']) ? $_POST['content'] : "")); ?>
                 </td>
             </tr>
             <tr><td></td><td>
@@ -115,9 +117,9 @@ try {
                     <td valign="top" class="border-right"><img src="<?php echo $user->avatar(); ?>" width="150px"/></td>
                     <td valign="top">
                         <small>Posted at <?php echo get_date(time(), "", 0, 0) ?></small><br />
-                        <?php
-                        echo htmlformat($content, true);
-                        ?>
+        <?php
+        echo htmlformat($content, true);
+        ?>
                     </td>
                 </tr>
                 <tr>

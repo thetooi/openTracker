@@ -1,5 +1,5 @@
 Beta 0.2.1
-* Started to comment all the classes and functions.
+* All functions and classes are now commented.
 * Added bencode and bdecode inside Bcode.php as a class.
 * Fixed a bug in announce.php where the torrent client says that the tracker is sending invalid data <null>
 * Made categories in browse clickable.

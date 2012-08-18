@@ -1,4 +1,5 @@
 <?php
+
 try {
 
     include(PATH_LIBRARY . "Main.php");
@@ -6,7 +7,7 @@ try {
     include(PATH_LIBRARY . "DB.php");
 
     $pref = new Pref("website");
-
+    
     if ($_SESSION['action'] != "step6")
         throw new Exception("Access denied");
     ?>

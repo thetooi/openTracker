@@ -21,12 +21,12 @@ if(!defined("INCLUDED"))
     <?php
     $acl = new Acl(USER_ID);
 
-    $db = new DB("forum_posts");
-    $db->setCols(array("DISTINCT topic_id", "post_user", "post_added", "topic_id", "topic_subject", "post_id"));
-    $db->join("left", "{PREFIX}forum_topics", "topic_id", "post_topic");
-    $db->join("left", "{PREFIX}forum_forums", "forum_id", "topic_forum");
+    $db = new DB("forum_topics as t");
+    $db->setCols(array("DISTINCT topic_id", "post_user", "post_added", "topic_id", "topic_subject", "post_id", "topic_lastpost"));
+    $db->join("left", "{PREFIX}forum_forums as f", "forum_id", "t.topic_forum");
+    $db->join("left", "{PREFIX}forum_posts as p", "t.topic_lastpost", "p.post_id");
     $db->setLimit("5");
-    $db->setSort("post_id DESC");
+    $db->setSort("t.topic_lastpost DESC");
     $db->select("forum_group <= '" . $acl->group . "' GROUP BY topic_id");
     while ($db->nextRecord()) {
         $user = new Acl($db->post_user);

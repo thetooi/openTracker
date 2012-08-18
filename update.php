@@ -17,7 +17,7 @@
  * @author Wuild
  * @package openTracker
  */
-define("REVISION", "17");
+define("REVISION", "18");
 
 $system = new DB("system");
 $system->setColPrefix("system_");
@@ -84,6 +84,10 @@ if ($rev < 17) {
   `post_lastpostread` int(11) NOT NULL,
   PRIMARY KEY (`post_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+}
+
+if($rev < 18){
+    $query[] = "ALTER TABLE  `{PREFIX}forum_topics` ADD  `topic_lastpost` INT NOT NULL";
 }
 
 if ($system->revision < REVISION) {

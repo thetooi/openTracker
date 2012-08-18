@@ -94,7 +94,7 @@ $db->select("friend_receiver = '" . USER_ID . "' AND friend_status = '0'");
 $friends = "";
 if ($db->numRows()) {
     ?>
-    <h4>Pending</h4>
+    <h4><?php echo _t("Pending") ?></h4>
     <div style="float:left; width: 100%;">
         <?php
         while ($db->nextRecord()) {
@@ -112,8 +112,8 @@ if ($db->numRows()) {
                     <img src="images/icons/down.gif" /> <?php echo $acl->downloaded(); ?><br />
                 <?php } ?>
                 <br />
-                <a href="<?php echo page("profile", "friends", "accept", $acl->name) ?>"><span class="btn">Accept</span></a> 
-                <a href="<?php echo page("profile", "friends", "decline", $acl->name) ?>"><span class="btn red">Decline</span></a>
+                <a href="<?php echo page("profile", "friends", "accept", $acl->name) ?>"><span class="btn"><?php echo _t("Accept") ?></span></a> 
+                <a href="<?php echo page("profile", "friends", "decline", $acl->name) ?>"><span class="btn red"><?php echo _t("Decline") ?></span></a>
             </div>
 
             <?php
@@ -124,7 +124,7 @@ if ($db->numRows()) {
     $db->select("friend_receiver = '" . USER_ID . "' AND friend_status = '1'");
     $friends = "";
     ?>
-    <h4>My friends</h4>
+    <h4><?php echo _t("my friends") ?></h4>
     <?php
     if ($db->numRows()) {
         while ($db->nextRecord()) {
@@ -142,9 +142,9 @@ if ($db->numRows()) {
                     <img src="images/icons/down.gif" /> <?php echo $acl->downloaded(); ?><br />
                 <?php } ?>
                 <br />
-                <a href="<?php echo page("profile", "mailbox", "view", "", "", "uid=" . $acl->id) ?>"><span class="btn">PM</span></a> 
-                <a href="<?php echo page("profile", "view", $acl->name) ?>"><span class="btn">Profile</span></a>
-                <a href="<?php echo page("profile", "friends", "remove", $acl->name) ?>" style="float:right;"><span class="btn red">Remove</span></a>
+                <a href="<?php echo page("profile", "mailbox", "view", "", "", "uid=" . $acl->id) ?>"><span class="btn"><?php echo _t("PM") ?></span></a> 
+                <a href="<?php echo page("profile", "view", $acl->name) ?>"><span class="btn"><?php echo _t("profile") ?></span></a>
+                <a href="<?php echo page("profile", "friends", "remove", $acl->name) ?>" style="float:right;"><span class="btn red"><?php echo _t("Remove") ?></span></a>
             </div>
 
             <?php

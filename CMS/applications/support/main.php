@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,23 +10,22 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $this->setSidebar(true);
 ?>
 <h4><?php echo _t("Support") ?></h4>
-<a href="<?php echo page("support", "create") ?>"><span class="btn"><?php echo _t("Open new ticket") ?></span></a>
+<a href="<?php echo page("support", "create") ?>" style="float:right;"><span class="btn"><?php echo _t("Open new ticket") ?></span></a>
 <br /><br />
 <table class="forum" cellspacing="0" cellpadding="5" width="100%">
     <thead>
         <tr>
-            <td class="border-bottom">Subject</td>
+            <td class="border-bottom"><?php echo _t("Subject") ?></td>
             <td class="border-bottom border-right"></td>
-            <td class="border-bottom border-right">Status</td>
-            <td class="border-bottom border-right">Owner</td>
-            <td class="border-bottom" width="200px;">Last reply</td>
+            <td class="border-bottom border-right"><?php echo _t("Status") ?></td>
+            <td class="border-bottom border-right"><?php echo _t("Owner") ?></td>
+            <td class="border-bottom" width="200px;"><?php echo _t("Last reply") ?></td>
         </tr>
     </thead>
     <tbody>
@@ -37,11 +35,11 @@ $this->setSidebar(true);
         while ($db->nextRecord()) {
             switch ($db->ticket_status) {
                 default:
-                    $status = "<font color='red'>Unsolved</font>";
+                    $status = "<font color='red'>" . _t("Unsolved") . "</font>";
                     break;
 
                 case 1:
-                    $status = "<font color='green'>Solved</font>";
+                    $status = "<font color='green'>" . _t("Solved") . "</font>";
                     break;
             }
 

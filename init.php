@@ -11,7 +11,6 @@
  * @author Wuild
  * @package openTracker
  */
-
 /**
  * filename init.php
  * 
@@ -110,10 +109,10 @@ if (isset($_COOKIE[COOKIE_PREFIX . 'user'])) {
     $userdata->select("user_id = '" . $id . "'");
     if ($userdata->numRows()) {
         $userdata->nextRecord();
-        
-        if($userdata->status == 0 || $userdata->status == 1 ||  $userdata->status == 3)
-            header("location: ".page("user", "logout"));
-        
+
+        if ($userdata->status == 0 || $userdata->status == 1 || $userdata->status == 3)
+            header("location: " . page("user", "logout"));
+
         if (md5("!" . $userdata->id . md5("!" . $userdata->password . md5($_SERVER['REMOTE_ADDR']))) == $password) {
             define("USER_ID", $userdata->id);
         } else {
@@ -646,6 +645,22 @@ function get_date($date, $method = "", $norelative = 0, $full_relative = 1) {
         'DATE' => $pref->date ? $pref->date : 'j M Y'
     );
 
+
+    $months = array(
+        "January" => _t("January"),
+        "February" => _t("February"),
+        "March" => _t("March"),
+        "April" => _t("April"),
+        "May" => _t("May"),
+        "June" => _t("June"),
+        "July" => _t("July"),
+        "August" => _t("August"),
+        "September" => _t("September"),
+        "October" => _t("October"),
+        "November" => _t("November"),
+        "December" => _t("December"),
+    );
+
     if (!$date) {
         return '--';
     }
@@ -709,7 +724,12 @@ function get_date($date, $method = "", $norelative = 0, $full_relative = 1) {
             return gmdate($time_options[$method], ($date + $offset));
         }
     } else {
-        return gmdate($time_options[$method], ($date + $offset));
+        $test = gmdate($time_options[$method], ($date + $offset));
+        foreach ($months as $month => $trans) {
+            $test = str_replace($month, $trans, $test);
+        }
+
+        return $test;
     }
 }
 

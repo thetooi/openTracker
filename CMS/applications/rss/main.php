@@ -36,7 +36,7 @@ if(!defined("INCLUDED"))
         <?php }
         ?>
     </table>
-    <input type="radio" name="type" id="type" value="dl" CHECKED> Download link <input type="radio" name="type" value="web" id="type"> Web link<br /><br />
+    <input type="radio" name="type" id="type" value="dl" CHECKED> <?php echo _t("Download link") ?> <input type="radio" name="type" value="web" id="type"> <?php echo _t("Web link") ?><br /><br />
     <input type="submit" name="rss" value="<?php echo _t("Get RSS link"); ?>">
 </form>
 
