@@ -11,6 +11,17 @@ Beta 0.2.1
 * Made the function pager into a class instead. library/Pager.php.
 * Added a bonus shop.
 * Fixed where users that checked the remember details checkbox didnt get affected by user status changed.
+* Widgets can now load custom CSS files by using the template function addCss(script name)
+* Added addons quick menu on the toolbar, (an addons will only show up if there is an admin page for it)
+* Added admin libraries to the autoloader.
+* Added a bunch of admin icons.
+* Started to build on the quick admin UI class.
+* Remade the admin settings page, they are now devided into seperate pages to make it easier to navigate thrue them
+* Added Day light saving on the time settings
+* Fixed a bug in .htaccess file where var_c got the same value as var_b if it was set.
+* Fixed so that the pref class will automaticly insert config values apon update() if the config value does not exists.
+* Addons can now check if an admin page does exists by using the addon function hasAdmin()
+* Made so that one addon can have different pages, these are automaticly loaded with the var_c variable
 
 Beta 0.2.0a
 * Fixed IMDB bugs

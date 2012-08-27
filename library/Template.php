@@ -165,9 +165,20 @@ class Template {
      * Build the loaded templates into a variable
      * @return string returns the templates as a variable
      */
-    function buildVar() {
-        global $page_title;
-        foreach ($this->files as $file) {
+    function buildVar($file = "") {
+        if (count($this->files) > 0) {
+            foreach ($this->files as $file) {
+                ob_start();
+                if (file_exists($this->path . $file))
+                    include($this->path . $file);
+                else
+                    echo "Error 404: file not found";
+
+                $this->data .= ob_get_contents();
+                ob_end_clean();
+            }
+            return $this->data;
+        }else {
             ob_start();
             if (file_exists($this->path . $file))
                 include($this->path . $file);
@@ -176,9 +187,9 @@ class Template {
 
             $this->data .= ob_get_contents();
             ob_end_clean();
+            
+            return $this->data;
         }
-
-        return $this->data;
     }
 
 }

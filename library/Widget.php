@@ -23,6 +23,7 @@ class Widget {
      * @var string 
      */
     private $_path;
+    public $css = array();
 
     /**
      * Construct the application widget
@@ -45,6 +46,11 @@ class Widget {
             return false;
     }
 
+    function loadCss($script) {
+        $path = str_replace(PATH_ROOT, "", $this->_path."css/");
+        $this->css[] = $path . $script;
+    }
+
     /**
      * Build the selected widget.
      * @return string
@@ -59,9 +65,13 @@ class Widget {
             $widget->loadFile("widget.php");
 
             $tpl = new Template(PATH_CMS . "templates/");
+            $tpl->test = $this;
             $tpl->content = $widget->buildVar();
-            $tpl->loadFile("widget.tpl.php");
-            return $tpl->buildVar();
+            $data = $tpl->buildVar("widget.tpl.php");
+            foreach ($widget->css as $css) {
+                $this->loadCss($css);
+            }
+            return $data;
         } Catch (Exception $e) {
             echo _t($e->getMessage());
         }

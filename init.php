@@ -167,10 +167,15 @@ function __autoload($classname) {
         if (file_exists(PATH_LIBRARY . $classname . ".php"))
             include_once(PATH_LIBRARY . $classname . ".php");
     }else {
-        if (file_exists(PATH_APPLICATIONS . $class_exploded[0] . "/library/" . $class_exploded[1] . ".php"))
-            include_once(PATH_APPLICATIONS . $class_exploded[0] . "/library/" . $class_exploded[1] . ".php");
-        else
-            die("could not load library " . PATH_APPLICATIONS . $class_exploded[0] . "/library/" . $class_exploded[1] . ".php");
+        if ($class_exploded[0] == "admin") {
+            if (file_exists(PATH_SITEADMIN_LIBRARY . $classname . ".php"))
+                include_once(PATH_SITEADMIN_LIBRARY . $classname . ".php");
+        } else {
+            if (file_exists(PATH_APPLICATIONS . $class_exploded[0] . "/library/" . $class_exploded[1] . ".php"))
+                include_once(PATH_APPLICATIONS . $class_exploded[0] . "/library/" . $class_exploded[1] . ".php");
+            else
+                die("could not load library " . PATH_APPLICATIONS . $class_exploded[0] . "/library/" . $class_exploded[1] . ".php");
+        }
     }
 }
 
@@ -563,7 +568,7 @@ function format_quotes($s) {
 
 /**
  * List all available timezones.
- * @param int $sel
+ * @param float $sel
  * @return string 
  */
 function timezones($sel) {
@@ -603,7 +608,8 @@ function timezones($sel) {
 
     $o = "";
     foreach ($array as $time => $name) {
-        $o .= "<option value='$time' " . (($time == $sel) ? "SELECTED" : "") . ">$name</option>";
+        echo $sel;
+        $o .= "<option value='$time' " . ($sel == $time ? "SELECTED" : "") . ">$name</option>";
     }
 
     return $o;
@@ -630,7 +636,7 @@ function findyoutube($url) {
 function get_date($date, $method = "", $norelative = 0, $full_relative = 1) {
     $pref = new Pref("time");
     $config = array();
-    $offset = 60 * 60 * $pref->offset;
+    $offset = 60 * 60 * $pref->offset + ($pref->dst ? 3600 : 0);
     $relative = 1;
     $relative_format = '{--}, H:i';
 
@@ -1016,24 +1022,16 @@ function getLanguages($selected) {
 }
 
 /**
- * Quick function to build all the widgets.
- * @return string
+ * Read day difference between 2 ints
+ * @param int $start
+ * @param int $end
+ * @return float; 
  */
-function buildWidgets() {
-    $acl = new Acl(USER_ID);
-    if (USER_ID) {
-        $data = "";
-        $db = new DB("widgets");
-        $db->setColPrefix("widget_");
-        $db->setSort("widget_sort ASC");
-        $db->select("widget_group <= " . $acl->group);
-        while ($db->nextRecord()) {
-            $widget = new Widget($db->module);
-            $data .= $widget->build();
-        }
-
-        return $data;
-    }
+function dateDiff($start, $end) {
+    $start_ts = $start;
+    $end_ts = $end;
+    $diff = $end_ts - $start_ts;
+    return round($diff / 86400);
 }
 
 new Cleanup();

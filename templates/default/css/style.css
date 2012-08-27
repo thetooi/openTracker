@@ -2,7 +2,7 @@
 
 body{ 
     background:         #eee; 
-    font:               12px Arial, sans-serif; 
+    font: normal 12px arial,verdana,tahoma,sans-serif;
     color:              #3a3a3a; 
     width:              960px;
     margin:             0 auto;
@@ -302,20 +302,50 @@ table .border-bottom{
 }
 
 table.forum{
-    border: 1px solid #E9E9E9;
-    border-bottom: 0px;
     float:left;
     margin-bottom: 20px;
+    line-height: 120%;
+    border-bottom: 4px solid #D5DDE5;
 }
 
+table.forum thead td a{
+    color: #2c2c2c;
+}
 table.forum thead td{
-    background-color: #fbfbfb;
-    padding:5px;
+    background-color: #D5DDE5;
+    padding:7px;
+    color: #2c2c2c;
+    font-weight: bold;
+}
+
+table.forum tbody td span.description{
+    font-size: 0.9em;
+    color: #606060;
+}
+
+table.forum tr:nth-child(even) {
+    background-color: #F1F4F7;
+}
+
+table.forum tr:nth-child(even) td.stats{
+    background-color: #E4EBF2;
+}
+
+table.forum tr:nth-child(odd) {
+    background-color: #FAFBFC;
+}
+
+table.forum tr:nth-child(odd) td.stats{
+    background-color: #EEF3F8;
 }
 
 table.forum tbody td{
-    background-color: #ffffff;
-    padding:5px; 
+    padding:7px; 
+}
+
+table.forum tbody td a.topic-title{
+    font-size: 14px;
+    line-height: 120%;
 }
 
 img{
@@ -511,6 +541,10 @@ span.btn{
     margin-right: 3px;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+span.grey{
+    background-color: #656565!important;
 }
 
 

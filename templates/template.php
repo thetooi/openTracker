@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $acl = new Acl(USER_ID);
@@ -23,11 +21,25 @@ $control->loadFile($this->data['url']['action'] . ".php");
 $control->args = $this->data;
 $tpl = new Template(PATH_TEMPLATES . $spref->template . "/");
 $tpl->data = $this->data;
-$tpl->sub_content = buildWidgets();
 $tpl->content = $control->buildVar();
 $tpl->sidebar = $control->sidebar;
 $tpl->login = $this->login;
 $title = ($control->title != "") ? " - " . $control->title : "";
+
+$loaded_css = array();
+
+$tpl->sub_content = "";
+if (USER_ID) {
+    $db = new DB("widgets");
+    $db->setColPrefix("widget_");
+    $db->setSort("widget_sort ASC");
+    $db->select("widget_group <= " . $acl->group);
+    while ($db->nextRecord()) {
+        $widget = new Widget($db->module);
+        $tpl->sub_content .= $widget->build();
+        $loaded_css = array_merge($loaded_css, $widget->css);
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -70,9 +82,17 @@ $title = ($control->title != "") ? " - " . $control->title : "";
         }
 
         if (count($control->css) > 0) {
-            foreach ($control->css as $javascript) {
+            foreach ($control->css as $css) {
                 ?>
-                <link rel="stylesheet" href="templates/<?php echo $spref->template; ?>/css/<?php echo $javascript; ?>" />
+                <link rel="stylesheet" href="templates/<?php echo $spref->template; ?>/css/<?php echo $css; ?>" />
+                <?
+            }
+        }
+
+        if (count($loaded_css) > 0) {
+            foreach ($loaded_css as $css) {
+                ?>
+                <link rel="stylesheet" href="<?php echo $css; ?>" />
                 <?
             }
         }

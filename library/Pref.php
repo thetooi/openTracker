@@ -39,13 +39,12 @@ class Pref {
         $db = new DB("pref");
         $db->select("pref_target = '" . $db->escape($target) . "'");
         while ($db->nextRecord()) {
-            if ($db->pref_value == "0")
-                $value = false;
-            else if ($db->pref_value == "1")
-                $value = true;
-            else
-                $value = $db->pref_value;
 
+            if (is_int($db->pref_value)) {
+                $value = (int) $db->pref_value;
+            } else {
+                $value = $db->pref_value;
+            }
             $this->__set($db->pref_name, $value);
         }
     }
@@ -65,7 +64,8 @@ class Pref {
      * @return string
      */
     function __get($name) {
-        return $this->_vars[$name];
+        if (isset($this->_vars[$name]))
+            return $this->_vars[$name];
     }
 
     /**
@@ -75,8 +75,16 @@ class Pref {
         $db = new DB("pref");
         $db->setColPrefix("pref_");
         foreach ($this->_vars as $name => $value) {
-            $db->value = $value;
-            $db->update("pref_name = '" . $name . "' AND pref_target = '" . $db->escape($this->target) . "'");
+            $db->select("pref_name = '" . $name . "' AND pref_target = '" . $db->escape($this->target) . "'");
+            if ($db->numRows()) {
+                $db->value = $value;
+                $db->update("pref_name = '" . $name . "' AND pref_target = '" . $db->escape($this->target) . "'");
+            } else {
+                $db->name = $name;
+                $db->value = $value;
+                $db->target = $this->target;
+                $db->insert();
+            }
         }
     }
 

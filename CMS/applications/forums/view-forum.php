@@ -16,6 +16,7 @@ if (!defined("INCLUDED"))
 try {
     $acl = new Acl(USER_ID);
 
+    $arg = $this->args['var_a'];
     $id = end(explode("-", $this->args['var_a']));
 
     if (!intval($id))
@@ -25,15 +26,27 @@ try {
     $db->select("forum_id = '" . $db->escape($id) . "'");
     $db->nextRecord();
 
-    $tpl = new Template(PATH_APPLICATIONS . "forums/tpl/");
-    $tpl->build("search.php");
-
     if ($db->forum_group > $acl->group)
         throw new Exception("Access denied");
 
-    echo "<h4>" . $db->forum_name . "</h4>";
+    echo "<span style='float:left; font-weight: normal;'><h2>" . $db->forum_name . "</h2></span>";
 
     $this->setTitle($db->forum_name);
+
+
+    $db = new DB("forum_topics");
+    $db->setColPrefix("topic_");
+    $db->join("left", "{PREFIX}forum_posts", "post_topic", "topic_id");
+    $db->setSort("topic_sticky DESC, post_added DESC");
+    $db->select("topic_forum = '" . $db->escape($id) . "' GROUP BY post_topic");
+
+    $perpage = 40;
+    $pager = new Pager;
+    $pager->perpage = $perpage;
+    $pager->count = $db->numRows();
+    $pager->href = array("forums", "view-forum", $arg);
+    $pager->build();
+    echo $pager->pager_top;
     ?>
     <br />
     <a href="<?php echo page("forums", "create-topic", "", "", "", "forum=" . $id); ?>" style="float:right;"><span class="btn"><?php echo _t("Create new topic"); ?></span></a>
@@ -41,10 +54,11 @@ try {
     <table width="100%" cellpadding="5" cellspacing="0" class="forum">
         <thead>
             <tr>
-                <td width="46px" class="border-bottom"></td>
-                <td width="60%" class="border-bottom border-right"><?php echo _t("Topic"); ?></td>
-                <td width="66px" class="border-bottom border-right" align="center"><?php echo _t("Replies"); ?></td>
-                <td class="border-bottom"><?php echo _t("Last post"); ?></td>
+                <td width="46px" class=""></td>
+                <td class=""><?php echo _t("Topic"); ?></td>
+                <td class="" align="center"><?php echo _t("Started by"); ?></td>
+                <td class="" align="right"><?php echo _t("Stats"); ?></td>
+                <td class=""><?php echo _t("Last post info"); ?></td>
             </tr>
         </thead>
         <tbody>
@@ -53,8 +67,11 @@ try {
             $db->setColPrefix("topic_");
             $db->join("left", "{PREFIX}forum_posts", "post_topic", "topic_id");
             $db->setSort("topic_sticky DESC, post_added DESC");
+            $db->setLimit($pager->limit);
             $db->select("topic_forum = '" . $db->escape($id) . "' GROUP BY post_topic");
             while ($db->nextRecord()) {
+
+                $user = new Acl($db->userid);
 
                 $q = new DB;
                 $q->query("SELECT COUNT(post_id) as posts FROM {PREFIX}forum_posts WHERE post_topic = '" . $db->id . "'");
@@ -83,9 +100,7 @@ try {
                     $last_post = "--";
                 else {
                     $user = new Acl($q->post_user);
-                    $last_post = _t("By") . " <a href='" . page("profile", "view", strtolower($user->name)) . "'>" . $user->name . "</a> in 
-                        <a href='" . page("forums", "view-topic", $q->topic_subject . "-" . $q->topic_id) . "'>" . $q->topic_subject . "</a>
-                            <br />" . get_date($q->post_added);
+                    $last_post = get_date($q->post_added) . "<br />" . _t("By") . ": <a href='" . page("profile", "view", strtolower($user->name)) . "'>" . $user->name . "</a>";
                 }
 
                 $image = "forum-default.png";
@@ -98,10 +113,11 @@ try {
                 $image = ($new ? "forum-new.png" : $image);
                 ?>
                 <tr>
-                    <td width="46px" class="border-bottom" align="center"><img src="images/forum/<?php echo $image; ?>"></td>
-                    <td width="60%" class="border-bottom border-right"><a href="<?php echo page("forums", "view-topic", cleanurl($db->subject) . "-" . $db->id); ?>"><?php echo $db->subject ?></a></td>
-                    <td width="66px" class="border-bottom border-right" align="center"><?php echo $posts ?></td>
-                    <td class="border-bottom"><?php echo $last_post ?></td>
+                    <td width="46px" class="" align="center"><img src="images/forum/<?php echo $image; ?>"></td>
+                    <td class=""><a href="<?php echo page("forums", "view-topic", cleanurl($db->subject) . "-" . $db->id); ?>" class="topic-title"><?php echo $db->subject ?></a></td>
+                    <td width="150px" class="" align="center"><?php echo $user->name ?></td>
+                    <td width="120px" class="stats" align="right"><?php echo $posts ?> Replies</td>
+                    <td width="180px"class=""><?php echo $last_post ?></td>
                 </tr>
                 <?php
             }
@@ -109,9 +125,12 @@ try {
         </tbody>
     </table>
 
-    <a href="<?php echo page("forums", "create-topic", "", "", "", "forum=" . $id); ?>" style="float:right; margin-top: 10px;"><span class="btn"><?php echo _t("Create new topic"); ?></span></a>
+    <?php echo $pager->pager_bottom; ?>
 
     <?php
+    
+    $tpl = new Template(PATH_APPLICATIONS."forums/tpl/");
+    $tpl->build("bottom-info.php");
 } Catch (Exception $e) {
     echo Error(_t($e->getMessage()));
 }

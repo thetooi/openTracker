@@ -15,7 +15,7 @@ if (!defined("INCLUDED"))
 
 try {
     ?>
-    <div style="float:right">
+    <div style="float:right; margin-bottom: 20px;">
         <form method="POST" action="<?php echo page("forums", "search") ?>">
             <input type="text" name="q" size="25" />
             <input type="submit" class="blue" value="<?php echo _t("Search") ?>" />

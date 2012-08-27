@@ -11,8 +11,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Admin - Addons");
@@ -33,6 +32,7 @@ try {
 
         case 'admin':
             $tpl->addon = (isset($this->args['var_b'])) ? $this->args['var_b'] : false;
+            $tpl->file = (isset($this->args['var_c'])) ? $this->args['var_c'] : "main";
             $tpl->loadFile("admin.php");
             break;
 

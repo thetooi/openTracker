@@ -22,7 +22,11 @@ try {
     if (!$app->hasAdmin())
         throw new Exception("no admin found");
 
-    include(PATH_APPLICATIONS . $this->addon . "/admin/main.php");
+    
+    if(!file_exists(PATH_APPLICATIONS . $this->addon . "/admin/".$this->file.".php"))
+            throw new Exception("Admin file not found");
+    $tpl = new Template(PATH_APPLICATIONS . $this->addon . "/admin/");
+    $tpl->build($this->file.".php");
 } Catch (Exception $e) {
     echo error(_t($e->getMessage()));
 }

@@ -91,6 +91,35 @@ $wpref = new Pref("website");
                     </li>
                 </ul>
             </li>
+            <li class="item"><a href="#" class="menu" rel="admin_addons">Addons</a>
+                <ul class="dropdown" id="admin_addons">
+                    <li class="title"><a>Installed addons</a></li>
+                    <?php
+                    $addons = makefilelist(PATH_APPLICATIONS, ".|..|index.html", true, "folders");
+                    if (count($addons) > 0) {
+                        foreach ($addons as $addon) {
+                            $add = new Addon($addon);
+
+                            if ($add->isInstalled() && $add->hasAdmin()) {
+                                ?>
+                                <li>
+                                    <a href="<?php echo page("admin", "addons", "admin", $addon); ?>">
+                                        <i class="icon"><img src="images/admin/addons.png" width="16px"></i>&nbsp;<?php echo ucfirst($addon); ?>
+                                    </a>
+                                </li>
+                                <?php
+                            }
+                        }
+                    } else {
+                        ?>
+                        <li>
+                            No installed addons
+                        </li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+            </li>
             <li class="item"><a href="#" class="menu" rel="admin_settings">System</a>
                 <ul class="dropdown" id="admin_settings">
                     <li class="title"><a>System</a></li>

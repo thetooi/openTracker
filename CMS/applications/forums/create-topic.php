@@ -53,6 +53,12 @@ try {
             $t->userid = USER_ID;
             $t->subject = $_POST['subject'];
             $t->forum = $forum_id;
+            
+            if($acl->Access("x")){
+                $t->locked = isset($_POST['locked']) ? true : false;
+                $t->sticky = isset($_POST['sticky']) ? true : false;
+            }
+            
             $t->insert();
             $topic_id = $t->getId();
             $topic_name = cleanurl($_POST['subject']);
@@ -89,9 +95,29 @@ try {
             </tr>
             <tr><td></td>
                 <td>
-    <?php echo bbeditor("content", 15, 80, (isset($_POST['content']) ? $_POST['content'] : "")); ?>
+                    <?php echo bbeditor("content", 15, 80, (isset($_POST['content']) ? $_POST['content'] : "")); ?>
                 </td>
             </tr>
+            <?php
+            if ($acl->Access("x")) {
+                ?>
+                <tr>
+                    <td>Sticky</td>
+                    <td>
+                        <label><input name="sticky" value="1" type="radio"> Yes</label>
+                        <label><input name="sticky" value="0" type="radio" CHECKED> No</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Locked</td>
+                    <td>
+                        <label><input name="locked" value="1" type="radio"> Yes</label>
+                        <label><input name="locked" value="0" type="radio" CHECKED> No</label>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
             <tr><td></td><td>
                     <input type="submit" name="create" value="<?php echo _t("Create topic"); ?>" /> <input type="submit" name="preview" value="<?php echo _t("Preview"); ?>" />
                 </td>
@@ -117,9 +143,9 @@ try {
                     <td valign="top" class="border-right"><img src="<?php echo $user->avatar(); ?>" width="150px"/></td>
                     <td valign="top">
                         <small>Posted at <?php echo get_date(time(), "", 0, 0) ?></small><br />
-        <?php
-        echo htmlformat($content, true);
-        ?>
+                        <?php
+                        echo htmlformat($content, true);
+                        ?>
                     </td>
                 </tr>
                 <tr>

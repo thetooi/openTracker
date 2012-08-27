@@ -81,8 +81,8 @@ class Pager {
         else
             $page = $pagedefault;
 
-        $link_sub = page($this->href[0], $this->href[1], "", "", "", "page=" . ($page - 1) . $this->args);
-        $link_add = page($this->href[0], $this->href[1], "", "", "", "page=" . ($page + 1) . $this->args);
+        $link_sub = page($this->href[0], $this->href[1],  (isset($this->href[2]) ? $this->href[2] : ""), (isset($this->href[3]) ? $this->href[3] : ""), (isset($this->href[4]) ? $this->href[4] : ""), "page=" . ($page - 1) . $this->args);
+        $link_add = page($this->href[0], $this->href[1],  (isset($this->href[2]) ? $this->href[2] : ""), (isset($this->href[3]) ? $this->href[3] : ""), (isset($this->href[4]) ? $this->href[4] : ""), "page=" . ($page + 1) . $this->args);
 
 
         $prev = "";
@@ -115,7 +115,7 @@ class Pager {
                     $dotted = 1;
                     continue;
                 }
-                $link = page($this->href[0], $this->href[1], "", "", "", "page=" . ($i) . $this->args);
+                $link = page($this->href[0], $this->href[1], (isset($this->href[2]) ? $this->href[2] : ""), (isset($this->href[3]) ? $this->href[3] : ""), (isset($this->href[4]) ? $this->href[4] : ""), "page=" . ($i) . $this->args);
 
                 $dotted = 0;
                 $start = $i * $this->perpage + 1;
@@ -124,11 +124,11 @@ class Pager {
                     $end = $this->count;
                 $text = "$start&nbsp;-&nbsp;$end";
                 if ($i != $page)
-                    $pagerarr[] = "<a href='$link'>$text</a>";
+                    $pagerarr[] = "<a href='$link'><span class='btn grey'>$text</a></a>";
                 else
-                    $pagerarr[] = "<span>$text</span>";
+                    $pagerarr[] = "<span class='btn disabled'>$text</span>";
             }
-            $pagerstr = join(" | ", $pagerarr);
+            $pagerstr = join(" ", $pagerarr);
             $pagertop = "<p align=\"center\" class='pages' >$prev $pagerstr $next</p>\n";
             $pagerbottom = "<p align=\"center\" class='pages' >$prev $pagerstr $next</p>\n";
         }

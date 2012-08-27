@@ -170,7 +170,6 @@ try {
         $uploaded = max(0, $data['uploaded'] - $self->uploaded);
         $downloaded = max(0, $data['downloaded'] - $self->downloaded);
 
-
         if ($uploaded > 0 || $downloaded > 0) {
             if ($torrent->freeleech)
                 $user->query("UPDATE {PREFIX}users SET user_uploaded = user_uploaded + $uploaded WHERE user_id='" . $user->id . "'");
@@ -195,8 +194,16 @@ try {
             $torrent_query[] = "torrent_times_completed = torrent_times_completed + 1";
 
         if (isset($self)) {
-            $db = new DB();
-            $db->query("UPDATE {PREFIX}peers SET peer_uploaded = " . $data['uploaded'] . ", peer_downloaded = " . $data['downloaded'] . ", peer_to_go = " . $data['left'] . ", peer_seeder = '" . $data['seeder'] . "', peer_last_action = '" . time() . "' WHERE $self_query");
+            $db = new DB("peers");
+            $db->setAnnounceDebug();
+            $db->setColPrefix("peer_");
+            $db->uploaded = $data['uploaded'];
+            $db->downloaded = $data['downloaded'];
+            $db->to_go = $data['left'];
+            $db->seeder = $data['seeder'];
+            $db->last_action = time();
+            $db->update($self_query);
+
             if ($self->seeder != $data['seeder']) {
                 if ($data['seeder']) {
                     $torrent_query[] = "torrent_seeders = torrent_seeders + 1";

@@ -173,25 +173,28 @@ echo $pager->pager_top;
 <table id="browse" class="forum" cellspacing="0" cellpadding="5">
     <thead>
         <tr>
-            <td width="40px" class="border-bottom">
+            <td width="40px" class="">
 
             </td>
-            <td width="50%" class="border-bottom">
+            <td width="50%" class="">
                 <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=name&amp;type={$order_link}") ?>"><b><?php echo _t("Name"); ?></b></a>
             </td>
-            <td class="border-right border-bottom">
+            <td class="">
             </td>
-            <td class="border-right border-bottom" align="center">
+            <td class="" align="center">
                 <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=size&amp;type={$order_link}") ?>"><b><?php echo _t("Size"); ?></b></a>
             </td>
-            <td class="border-right border-bottom" align="center">
+            <td class="" align="center">
                 <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=added&amp;type={$order_link}") ?>"><b><?php echo _t("Uploaded"); ?></b></a>
             </td>
-            <td class="border-bottom" align="center">
+            <td class="" align="center">
                 <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=seeders&amp;type={$order_link}") ?>"><b><img src="images/icons/up.gif" title="seeders"></b></a>
             </td>
-            <td class="border-right border-bottom" align="center">
+            <td class="" align="center">
                 <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=leechers&amp;type={$order_link}") ?>"><b><img src="images/icons/down.gif" title="leechers"></b></a>
+            </td>
+            <td class="" align="center">
+                <b>Uploader</b>
             </td>
         </tr>
     </thead>
@@ -204,31 +207,34 @@ echo $pager->pager_top;
         $db->select(implode(" AND ", $where) . "");
 
         while ($db->nextRecord()) {
-
+            $user = new Acl($db->torrent_userid);
             $torrent = new Torrent($db->torrent_id);
             ?>
             <tr>
-                <td class="border-bottom">
+                <td class="">
                     <img src="images/categories/<?php echo $torrent->category(); ?>" />
                 </td>
-                <td width="50%" class="border-bottom">
+                <td width="50%" class="">
                     <a href="<?php echo page("torrent", "details", "", "", "", "id=" . $db->torrent_id); ?>"><?php echo $db->torrent_name; ?></a>
                     <?php echo ($db->torrent_freeleech) ? "<br /><small class='freeleech'>Freeleech</small>" : "" ?>
                 </td>
-                <td class="border-right border-bottom" align="center">
+                <td class="" align="center">
                     <a href="<?php echo page("torrent", "download", "", "", "", "torrent=" . $db->torrent_id) ?>"><img src="images/icons/download.png" title="<?php echo _t("Download"); ?>" /></a>
                 </td>
-                <td class="border-right border-bottom" align="center">
+                <td class="" align="center">
                     <?php echo bytes($db->torrent_size); ?>
                 </td>
-                <td class="border-right border-bottom" align="center">
+                <td class="" align="center">
                     <?php echo str_replace(" ", "<br />", date("Y-m-d H:i", $db->torrent_added)) ?>
                 </td>
-                <td class="border-bottom" align="center">
+                <td class="" align="center">
                     <?php echo $db->torrent_seeders ?>
                 </td>
-                <td class="border-right border-bottom" align="center">
+                <td class="" align="center">
                     <?php echo $db->torrent_leechers ?>
+                </td>
+                <td class="" align="center">
+                    <a href="<?php echo page("profile", "view", $user->name) ?>"><?php echo $user->name; ?></a>
                 </td>
             </tr>
         <?php } ?>
