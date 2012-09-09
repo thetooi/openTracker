@@ -17,7 +17,7 @@
  * @author Wuild
  * @package openTracker
  */
-define("REVISION", "18");
+define("REVISION", "20");
 
 $system = new DB("system");
 $system->setColPrefix("system_");
@@ -77,7 +77,7 @@ if ($rev < 16) {
 }
 
 if ($rev < 17) {
-    $query[] = "CREATE TABLE IF NOT EXISTS `tracker_forum_postread` (
+    $query[] = "CREATE TABLE IF NOT EXISTS `{PREFIX}forum_postread` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
   `post_userid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `post_topicid` int(11) NOT NULL,
@@ -86,8 +86,27 @@ if ($rev < 17) {
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 }
 
-if($rev < 18){
+if ($rev < 18) {
     $query[] = "ALTER TABLE  `{PREFIX}forum_topics` ADD  `topic_lastpost` INT NOT NULL";
+}
+
+if ($rev < 19) {
+    $query[] = "ALTER TABLE  `{PREFIX}users` CHANGE  `user_invited`  `user_invited` VARCHAR( 255 ) NOT NULL";
+}
+
+
+if ($rev < 20) {
+    $query[] = "CREATE TABLE IF NOT EXISTS `{PREFIX}files` (
+  `file_id` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_size` int(11) NOT NULL,
+  `file_type` varchar(255) NOT NULL,
+  `file_userid` varchar(255) NOT NULL,
+  `file_added` int(11) NOT NULL,
+  `file_width` int(11) NOT NULL,
+  `file_height` int(11) NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+    $query[] = "ALTER TABLE  `{PREFIX}users` ADD `user_description` TEXT NOT NULL";
 }
 
 if ($system->revision < REVISION) {

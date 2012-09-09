@@ -15,6 +15,10 @@ if (!defined("INCLUDED"))
 
 try {
 
+    $acl = new Acl(USER_ID);
+    
+    if(!$acl->Access("b"))
+        throw new Exception("Access denied, you must be power user or higher to use the bonus store.");
     $this->sidebar = true;
     ?>
     <h4><?php echo _t("Bonus Store") ?></h4>
@@ -36,17 +40,17 @@ try {
                 throw new Exception("Invalid bonus id");
 
             $db->nextRecord();
-            $product_cost = $db->cost;
+            $product_cost = (int) $db->cost;
 
             $user = new DB();
-            if ($acl->bonusPoints() < $product_cost)
+            if ((int) $acl->bonus < $product_cost)
                 throw new Exception("Not enought points");
 
             $data = $db->data;
             switch ($db->type) {
                 case "1":
                     if ($acl->downloaded < $data)
-                        throw new Exception("Invalid action");
+                        throw new Exception("Not enough downloaded data to remove");
                     $user->query("UPDATE {PREFIX}users SET user_downloaded = user_downloaded - $data WHERE user_id = '" . $user->escape(USER_ID) . "'");
                     break;
 
@@ -82,7 +86,7 @@ try {
             $db->setSort("bonus_sort ASC");
             $db->select();
             while ($db->nextRecord()) {
-                $buy_button = ($acl->bonusPoints() < $db->cost) ? _t("Not enough points") : "<input type='submit' name='buy' value='" . _t("Buy") . "' />"
+                $buy_button = ((int) $acl->bonus < (int) $db->cost) ? _t("Not enough points") : "<input type='submit' name='buy' value='" . _t("Buy") . "' />"
                 ?>
 
                 <tr>

@@ -22,6 +22,7 @@ Beta 0.2.1
 * Fixed so that the pref class will automaticly insert config values apon update() if the config value does not exists.
 * Addons can now check if an admin page does exists by using the addon function hasAdmin()
 * Made so that one addon can have different pages, these are automaticly loaded with the var_c variable
+* Added captcha code on login and register, these can be enabled/disabled in the members settings.
 
 Beta 0.2.0a
 * Fixed IMDB bugs

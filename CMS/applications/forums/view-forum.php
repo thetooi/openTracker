@@ -23,14 +23,15 @@ try {
         throw new Exception("Missing forum id");
 
     $db = new DB("forum_forums");
+    $db->join("left", "{PREFIX}forum_categories", "category_id", "forum_category");
     $db->select("forum_id = '" . $db->escape($id) . "'");
     $db->nextRecord();
 
     if ($db->forum_group > $acl->group)
         throw new Exception("Access denied");
 
-    echo "<span style='float:left; font-weight: normal;'><h2>" . $db->forum_name . "</h2></span>";
-
+    echo "<h4>" . $db->forum_name . "</h4>";
+    echo "<a href='".page("forums")."'>" . $db->category_title . "</a> > <a href='".page("forums", "view-forum", $this->args['var_a'])."'>" . $db->forum_name."</a>";
     $this->setTitle($db->forum_name);
 
 
@@ -128,8 +129,7 @@ try {
     <?php echo $pager->pager_bottom; ?>
 
     <?php
-    
-    $tpl = new Template(PATH_APPLICATIONS."forums/tpl/");
+    $tpl = new Template(PATH_APPLICATIONS . "forums/tpl/");
     $tpl->build("bottom-info.php");
 } Catch (Exception $e) {
     echo Error(_t($e->getMessage()));

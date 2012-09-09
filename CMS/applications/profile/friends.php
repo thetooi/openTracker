@@ -16,6 +16,7 @@ if(!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Friends");
+$this->setSidebar(true);
 
 $user = new Acl(USER_ID);
 

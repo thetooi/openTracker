@@ -15,6 +15,10 @@ if (!defined("INCLUDED"))
 
 try {
 
+
+    if (!USER_ID)
+        throw new Exception("not logged in!");
+
     $db = new DB("forum_topics");
     $db->select("topic_id = '" . $db->escape($this->topic_id) . "'");
 
@@ -68,7 +72,7 @@ try {
 
             $db = new DB("forum_topics");
             $db->topic_lastpost = $id;
-            $db->update("topic_id = '".$db->escape($_POST['topic_id'])."'");
+            $db->update("topic_id = '" . $db->escape($_POST['topic_id']) . "'");
 
             header("location: " . page("forums", "view-topic", "$topic_name-" . $_POST['topic_id'], "", "", "page=p$id#post$id"));
         } Catch (Exception $e) {
@@ -93,9 +97,9 @@ try {
                     <td valign="top" class="border-right"><img src="<?php echo $user->avatar(); ?>" width="150px"/></td>
                     <td valign="top">
                         <small>Posted at <?php echo get_date(time(), "", 0, 0) ?></small><br />
-        <?php
-        echo htmlformat($content, true);
-        ?>
+                        <?php
+                        echo htmlformat($content, true);
+                        ?>
                     </td>
                 </tr>
                 <tr>
@@ -118,7 +122,7 @@ try {
                 <form method="post">
                     <input type="hidden" name="secure_input" value="<?php echo $_SESSION['secure_token_last'] ?>">
                     <input type="hidden" name="topic_id" value="<?php echo $this->topic_id ?>" />
-    <?php echo bbeditor("content", 10, 80, (isset($_POST['content']) ? $_POST['content'] : "")); ?>
+                    <?php echo bbeditor("content", 10, 80, (isset($_POST['content']) ? $_POST['content'] : "")); ?>
                     <br />
                     <input type="submit" name="reply" value="<?php echo _t("Reply"); ?>" /> <input type="submit" name="preview" value="<?php echo _t("Preview"); ?>" />
                 </form>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,10 +10,10 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
+$pref = new Pref("system");
 ?>
 <h4><?php echo _t("Log in") ?></h4>
 <form method="post" action="<?php echo page("user", "login"); ?>">
@@ -25,6 +24,13 @@ if(!defined("INCLUDED"))
         <tr><td><?php echo _t("Password"); ?></td></tr>
         <tr><td><input type="password" name="user_password" size="30" /></td></tr>
         <tr><td><label for="remember_me"><input type="checkbox" id="remember_me" name="remeber" /> <?php echo _t("Remember my details"); ?></label></td></tr>
+                    <?php
+                    if ($pref->login_captcha) {
+                        ?>
+            <tr><td colspan="2"><img src="CMS/applications/user/captcha/captcha.php" alt="CAPTCHA" /><br /><input type="text" name="captcha"></td></tr>
+            <?php
+        }
+        ?>
         <tr><td><input type="submit" name="login" value="<?php echo _t("Log in"); ?>" /></td></tr>
     </table>
 </form>

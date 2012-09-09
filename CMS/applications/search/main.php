@@ -15,6 +15,8 @@
 if(!defined("INCLUDED"))
     die("Access denied");
 
+$this->setSidebar(true);
+
 ?>
 <h4><?php echo _t("Search") ?></h4>
 <form method="GET">

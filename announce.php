@@ -80,7 +80,6 @@ try {
         throw new Exception("bad client");
 
 
-
     if (!isset($data['event']))
         $data['event'] = "";
 
@@ -111,11 +110,13 @@ try {
 
     $torrent_id = $torrent->id;
 
-    $callback[] = "d" . Bcode::benc_str("interval") . "i" . (60 * 30) . "e" . Bcode::benc_str("peers") . "l";
 
+
+    $callback[] = "d" . Bcode::benc_str("interval") . "i" . (60 * 30) . "e" . Bcode::benc_str("peers") . "l";
     $totpeers = $torrent->seeders + $torrent->leechers;
 
     $peer = new DB("peers");
+    $peer->setAnnounceDebug();
     $peer->setCols($peer_cols);
     $peer->setColPrefix("peer_");
 
@@ -125,16 +126,16 @@ try {
     }
     $peer->select("peer_torrent = '" . $torrent->id . "'");
 
+
     while ($peer->nextRecord()) {
+        
         $peer->peer_id = str_pad($peer->peer_id, 20);
         if ($peer->peer_id === $data['peer_id']) {
             $self = $peer;
             continue;
         }
         $callback[] = "d" . Bcode::benc_str("ip") . Bcode::benc_str($peer->ip);
-        if (!$_GET['no_peer_id']) {
-            $callback[] = Bcode::benc_str("peer id") . Bcode::benc_str($peer->peer_id);
-        }
+
         $callback[] = Bcode::benc_str("port") . "i" . $peer->port . "e" . "e";
     }
 
@@ -146,6 +147,7 @@ try {
 
         $db = new DB("peers");
         $db->setCols($peer_cols);
+        $db->setAnnounceDebug();
         $db->setColPrefix("peer_");
         $db->select($self_query);
         if ($db->numRows()) {
@@ -155,10 +157,12 @@ try {
         }
     }
 
+
     $torrent_query = array();
 
     if (!isset($self)) {
         $db = new DB("peers");
+        $db->setAnnounceDebug();
         $db->select($self_query);
 
         if ($db->numRows() >= 1 && !$data['seeder'])
@@ -167,8 +171,18 @@ try {
         if ($db->numRows() >= 3 && $data['seeder'])
             throw new Exception("Error 9: Connection limit exceeded!");
     }else {
-        $uploaded = max(0, $data['uploaded'] - $self->uploaded);
-        $downloaded = max(0, $data['downloaded'] - $self->downloaded);
+
+        $self = new DB("peers");
+        $self->setAnnounceDebug();
+        $self->setColPrefix("peer_");
+        $self->select($self_query);
+        $self->nextRecord();
+
+        $self_up = (int) $self->uploaded;
+        $self_do = (int) $self->downloaded;
+
+        $uploaded = max(0, $data['uploaded'] - $self_up);
+        $downloaded = max(0, $data['downloaded'] - $self_do);
 
         if ($uploaded > 0 || $downloaded > 0) {
             if ($torrent->freeleech)
@@ -177,7 +191,6 @@ try {
                 $user->query("UPDATE {PREFIX}users SET user_uploaded = user_uploaded + $uploaded, user_downloaded = user_downloaded + $downloaded WHERE user_id='" . $user->id . "'");
         }
     }
-
     if (isset($self) && $data['event'] == "stopped") {
         $db = new DB("peers");
         $db->delete($self_query);
@@ -216,6 +229,7 @@ try {
                 }
             }
         } else {
+
             if ($data['event'] != "started")
                 throw new Exception("Peer not found");
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 /**
@@ -53,6 +51,8 @@ try {
         $db->insert();
     }
 
+    $user = new Acl(USER_ID);
+
     if (isset($_POST['save'])) {
         $acl = new Acl($this->userid);
         if ($_POST['secure_input'] != $_SESSION['secure_token'])
@@ -74,11 +74,16 @@ try {
         if ($_POST['status'] != $acl->status)
             addLog($this->userid, "changed account status");
 
+        if ($user->Access("z"))
+            $db->name = $_POST['username'];
+
         $db->email = $_POST['email'];
         $db->group = $_POST['group'];
         $db->status = $_POST['status'];
         $db->invites = $_POST['invites'];
+        $db->bonus = $_POST['bonus'];
         $db->uploader = isset($_POST['uploader']) ? 1 : 0;
+        $db->donator = isset($_POST['donator']) ? 1 : 0;
         if (!empty($_POST['new_password']) && !empty($_POST['new_password2'])) {
             if ($_POST['new_password'] != $_POST['new_password2'])
                 throw new Exception("Passwords did not match");
@@ -127,6 +132,23 @@ try {
                     <fieldset>
                         <legend><?php echo _t("General"); ?></legend>
                         <table width="100%">
+                            <?php
+                            if ($user->Access("z")) {
+                                ?>
+                                <tr>
+                                    <td width="150px">
+                                        <?php echo _t("Username"); ?> :
+                                    </td>
+                                    <td>
+                                        <input type="text" name="username" value="<?php echo $acl->name ?>" size="30" />
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+
+                            $status = (int) $acl->status;
+                            ?>
+
                             <tr>
                                 <td width="150px">
                                     <?php echo _t("E-mail"); ?> :
@@ -142,10 +164,10 @@ try {
                                 </td>
                                 <td>
                                     <select name="status">
-                                        <option value="0" <?php echo $acl->status == 0 ? "SELECTED" : "" ?>><?php echo _t("Inactive") ?></option>
-                                        <option value="1" <?php echo $acl->status == 1 ? "SELECTED" : "" ?>><?php echo _t("Pending") ?></option>
-                                        <option value="3" <?php echo $acl->status == 3 ? "SELECTED" : "" ?>><?php echo _t("Locked") ?></option>
-                                        <option value="4" <?php echo $acl->status == 4 ? "SELECTED" : "" ?>><?php echo _t("Active") ?></option>
+                                        <option value="0" <?php echo $status == 0 ? "SELECTED" : "" ?>><?php echo _t("Inactive") ?></option>
+                                        <option value="1" <?php echo $status == 1 ? "SELECTED" : "" ?>><?php echo _t("Pending") ?></option>
+                                        <option value="3" <?php echo $status == 3 ? "SELECTED" : "" ?>><?php echo _t("Locked") ?></option>
+                                        <option value="4" <?php echo $status == 4 ? "SELECTED" : "" ?>><?php echo _t("Active") ?></option>
                                     </select>
                                 </td>
                             </tr>
@@ -162,7 +184,23 @@ try {
                                     <?php echo _t("Uploader"); ?> :
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="uploader" <?php echo $db->user_uploader == "1" ? "CHECKED" : "" ?>></select>
+                                    <input type="checkbox" name="uploader" <?php echo $db->user_uploader == "1" ? "CHECKED" : "" ?> />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="150px">
+                                    <?php echo _t("Donator"); ?> :
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="donator" <?php echo $db->user_donator == "1" ? "CHECKED" : "" ?> />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="150px">
+                                    <?php echo _t("Bonus points"); ?> :
+                                </td>
+                                <td>
+                                    <input type="text" name="bonus" value="<?php echo $acl->bonusPoints(); ?>">
                                 </td>
                             </tr>
                             <tr>

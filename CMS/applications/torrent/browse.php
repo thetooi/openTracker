@@ -120,7 +120,7 @@ if ($count_get > 0) {
 ?>
 
 <center>
-    <form method="GET">
+    <form method="get" action="<?php echo page("torrent", "browse") ?>">
         <?php
         if (!CLEAN_URLS) {
             ?>
@@ -140,26 +140,28 @@ if ($count_get > 0) {
         </select>
         <input type="submit" value="<?php echo _t("Search") ?>" /><br />
         <table>
-            <?php
-            $cat = new DB("categories");
-            $cat->setColPrefix("category_");
-            $cat->select();
-            while ($cat->nextRecord()) {
-                $sel = isset($_GET['c' . $cat->id]) || in_array($cat->id, $query_cats) ? " CHECKED" : "";
+            <tr>
+                <?php
+                $cat = new DB("categories");
+                $cat->setColPrefix("category_");
+                $cat->select();
+                while ($cat->nextRecord()) {
+                    $sel = isset($_GET['c' . $cat->id]) || in_array($cat->id, $query_cats) ? " CHECKED" : "";
+                    ?>
+                    <td align="center">
+                        <label for="cat_<?php echo $cat->id ?>"><a href="<?php echo page("torrent", "browse", "", "", "", "c" . $cat->id . "=1") ?>"><img src="images/categories/<?php echo $cat->icon; ?>" /></a><br />
+                            <input type="checkbox" name="c<?php echo $cat->id; ?>" id="cat_<?php echo $cat->id; ?>" value="1" <?php echo $sel; ?> />
+                        </label>
+                    </td>
+                <?php }
                 ?>
-                <td align="center">
-                    <label for="cat_<?php echo $cat->id ?>"><a href="<?php echo page("torrent", "browse", "", "", "", "c" . $cat->id . "=1") ?>"><img src="images/categories/<?php echo $cat->icon; ?>" /></a><br />
-                        <input type="checkbox" name="c<?php echo $cat->id; ?>" id="cat_<?php echo $cat->id; ?>" value="1" <?php echo $sel; ?> />
-                    </label>
-                </td>
-            <?php }
-            ?>
+            </tr>
         </table>
     </form>
 </center>
 
 <?php
-$perpage = ($acl->torrents_perpage != 0) ? $acl->torrents_perpage : 50;
+$perpage = ($acl->torrents_perpage != 0) ? $acl->torrents_perpage : 25;
 $db->select(implode(" AND ", $where) . "");
 $pager = new Pager;
 $pager->perpage = $perpage;
@@ -173,7 +175,7 @@ echo $pager->pager_top;
 <table id="browse" class="forum" cellspacing="0" cellpadding="5">
     <thead>
         <tr>
-            <td width="40px" class="">
+            <td style="width:40px;" class="">
 
             </td>
             <td width="50%" class="">
@@ -188,13 +190,10 @@ echo $pager->pager_top;
                 <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=added&amp;type={$order_link}") ?>"><b><?php echo _t("Uploaded"); ?></b></a>
             </td>
             <td class="" align="center">
-                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=seeders&amp;type={$order_link}") ?>"><b><img src="images/icons/up.gif" title="seeders"></b></a>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=seeders&amp;type={$order_link}") ?>"><b><img src="images/icons/up.gif" title="seeders" /></b></a>
             </td>
             <td class="" align="center">
-                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=leechers&amp;type={$order_link}") ?>"><b><img src="images/icons/down.gif" title="leechers"></b></a>
-            </td>
-            <td class="" align="center">
-                <b>Uploader</b>
+                <a href="<?php echo page("torrent", "browse", "", "", "", "{$oldlink}sort=leechers&amp;type={$order_link}") ?>"><b><img src="images/icons/down.gif" title="leechers" /></b></a>
             </td>
         </tr>
     </thead>
@@ -221,7 +220,7 @@ echo $pager->pager_top;
                 <td class="" align="center">
                     <a href="<?php echo page("torrent", "download", "", "", "", "torrent=" . $db->torrent_id) ?>"><img src="images/icons/download.png" title="<?php echo _t("Download"); ?>" /></a>
                 </td>
-                <td class="" align="center">
+                <td class="stats" align="center">
                     <?php echo bytes($db->torrent_size); ?>
                 </td>
                 <td class="" align="center">
@@ -232,9 +231,6 @@ echo $pager->pager_top;
                 </td>
                 <td class="" align="center">
                     <?php echo $db->torrent_leechers ?>
-                </td>
-                <td class="" align="center">
-                    <a href="<?php echo page("profile", "view", $user->name) ?>"><?php echo $user->name; ?></a>
                 </td>
             </tr>
         <?php } ?>

@@ -120,6 +120,7 @@ $wpref = new Pref("website");
                     ?>
                 </ul>
             </li>
+            <li class="item"><a href="<?php echo page("admin", "files") ?>">Files</a></li>
             <li class="item"><a href="#" class="menu" rel="admin_settings">System</a>
                 <ul class="dropdown" id="admin_settings">
                     <li class="title"><a>System</a></li>

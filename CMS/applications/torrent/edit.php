@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -11,8 +10,7 @@
  * @author Wuild
  * @package openTracker
  */
-
-if(!defined("INCLUDED"))
+if (!defined("INCLUDED"))
     die("Access denied");
 
 try {
@@ -40,7 +38,8 @@ try {
             $db->torrent_youtube = $_POST['youtube'];
             $db->torrent_nfo = $_POST['nfo'];
             $db->torrent_category = $_POST['type'];
-            $db->torrent_freeleech = (isset($_POST['freeleech']) ? true : false);
+            if ($acl->Access("x"))
+                $db->torrent_freeleech = (isset($_POST['freeleech']) ? true : false);
             $db->update("torrent_id = '" . $db->escape($tid) . "'");
 
 
@@ -146,12 +145,18 @@ try {
                     <td class="heading" valign="top" align="right"><b><?php echo _t("NFO"); ?></b></td>
                     <td><textarea cols="70" name="nfo" rows="15"><?php echo $db->torrent_nfo ?></textarea></td>
                 </tr>
-                <tr>
-                    <td class="heading" width="120px" valign="top" align="right"><b><?php echo _t("Additional"); ?></b></td>
-                    <td valign="top" align="left">
-                        <label><input type="checkbox" name="freeleech" <?php echo ($db->torrent_freeleech) ? "CHECKED" : "" ?> /><?php echo _t("Freeleech"); ?></label>
-                    </td>
-                </tr>
+                <?php
+                if ($acl->Access("x")) {
+                    ?>
+                    <tr>
+                        <td class="heading" width="120px" valign="top" align="right"><b><?php echo _t("Additional"); ?></b></td>
+                        <td valign="top" align="left">
+                            <label><input type="checkbox" name="freeleech" <?php echo ($db->torrent_freeleech) ? "CHECKED" : "" ?> /><?php echo _t("Freeleech"); ?></label>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
                 <tr>
                     <td align="right" colspan="1"><input type="submit" name="save" value="<?php echo _t("Save Torrent"); ?>"></td>
                 </tr>

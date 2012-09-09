@@ -52,6 +52,9 @@ try {
 
             $password_secret = generatePassword(12);
 
+            $db = new DB();
+            $db->query("UPDATE {PREFIX}users SET user_invites = user_invites - 1 WHERE user_id = '".USER_ID."'");
+            
             $db = new DB("users");
             $db->setColPrefix("user_");
             $db->id = $id;
@@ -77,6 +80,8 @@ try {
             $subject = $wpref->name . " invitation";
 
             sendEmail($_POST['email'], $subject, $body);
+            
+            echo _t("You invite to")." ".$_POST['email']." "._t("has been sent");
         } Catch (Exception $e) {
             echo error(_t($e->getMessage()));
         }
