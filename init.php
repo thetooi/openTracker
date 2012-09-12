@@ -62,7 +62,7 @@ define("COOKIE_PREFIX", "opentracker_");
 /**
  * System version 
  */
-define("SYSTEM_VERSION", "0.2.1");
+define("SYSTEM_VERSION", "1.0.7");
 
 /**
  * Start page 
