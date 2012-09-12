@@ -45,8 +45,12 @@ class Cleanup {
         } else {
             $db->nextRecord();
             $time = time() - 900;
+
+
             if ($db->last_cleantime < $time)
                 $doclean = true;
+            else
+                $doclean = false;
         }
 
         if ($force)
@@ -71,110 +75,31 @@ class Cleanup {
      * Cleanup torrents. 
      */
     function torrents() {
-
-
         $db = new DB;
         // Remove inactive peers
         $db->query("DELETE FROM {PREFIX}peers WHERE peer_last_action < " . $this->deadtime_peers);
         $db->query("UPDATE {PREFIX}torrents SET torrent_visible='0' WHERE torrent_visible='1' AND torrent_last_action < " . $this->deadtime_peers);
         $db->query("DELETE FROM {PREFIX}users WHERE user_last_access < " . $this->deadtime_users . " AND user_status != 1");
 
-        set_time_limit(0);
-        ignore_user_abort(1);
-
-        do {
-
-
-
-            $db = new DB("torrents");
-            $db->setCol("torrent_id");
-            $db->select();
-            $ar = array();
-            while ($db->nextRecord()) {
-                $id = $db->torrent_id;
-                $ar[$id] = 1;
-            }
-
-            if (!count($ar))
-                break;
-
-            $dp = @opendir(PATH_TORRENTS);
-            if (!$dp)
-                break;
-
-            $ar2 = array();
-            while (($file = readdir($dp)) !== false) {
-                if (!preg_match('/^(\d+)\.torrent$/', $file, $m))
-                    continue;
-                $id = $m[1];
-                $ar2[$id] = 1;
-                if (isset($ar[$id]) && $ar[$id])
-                    continue;
-                $ff = PATH_TORRENTS . "/$file";
-                unlink($ff);
-            }
-            closedir($dp);
-
-            if (!count($ar2))
-                break;
-
-            $delids = array();
-            foreach (array_keys($ar) as $k) {
-                if (isset($ar2[$k]) && $ar2[$k])
-                    continue;
-                $delids[] = $k;
-                unset($ar[$k]);
-            }
-            if (count($delids))
-                mysql_query();
-            $db->query("DELETE FROM {PREFIX}torrents WHERE torrent_id IN ('" . join(",", $delids) . "')");
-
-            $db = new DB();
-            $db->query("SELECT peer_torrent FROM peers GROUP BY peer_torrent");
-            $db->select();
-            $delids = array();
-            while ($db->nextRecord()) {
-                $id = $db->peer_torrent;
-                if (isset($ar[$id]) && $ar[$id])
-                    continue;
-                $delids[] = $id;
-            }
-            if (count($delids))
-                $db->query("DELETE FROM {PREFIX}peers WHERE peer_torrent IN ('" . join(",", $delids) . "')");
-        } while (0);
-
         $torrents = array();
-        $db = new DB();
+        $db = new DB;
         $db->query("SELECT peer_torrent, peer_seeder, COUNT(*) AS c FROM {PREFIX}peers GROUP BY peer_torrent, peer_seeder");
         while ($db->nextRecord()) {
-            if ($db->peer_seeder == "1")
-                $key = "torrent_seeders";
+            if ($db->peer_seeder == 1)
+                $key = "seeders";
             else
-                $key = "torrent_leechers";
-
+                $key = "leechers";
             $torrents[$db->peer_torrent][$key] = $db->c;
         }
 
-        $fields = explode(":", "torrent_leechers:torrent_seeders");
-        $db = new DB();
-        $db->query("SELECT torrent_id, torrent_seeders, torrent_leechers FROM {PREFIX}torrents");
-        while ($db->nextRecord()) {
-            $id = $db->torrent_id;
-            if (isset($torrents[$id]))
-                $torr = $torrents[$id];
-            foreach ($fields as $field) {
-                if (!isset($torr[$field]))
-                    $torr[$field] = 0;
-            }
+        foreach ($torrents as $torrent => $array) {
+ 
             $update = array();
-            foreach ($fields as $field) {
-                if ($torr[$field] != $db->$field)
-                    $update[] = "$field = " . $torr[$field];
-            }
-            if (count($update)){
-                $db2 = new DB;
-                $db2->query("UPDATE {PREFIX}torrents SET " . implode(",", $update) . " WHERE torrent_id = '$id'");
-            }
+            if (isset($array['seeders']))
+                $update[] = "torrent_seeders = " . $array['seeders'];
+            if (isset($array['leechers']))
+                $update[] = "torrent_leechers = " . $array['leechers'];
+            $db->query("UPDATE {PREFIX}torrents SET " . implode(", ", $update) . " WHERE torrent_id = '" . $torrent . "'");
         }
     }
 

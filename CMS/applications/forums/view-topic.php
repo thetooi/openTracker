@@ -29,16 +29,8 @@ try {
     $page = isset($_GET["page"]) ? $_GET["page"] : false;
 
     $db = new DB("forum_topics");
-    $db->join("left", "{PREFIX}forum_forums", "forum_id", "topic_forum");
-    $db->join("left", "{PREFIX}forum_categories", "category_id", "forum_category");
     $db->select("topic_id = '" . $db->escape($id) . "'");
     $db->nextRecord();
-
-    $forum_id = $db->topic_forum;
-
-    echo "<h4>" . $db->topic_subject . "</h4>";
-
-    echo "<a href='" . page("forums") . "'>" . $db->category_title . "</a> > <a href='" . page("forums", "view-forum", $db->forum_name . "-" . $db->forum_id) . "'>" . $db->forum_name . "</a> > <a href='" . page("forums", "view-topic", $db->topic_subject . "-" . $db->topic_id) . "'>" . $db->topic_subject . "</a>";
 
     if ($acl->Access("x")) {
         $db = new DB("forum_topics");
@@ -51,6 +43,10 @@ try {
             header("location: " . page("forums", "delete-topic", "", "", "", "id=" . $db->topic_id . "&confirm"));
         }
     }
+
+    $forum_id = $db->topic_forum;
+
+    echo "<h4>" . $db->topic_subject . "</h4>";
 
     if ($acl->Access("x")) {
         echo "
@@ -144,13 +140,18 @@ try {
         <table class="forum" id="post<?php echo $db->post_id ?>" width="100%" cellspacing="0" cellpadding="5">
             <thead>
                 <tr>
-                    <td width="150px" class="border-bottom"><span style="float:left;"><a href="<?php echo page("profile", "view", strtolower($user->name)); ?>"><strong><?php echo $user->name; ?></strong></a> (<?php echo $user->group_name ?>)</span><?php echo $user->icons() ?></td>
+                    <td width="150px" class="border-bottom"><a href="<?php echo page("profile", "view", strtolower($user->name)); ?>"><strong><?php echo $user->name; ?></strong></a> (<?php echo $user->group_name ?>)</td>
                     <td class="border-bottom"></td>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td valign="top" class="border-right"><img src="<?php echo $user->avatar(); ?>" width="150px"/><br />
+                        <?php echo $online; ?><br />
+                        <?php if (!$user->anonymous || $acl->Access("x")) { ?>
+                            <img src="images/icons/up.gif" style="float:left; margin-top: -4px;" /><?php echo $user->uploaded() ?><br />
+                            <img src="images/icons/down.gif" style="float:left; margin-top: -4px;" /><?php echo $user->downloaded() ?>
+                        <?php } ?>
                     </td>
                     <td valign="top">
                         <small><?php echo _t("Posted ") ?> <?php echo get_date($db->post_added, "", 0, 0) ?></small><br />

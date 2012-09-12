@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -10,8 +11,10 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
+
 ?>
 
 <script type="text/javascript">
@@ -37,16 +40,6 @@ $online = ($acl->last_access < $time) ? get_date($acl->last_access) : "<b><font 
         <tr class="row"><td valign="top" class="avatar" rowspan="14"><img src="<?php echo $acl->Avatar() ?>" id='avatar_image' alt="" style="max-width: 150px;" /></td></tr>
         <tr class="row"><td class="tblhead"><?php echo _t("Last seen") ?></td><td align="left"><?php echo $online ?></td></tr>
         <tr class="row"><td class="tblhead"><?php echo _t("Joined") ?></td><td align="left"><?php echo get_date($acl->added, "date"); ?></td></tr>
-        <tr class="row"><td class="tblhead"><?php echo _t("Group") ?></td><td align="left"><?php echo $acl->group_name ?></td></tr>
-        <?php
-        if ($acl->Access("x")) {
-            $dom = gethostbyaddr($acl->ip);
-            $addr = ($dom == $acl->ip || gethostbyname($dom) != $acl->ip) ? $acl->ip : $acl->ip . ' (' . $dom . ')';
-            ?>
-            <tr class="row"><td class="tblhead"><?php echo _t("IP address") ?></td><td align="left"><?php echo $addr ?></td></tr>
-            <?php
-        }
-        ?>
         <tr class="row"><td class="tblhead"><?php echo _t("Uploaded") ?></td><td align="left"><?php echo $acl->uploaded() ?></td></tr>
         <tr class="row"><td class="tblhead"><?php echo _t("Downloaded") ?></td><td align="left"><?php echo $acl->downloaded() ?></td></tr>
         <tr class="row"><td class="tblhead"><?php echo _t("Ratio") ?></td><td align="left"><?php echo $acl->ratio() ?></td></tr>
@@ -63,9 +56,6 @@ $online = ($acl->last_access < $time) ? get_date($acl->last_access) : "<b><font 
             </td><td align="left"><?php echo $acl->invites() ?></td></tr>
         <tr class="row"><td class="tblhead"><?php echo _t("Torrents") ?></td><td align="left"><a style="cursor: pointer;" class="show" rel="#seeding"><?php echo _t("Seeding") . " " . $acl->seeding(); ?></a> / <a style="cursor: pointer;" class="show" rel="#leeching"><?php echo _t("Leeching") . " " . $acl->leeching(); ?></a></td></tr>
     </table>
-    <div class="col_100">
-        <?php echo htmlformat($acl->description, true); ?>
-    </div>
 </div>
 
 <div id="seeding" style="display:none;">

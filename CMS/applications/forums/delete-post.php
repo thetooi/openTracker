@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -10,7 +11,8 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Quote Post");
@@ -43,26 +45,8 @@ try {
         </div>
         <?
     } else {
-
-        $db = new DB("forum_posts");
-        $db->select("post_id = '" . $db->escape($_GET['id']) . "'");
-        $db->nextRecord();
-
-        $topicId = $db->post_topic;
-
         $db = new DB("forum_posts");
         $db->delete("post_id = '" . $db->escape($_GET['id']) . "'");
-
-        $db = new DB("forum_posts");
-        $db->setSort("post_added DESC");
-        $db->setLimit("1");
-        $db->select("post_topic = $topicId");
-        $db->nextRecord();
-        $last_post = $db->post_id;
-
-        $db = new DB;
-        $db->query("UPDATE {PREFIX}forum_topics SET topic_lastpost = $last_post WHERE topic_id = $topicId");
-
         header("location: " . page("forums", "view-topic", $post->topic_subject . "-" . $post->topic_id));
     }
 } Catch (Exception $e) {

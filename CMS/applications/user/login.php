@@ -11,7 +11,8 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Login");
@@ -41,12 +42,6 @@ if (isset($_POST['login'])) {
 
         if (!$db->numRows())
             throw new Exception("Wrong username or password");
-
-        $pref = new Pref("system");
-        if ($pref->login_captcha) {
-            if($_SESSION['letters'] != md5(strtolower($_POST['captcha'])))
-                throw new Exception("Invalid captcha code");
-        }
 
 
         $db->nextRecord();

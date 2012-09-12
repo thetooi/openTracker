@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -10,8 +11,10 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
+
 ?>
 
 <h4><?php echo _t("Upload Torrent") ?></h4>
@@ -19,7 +22,6 @@ if (!defined("INCLUDED"))
 $acl = new Acl(USER_ID);
 
 $this->setTitle("Upload Torrent");
-$this->setSidebar(true);
 
 if (isset($_POST['upload'])) {
     try {
@@ -144,8 +146,7 @@ if (isset($_POST['upload'])) {
         $db->category = $_POST['type'];
         $db->youtube = $_POST['youtube'];
         $db->imdb = $_POST['imdb'];
-        if ($acl->Access("x"))
-            $db->freeleech = isset($_POST['freeleech']) ? 1 : 0;
+        $db->freeleech = isset($_POST['freeleech']) ? 1 : 0;
         $db->insert();
         $fp = fopen(PATH_TORRENTS . "$id.torrent", "w");
         if ($fp) {

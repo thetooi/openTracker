@@ -62,7 +62,7 @@ define("COOKIE_PREFIX", "opentracker_");
 /**
  * System version 
  */
-define("SYSTEM_VERSION", "1.0.7 Stable");
+define("SYSTEM_VERSION", "0.2.1");
 
 /**
  * Start page 
@@ -488,15 +488,6 @@ function timediff($date1, $date2) {
     return $return;
 }
 
-function callback_youtube($matches) {
-    $html = "<object type='application/x-shockwave-flash' style='width:500px;height:360px;' data='http://www.youtube.com/v/" . findyoutube($matches[1]) . "?showsearch=0&amp;showinfo=0&amp;version=3&amp;modestbranding=1&amp;fs=1' allowscriptaccess='always' allowfullscreen='true'>
-    <param name='movie' value='http://www.youtube.com/v/" . findyoutube($matches[1]) . "?showsearch=0&amp;showinfo=0&amp;version=3&amp;modestbranding=1&amp;fs=1'><param name='allowFullScreen' value='true'>
-<param name='allowFullScreen' value='true'>
-<param name='allowscriptaccess' value='always'>
-</object>";
-    return $html;
-}
-
 /**
  * Convert string to bbcodes.
  * 
@@ -514,7 +505,6 @@ function bbcodes($s) {
     $s = preg_replace("#\[i\]((\s|.)+?)\[\/i\]#is", "<i>\\1</i>", $s);
     $s = preg_replace("#\[u\]((\s|.)+?)\[\/u\]#is", "<u>\\1</u>", $s);
     $s = preg_replace("#\[u\]((\s|.)+?)\[\/u\]#is", "<u>\\1</u>", $s);
-    $s = preg_replace("#\[align=([^()<>\s]+?)\]((\s|.)+?)\[\/align\]#is", "<div style=\"text-align:\\1;\">\\2</div>", $s);
     $s = preg_replace("#\[img\](http:\/\/[^\s'\"<>]+(\.(jpg|gif|png)))\[\/img\]#is", "<img border=\"0\" src=\"\\1\" alt='' />", $s);
     $s = preg_replace("#\[img=(http:\/\/[^\s'\"<>]+(\.(gif|jpg|png)))\]\[\/img\]#is", "<img border=\"0\" src=\"\\1\" alt='' />", $s);
     $s = preg_replace("/\[color=([a-zA-Z]+)\]((\s|.)+?)\[\/color\]/i", "<font color='\\1'>\\2</font>", $s);
@@ -523,7 +513,6 @@ function bbcodes($s) {
     $s = preg_replace("#\[url\]([^()<>\s]+?)\[\/url\]#is", "<a href=\"\\1\" target=\"_blank\">\\1</a>", $s);
     $s = preg_replace("#\[size=([1-7])\]((\s|.)+?)\[\/size\]#is", "<font size='\\1'>\\2</font>", $s);
     $s = preg_replace("#\[font=([a-zA-Z ,]+)\]((\s|.)+?)\[\/font\]#is", "<font face=\"\\1\">\\2</font>", $s);
-    $s = preg_replace_callback("#\[youtube\]((\s|.)+?)\[\/youtube\]#is", "callback_youtube", $s);
     $s = format_quotes($s);
     return $s;
 }
@@ -564,10 +553,10 @@ function format_quotes($s) {
 
         $quote = substr($s, $open, $close - $open + 8);
 
-//[quote]Text[/quote]
+        //[quote]Text[/quote]
         $quote = preg_replace("/\[quote\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<div class='citation'>\\1</div><br />", $quote);
 
-//[quote=Author]Text[/quote]
+        //[quote=Author]Text[/quote]
         $quote = preg_replace(
                 "/\[quote=(.+?)\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<div class='citation'><b>\\1 said</b>: <div class='blockquote'>\\2</div></div><br />", $quote);
 
@@ -756,7 +745,7 @@ function get_date($date, $method = "", $norelative = 0, $full_relative = 1) {
  * @return string 
  */
 function cleanUrl($url) {
-// Replace white space & special chars to "simple"
+    // Replace white space & special chars to "simple"
     $arr_chars = array(' ', 'Ã§', 'Ã±', 'Å¡', 'Å¾', 'Â¢', 'Âµ', 'Ã—', 'ÃŸ');
 
     $arr_chars_replace = array('-', 'c', 'n', 's', 'z', 'c', 'u', 'x', 'ss');
@@ -1045,30 +1034,5 @@ function dateDiff($start, $end) {
     return round($diff / 86400);
 }
 
-/**
- * Add notification
- * @param type $type
- * @param type $user
- * @param type $msg
- * @param type $userid 
- */
-function addNotification($type, $userid, $msg = "", $owner = USER_ID) {
-    $db = new DB("notifications");
-    $db->setColPrefix("notification_");
-    $db->type = $type;
-    $db->user = $userid;
-    $db->owner = $owner;
-    $db->added = time();
-    $db->data = $msg;
-    $db->unread = 1;
-    $db->insert();
-}
-
-function autoclean() {
-    set_time_limit(0);
-    ignore_user_abort(1);
-    new Cleanup();
-}
-
-autoclean();
+new Cleanup();
 ?>

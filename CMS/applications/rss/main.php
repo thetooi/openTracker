@@ -15,8 +15,6 @@
 if(!defined("INCLUDED"))
     die("Access denied");
 
-$this->setSidebar(true);
-
 ?>
 
 <h4><?php echo _t("Generate RSS feed link"); ?></h4>

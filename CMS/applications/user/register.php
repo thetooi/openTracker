@@ -11,7 +11,8 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Register");
@@ -56,12 +57,6 @@ try {
             if ($db->numRows())
                 throw new Exception("Username does already exist");
 
-            $pref = new Pref("system");
-            if ($pref->register_captcha) {
-                if ($_SESSION['letters'] != md5(strtolower($_POST['captcha'])))
-                    throw new Exception("Invalid captcha code");
-            }
-
             $id = uniqid(true);
             $passkey = md5(uniqid(true));
             $password_secret = generatePassword(12);
@@ -84,8 +79,6 @@ try {
             $db->insert();
 
             $email_body = "
-                Thank you for registering at SceneStuff.<br />
-                Your account has been created but needs to be validated,
             Click the link below to activate your account.<br />
             <a href='" . page("user", "confirm", "", "", "", "key=" . $password_secret) . "'>" . page("user", "confirm", "", "", "", "key=" . $password_secret) . "</a>
         ";

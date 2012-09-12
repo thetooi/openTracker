@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -10,7 +11,8 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Edit Profile");
@@ -29,7 +31,6 @@ if (isset($_POST['save'])) {
         $db->torrents_perpage = $_POST['torrents_perpage'];
         $db->posts_perpage = $_POST['posts_perpage'];
         $db->anonymous = isset($_POST['anonymous']) ? 1 : 0;
-        $db->description = $_POST['description'];
         $db->language = $_POST['language'];
         if (isset($_POST['cats']))
             $db->default_categories = implode(",", $_POST['cats']);
@@ -228,14 +229,6 @@ $acl = new Acl(USER_ID);
                             <td>
                                 <input type="text" name="posts_perpage" value="<?php echo $acl->posts_perpage ?>" size="40" /><br />
                                 (<?php echo _t("0 = default"); ?>)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="150px">
-                                <?php echo _t("Profile Descripion"); ?> :
-                            </td>
-                            <td>
-                                <?php echo bbeditor("description", 15, 50, $acl->description) ?>
                             </td>
                         </tr>
                     </table>

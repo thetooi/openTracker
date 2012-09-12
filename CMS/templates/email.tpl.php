@@ -19,7 +19,7 @@ $wpref = new Pref("website");
 ?>
 <html>
     <body>
-        <img src="<?php echo CMS_URL ?>images/logo_1.png"><br />
+        <img src="<?php echo $wpref->url ?>images/logo.png"><br />
         <?php echo $this->content; ?>
     </body>
 </html>

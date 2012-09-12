@@ -55,8 +55,8 @@ try {
             $t->forum = $forum_id;
             
             if($acl->Access("x")){
-                $t->locked = (isset($_POST['locked']) && $_POST['locked'] == "1") ? true : false;
-                $t->sticky = (isset($_POST['sticky']) && $_POST['sticky'] == "1") ? true : false;
+                $t->locked = isset($_POST['locked']) ? true : false;
+                $t->sticky = isset($_POST['sticky']) ? true : false;
             }
             
             $t->insert();

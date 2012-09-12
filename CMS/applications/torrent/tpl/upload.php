@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012, openTracker. (http://opentracker.nu)
  *
@@ -10,14 +11,14 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
 
-$acl = new Acl(USER_ID);
 ?>
 <form method="post" enctype="multipart/form-data" action="<?php echo page("torrent", "upload"); ?>">
     <input type="hidden" name="secure_input" value="<?php echo $_SESSION['secure_token_last'] ?>">
-    <table style="width: 100%;">
+    <div class="col_100 align_center">
         <?php
         $cat = new DB("categories");
         $cat->setColPrefix("category_");
@@ -25,14 +26,14 @@ $acl = new Acl(USER_ID);
         while ($cat->nextRecord()) {
             $sel = isset($_GET['c' . $cat->id]) ? " CHECKED" : "";
             ?>
-            <td>
+            <div class="col_5 align_center paddings">
                 <label for="cat_<?php echo $cat->id ?>"><img src="images/categories/<?php echo $cat->icon; ?>" alt="<?php echo $cat->name; ?>" /><br />
                     <input type="radio" name="type" id="cat_<?php echo $cat->id; ?>" value="<?php echo $cat->id ?>" />
                 </label>
-            </td>
+            </div>
         <?php }
         ?>
-    </table>
+    </div>
     <div class="col_100">
         <div class="col_100">
             <div class="col_15 align_right paddings"><b><?php echo _t("Announce url"); ?></b></div>
@@ -58,14 +59,10 @@ $acl = new Acl(USER_ID);
                 <span class="small">(<?php echo _t("Link shall only be pointed to trailer at Youtube."); ?>)
                     <br><?php echo _t("Example") ?>: http://www.youtube.com/watch?v=9iEQdTFb2Rw"</span></div>
         </div>
-        <?php
-        if ($acl->Access("x")) {
-            ?>
-            <div class="col_100">
-                <div class="col_15 align_right paddings"><b><?php echo _t("Additional"); ?></b></div>
-                <label><input type="checkbox" name="freeleech" /><?php echo _t("Freeleech"); ?></label>
-            </div>
-        <?php } ?>
+        <div class="col_100">
+            <div class="col_15 align_right paddings"><b><?php echo _t("Additional"); ?></b></div>
+            <label><input type="checkbox" name="freeleech" /><?php echo _t("Freeleech"); ?></label>
+        </div>
         <div class="col_100">
             <div class="col_15 align_right paddings"><input type="submit" name="upload" value="<?php echo _t("Upload Torrent"); ?>"></div>
         </div>

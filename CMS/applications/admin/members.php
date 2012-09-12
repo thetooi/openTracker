@@ -11,7 +11,8 @@
  * @author Wuild
  * @package openTracker
  */
-if (!defined("INCLUDED"))
+
+if(!defined("INCLUDED"))
     die("Access denied");
 
 $this->setTitle("Admin - Members");
@@ -38,9 +39,7 @@ try {
             $tpl->userid = (getID($this->args['var_b'])) ? getID($this->args['var_b']) : 0;
             $tpl->loadFile("log.php");
             break;
-        case 'delete':
-            $tpl->loadFile("delete.php");
-            break;
+
         case 'create':
             $tpl->loadFile("create.php");
             break;

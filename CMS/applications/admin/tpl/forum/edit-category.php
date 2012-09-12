@@ -68,7 +68,7 @@ try {
                 <td><select name="group"><?php echo getGroups($db->group) ?></select></td>
             </tr>
             <tr>
-                <td><input type="submit" value="Save category" name="save" /></td>
+                <td><input type="submit" value="Save category" name="<?php echo _t("save") ?>" /></td>
             </tr>
         </table>
     </form>

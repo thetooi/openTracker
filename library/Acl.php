@@ -83,12 +83,12 @@ class Acl {
      */
     function Avatar() {
         if ($this->_user['avatar'] == "") {
-            return "images/default_avatar.png";
+            return "images/default_avatar.jpg";
         } else {
             if (file_exists(PATH_AVATARS . $this->_user['avatar']))
                 return "images/avatars/" . $this->_user['avatar'];
             else
-                return "images/default_avatar.png";
+                return "images/default_avatar.jpg";
         }
     }
 
@@ -154,10 +154,10 @@ class Acl {
      * Return number of bonus points
      * @return int 
      */
-    function bonusPoints() {
-        return number_format($this->_user['bonus'], 2);
+    function bonusPoints(){
+        return (float)$this->_user['bonus'];
     }
-
+    
     /**
      * Generate a new passkey 
      */
@@ -168,15 +168,6 @@ class Acl {
         $db->passkey = $passkey;
         $db->update("user_id = '" . $this->id . "'");
         $this->__set("passkey", $passkey);
-    }
-
-    /**
-     * Get user icons. 
-     */
-    function icons() {
-        $return = "";
-
-        return $return;
     }
 
     /**
