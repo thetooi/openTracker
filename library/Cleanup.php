@@ -107,7 +107,7 @@ class Cleanup {
      * Cleanup groups 
      */
     function groups() {
-        $notif = new notifications_main();
+        //$notif = new notifications_main();
         $db = new DB("groups");
         $db->setSort("group_id ASC");
         $db->select();
@@ -125,7 +125,7 @@ class Cleanup {
                     $db2 = new DB("users");
                     $db2->user_group = $db->group_upgradeto;
                     $db2->update("user_id = '" . $user->user_id . "'");
-                    $notif->add($user->user_id, "system", json_encode(array("type" => "upgrade", "group" => $db->group_upgradeto)));
+                    //$notif->add($user->user_id, "system", json_encode(array("type" => "upgrade", "group" => $db->group_upgradeto)));
                 }
             }
         }
@@ -137,7 +137,7 @@ class Cleanup {
             $user = new DB("users");
             $user->select("user_group = '" . $db->group_id . "'");
             while ($user->nextRecord()) {
-                $notif = new notifications_main();
+                //$notif = new notifications_main();
                 $ratio = false;
                 if ($user->user_uploaded != 0 && $user->user_downloaded != 0) {
                     $ratio = round($user->user_uploaded / $user->user_downloaded, 2);
@@ -147,7 +147,7 @@ class Cleanup {
                     $db2 = new DB("users");
                     $db2->user_group = $db->group_downgradeto;
                     $db2->update("user_id = '" . $user->user_id . "'");
-                    $notif->add($user->user_id, "system", json_encode(array("type" => "downgrade", "group" => $db->group_downgradeto)));
+                    //$notif->add($user->user_id, "system", json_encode(array("type" => "downgrade", "group" => $db->group_downgradeto)));
                 }
             }
         }

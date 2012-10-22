@@ -20,7 +20,7 @@ $this->setTitle("Friends");
 $user = new Acl(USER_ID);
 
 if (isset($this->args['var_a'])) {
-    $notif = new notifications_main();
+    //$notif = new notifications_main();
     try {
         switch ($this->args['var_a']) {
 
@@ -39,7 +39,7 @@ if (isset($this->args['var_a'])) {
                 }
 
                 if ($db->affectedRows())
-                    $notif->add($friend_id, "friend", json_encode(array("type" => "accept", "user" => USER_ID)));
+                    //$notif->add($friend_id, "friend", json_encode(array("type" => "accept", "user" => USER_ID)));
                 break;
 
             case 'decline':
@@ -47,7 +47,7 @@ if (isset($this->args['var_a'])) {
                 $db = new DB("friends");
                 $db->delete("friend_receiver = '" . USER_ID . "' AND friend_sender = '" . $friend_id . "' AND friend_status='0'");
                 if ($db->affectedRows())
-                    $notif->add($friend_id, "friend", json_encode(array("type" => "decline", "user" => USER_ID)));
+                    //$notif->add($friend_id, "friend", json_encode(array("type" => "decline", "user" => USER_ID)));
                 break;
 
             case 'remove':
@@ -56,7 +56,7 @@ if (isset($this->args['var_a'])) {
                 $db->delete("friend_receiver = '" . $friend_id . "' AND friend_sender = '" . USER_ID . "' AND friend_status='1'");
                 $db->delete("friend_receiver = '" . USER_ID . "' AND friend_sender = '" . $friend_id . "' AND friend_status='1'");
                 if ($db->affectedRows())
-                    $notif->add($friend_id, "friend", json_encode(array("type" => "remove", "user" => USER_ID)));
+                    //$notif->add($friend_id, "friend", json_encode(array("type" => "remove", "user" => USER_ID)));
                 break;
 
             case 'add':

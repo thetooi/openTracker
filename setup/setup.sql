@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}translation` (
   `translation_lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `translation_phrase` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `translation_phrase_translated` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `translation_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `translation_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `{PREFIX}translation` (`translation_lang_id`, `translation_phrase`, `translation_phrase_translated`, `translation_file`) VALUES
