@@ -77,7 +77,7 @@ if (USER_ID) {
             foreach ($control->javascript as $javascript) {
                 ?>
                 <script src='CMS/applications/<?php echo $this->data['url']['application'] . "/javascript/" . $javascript; ?>' type='text/javascript' ></script>
-                <?
+                <?php
             }
         }
 
@@ -85,7 +85,7 @@ if (USER_ID) {
             foreach ($control->css as $css) {
                 ?>
                 <link rel="stylesheet" href="templates/<?php echo $spref->template; ?>/css/<?php echo $css; ?>" />
-                <?
+                <?php
             }
         }
 
@@ -93,7 +93,7 @@ if (USER_ID) {
             foreach ($loaded_css as $css) {
                 ?>
                 <link rel="stylesheet" href="<?php echo $css; ?>" />
-                <?
+                <?php
             }
         }
         ?>
