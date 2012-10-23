@@ -24,7 +24,7 @@ $folders = array(
         $mode = (is_writable($path) ? "<font color=green>Writable</font>" : "<font color=red>Not Writable</font>");
         ?>
         <td><?php echo "<b>" . $folder . "</b><br /> Status: $mode"; ?></td>
-        <?
+        <?php
         if ($i == 4) {
             echo "</tr>";
         }

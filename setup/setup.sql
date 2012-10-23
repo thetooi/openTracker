@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}translation` (
   `translation_lang_id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `translation_phrase` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `translation_phrase_translated` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `translation_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `translation_file` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `{PREFIX}translation` (`translation_lang_id`, `translation_phrase`, `translation_phrase_translated`, `translation_file`) VALUES
@@ -502,23 +502,23 @@ CREATE TABLE IF NOT EXISTS `{PREFIX}users` (
   `user_password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_password_secret` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `user_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_status` int(2) NOT NULL,
-  `user_downloaded` bigint(20) NOT NULL,
-  `user_uploaded` bigint(20) NOT NULL,
-  `user_group` int(11) NOT NULL,
-  `user_ip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `user_last_login` int(20) NOT NULL,
-  `user_last_access` int(11) NOT NULL,
-  `user_passkey` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `user_uploader` int(11) NOT NULL,
-  `user_added` int(11) NOT NULL,
-  `user_avatar` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_torrents_perpage` int(11) NOT NULL,
-  `user_posts_perpage` int(11) NOT NULL,
-  `user_default_categories` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `user_anonymous` int(11) NOT NULL,
-  `user_language` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `user_invites` int(11) NOT NULL
+  `user_status` int(2) NOT NULL DEFAULT 0,
+  `user_downloaded` bigint(20) NOT NULL DEFAULT 0,
+  `user_uploaded` bigint(20) NOT NULL DEFAULT 0,
+  `user_group` int(11) NOT NULL DEFAULT 0,
+  `user_ip` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
+  `user_last_login` int(20) NOT NULL DEFAULT 0,
+  `user_last_access` int(11) NOT NULL DEFAULT 0,
+  `user_passkey` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
+  `user_uploader` int(11) NOT NULL DEFAULT 0,
+  `user_added` int(11) NOT NULL DEFAULT 0,
+  `user_avatar` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
+  `user_torrents_perpage` int(11) NOT NULL DEFAULT 0,
+  `user_posts_perpage` int(11) NOT NULL DEFAULT 0,
+  `user_default_categories` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
+  `user_anonymous` int(11) NOT NULL DEFAULT 0,
+  `user_language` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
+  `user_invites` int(11) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `{PREFIX}users_log`;
